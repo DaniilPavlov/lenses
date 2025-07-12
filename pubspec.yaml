@@ -1,0 +1,97 @@
+name: lenses
+description: "A new Flutter project."
+# The following line prevents the package from being accidentally published to
+# pub.dev using `flutter pub publish`. This is preferred for private packages.
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
+
+# The following defines the version and build number for your application.
+# A version number is three numbers separated by dots, like 1.2.43
+# followed by an optional build number separated by a +.
+# Both the version and the builder number may be overridden in flutter
+# build by specifying --build-name and --build-number, respectively.
+# In Android, build-name is used as versionName while build-number used as versionCode.
+# Read more about Android versioning at https://developer.android.com/studio/publish/versioning
+# In iOS, build-name is used as CFBundleShortVersionString while build-number is used as CFBundleVersion.
+# Read more about iOS versioning at
+# https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
+# In Windows, build-name is used as the major, minor, and patch parts
+# of the product and file versions while build-number is used as the build suffix.
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.6.0
+
+# Dependencies specify other packages that your package needs in order to work.
+# To automatically upgrade your package dependencies to the latest versions
+# consider running `flutter pub upgrade --major-versions`. Alternatively,
+# dependencies can be manually updated by changing the version numbers below to
+# the latest version available on pub.dev. To see which dependencies have newer
+# versions available, run `flutter pub outdated`.
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # The following adds the Cupertino Icons font to your application.
+  # Use with the CupertinoIcons class for iOS style icons.
+  cupertino_icons: ^1.0.8
+  flutter_mobx: ^2.3.0
+  mobx: ^2.5.0
+  provider: ^6.1.5
+  shared_preferences: ^2.5.3
+  logger: ^2.6.0
+  flutter_svg: ^2.2.0
+  percent_indicator: ^4.2.5
+  get_it: ^7.7.0
+  json_annotation: ^4.8.1
+
+dev_dependencies:
+  flutter_launcher_icons: ^0.13.1
+  json_serializable: ^6.8.0
+  meykuless_lint_rules:
+    git:
+      url: https://github.com/DaniilPavlov/meykuless_lint_rules.git
+      ref: 190e704f0bcedbe8558d7e4f11c022dcaf60072e
+
+  flutter_test:
+    sdk: flutter
+  build_runner: ^2.4.12
+  mobx_codegen: ^2.7.1
+  flutter_gen_runner: ^5.10.0
+
+flutter_icons:
+  android: true
+  ios: true
+  android_adaptive_icon_background: "#FFFFFF" 
+  ios_remove_alpha_icon: true
+  image_path: "assets/app_icon/app_icon.png"
+
+flutter_gen:
+  output: lib/assets_gen/
+
+  # Optional
+  integrations:
+    flutter_svg: true
+
+# For information on the generic Dart part of this file, see the
+# following page: https://dart.dev/tools/pub/pubspec
+
+# The following section is specific to Flutter packages.
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/icons/
+  fonts:
+    - family: coolvetica
+      fonts:
+        - asset: assets/fonts/coolvetica_book.ttf
+    - family: rfDewi
+      fonts:
+        - asset: assets/fonts/RFDewi-Regular.ttf
+        - asset: assets/fonts/RFDewi-BoldItalic.ttf
+          weight: 700
+          style: italic
+        - asset: assets/fonts/RFDewi-SemiboldItalic.ttf
+          weight: 600
+          style: italic
+        - asset: assets/fonts/RFDewi-Semibold.ttf
+          weight: 600
