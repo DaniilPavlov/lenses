@@ -98,6 +98,7 @@ abstract class LensesControllerBase with Store {
         _pairDates = AsyncValue.value(
           value: LensesPairDatesModel.fromJson(jsonDecode(pairDatesRaw)),
         );
+        updateLensesPair(leftDate: _pairDates.value?.left?.dateStart, rightDate: _pairDates.value?.right?.dateStart);
       } catch (e) {
         _pairDates = AsyncValue.error(
           error: AsyncError(
