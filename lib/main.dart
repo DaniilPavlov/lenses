@@ -92,7 +92,7 @@ class Lenses extends StatelessWidget {
               selectionColor: AppColors.pureColors.green.g100,
               selectionHandleColor: AppColors.pureColors.green.g500,
             ),
-            tabBarTheme: const TabBarTheme(
+            tabBarTheme:  const TabBarThemeData(
               overlayColor: WidgetStatePropertyAll(Colors.transparent),
             ),
           ),

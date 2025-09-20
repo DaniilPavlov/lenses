@@ -33,14 +33,14 @@ abstract class LensesControllerBase with Store {
         ? LensDateModel(
             dateStart: leftDate,
             dateEnd: leftDate.add(const Duration(days: 14)),
-            daysLeft: leftDate.add(const Duration(days: 14)).difference(DateTime.now()).inDays,
+            daysLeft: leftDate.add(const Duration(days: 14)).difference(DateTime.now()).inDays + 1,
           )
         : _pairDates.value?.left;
     final parsedRightDate = rightDate != null
         ? LensDateModel(
             dateStart: rightDate,
             dateEnd: rightDate.add(const Duration(days: 14)),
-            daysLeft: rightDate.add(const Duration(days: 14)).difference(DateTime.now()).inDays,
+            daysLeft: rightDate.add(const Duration(days: 14)).difference(DateTime.now()).inDays + 1,
           )
         : _pairDates.value?.right;
     _pairDates = AsyncValue.value(value: LensesPairDatesModel(left: parsedLeftDate, right: parsedRightDate));

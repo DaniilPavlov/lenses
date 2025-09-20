@@ -63,7 +63,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    final AppBarTheme appBarTheme = AppBarTheme.of(context);
+    const appBarTheme = AppBarThemeData();
 
     // Если явно не задан leading виджет,
     // то будет отображаться кнопка перехода на предыдущий маршрут

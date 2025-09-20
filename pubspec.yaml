@@ -16,10 +16,11 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 # In Windows, build-name is used as the major, minor, and patch parts
 # of the product and file versions while build-number is used as the build suffix.
-version: 1.0.0+1
+version: 1.0.0+2
 
 environment:
-  sdk: ^3.6.0
+  sdk: ">=3.5.0 <4.0.0"
+  flutter: ^3.35.3
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -38,15 +39,15 @@ dependencies:
   mobx: ^2.5.0
   provider: ^6.1.5
   shared_preferences: ^2.5.3
-  logger: ^2.6.0
-  flutter_svg: ^2.2.0
+  logger: ^2.6.1
+  flutter_svg: ^2.2.1
   percent_indicator: ^4.2.5
-  get_it: ^7.7.0
-  json_annotation: ^4.8.1
+  get_it: ^8.2.0
+  json_annotation: ^4.9.0
 
 dev_dependencies:
-  flutter_launcher_icons: ^0.13.1
-  json_serializable: ^6.8.0
+  flutter_launcher_icons: ^0.14.4
+  json_serializable: ^6.11.1
   meykuless_lint_rules:
     git:
       url: https://github.com/DaniilPavlov/meykuless_lint_rules.git
@@ -54,9 +55,9 @@ dev_dependencies:
 
   flutter_test:
     sdk: flutter
-  build_runner: ^2.4.12
-  mobx_codegen: ^2.7.1
-  flutter_gen_runner: ^5.10.0
+  build_runner: ^2.6.0
+  mobx_codegen: ^2.7.3
+  flutter_gen_runner: ^5.11.0
 
 flutter_icons:
   android: true
