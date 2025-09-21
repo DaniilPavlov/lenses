@@ -5,15 +5,15 @@ import 'package:lenses/styles/const_text_styles.dart';
 import 'package:lenses/widgets/buttons/custom_button.dart';
 
 class PutOnDateSheet extends StatefulWidget {
-  final void Function({DateTime? rightDate, DateTime? leftDate}) onConfirmed;
-  final DateTime? leftPut;
-  final DateTime? rightPut;
   const PutOnDateSheet({
     required this.onConfirmed,
     required this.leftPut,
     required this.rightPut,
     super.key,
   });
+  final void Function({DateTime? rightDate, DateTime? leftDate}) onConfirmed;
+  final DateTime? leftPut;
+  final DateTime? rightPut;
 
   @override
   State<PutOnDateSheet> createState() => _PutOnDateSheetState();

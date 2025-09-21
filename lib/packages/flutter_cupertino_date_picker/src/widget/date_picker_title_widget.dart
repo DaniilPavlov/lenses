@@ -1,17 +1,14 @@
-// ignore_for_file: always_use_package_imports, prefer_const_constructors_in_immutables,member-ordering-extended,avoid-returning-widgets, always_put_required_named_parameters_first, avoid_multiple_declarations_per_line
-
 import 'package:flutter/material.dart';
-
-import '../date_picker_constants.dart';
-import '../date_picker_theme.dart';
-import '../i18n/date_picker_i18n.dart';
+import 'package:lenses/packages/flutter_cupertino_date_picker/src/date_picker_constants.dart';
+import 'package:lenses/packages/flutter_cupertino_date_picker/src/date_picker_theme.dart';
+import 'package:lenses/packages/flutter_cupertino_date_picker/src/i18n/date_picker_i18n.dart';
 
 /// DatePicker's title widget.
 ///
 /// @author dylan wu
 /// @since 2019-05-16
 class DatePickerTitleWidget extends StatelessWidget {
-  DatePickerTitleWidget(
+  const DatePickerTitleWidget(
     this.onCancel,
     this.onConfirm, {
     super.key,
@@ -21,7 +18,8 @@ class DatePickerTitleWidget extends StatelessWidget {
 
   final DateTimePickerTheme pickerTheme;
   final DateTimePickerLocale locale;
-  final DateVoidCallback onCancel, onConfirm;
+  final DateVoidCallback onCancel;
+  final DateVoidCallback onConfirm;
 
   @override
   Widget build(BuildContext context) {

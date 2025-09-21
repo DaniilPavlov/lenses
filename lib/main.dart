@@ -15,10 +15,9 @@ import 'package:lenses/utils/toast_handler/toast_handler_widget.dart';
 import 'package:mobx/mobx.dart';
 import 'package:provider/provider.dart';
 
-// TODO добавить локализацию
-// TODO добавить локальные пуши-напоминания о замене линз
-// TODO обновить репозиторий линтера до последней версии flutter_linter
-// TODO добавить возможность установления срока ношения
+// TODO: добавить локализацию
+// TODO: добавить локальные пуши-напоминания о замене линз
+// TODO: добавить возможность установления срока ношения
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -92,7 +91,7 @@ class Lenses extends StatelessWidget {
               selectionColor: AppColors.pureColors.green.g100,
               selectionHandleColor: AppColors.pureColors.green.g500,
             ),
-            tabBarTheme:  const TabBarThemeData(
+            tabBarTheme: const TabBarThemeData(
               overlayColor: WidgetStatePropertyAll(Colors.transparent),
             ),
           ),

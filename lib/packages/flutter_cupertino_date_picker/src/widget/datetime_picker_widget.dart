@@ -1,15 +1,13 @@
-// ignore_for_file: always_use_package_imports, no_logic_in_create_state, prefer_typing_uninitialized_variables, type_annotate_public_apis, avoid_dynamic_calls,avoid-returning-widgets,member-ordering-extended, always_put_required_named_parameters_first, avoid_multiple_declarations_per_line, cascade_invocations, omit_local_variable_types
-
 import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../date_picker.dart';
-import '../date_picker_constants.dart';
-import '../date_picker_theme.dart';
-import '../date_time_formatter.dart';
-import '../i18n/date_picker_i18n.dart';
-import 'date_picker_title_widget.dart';
+import 'package:lenses/packages/flutter_cupertino_date_picker/src/date_picker.dart';
+import 'package:lenses/packages/flutter_cupertino_date_picker/src/date_picker_constants.dart';
+import 'package:lenses/packages/flutter_cupertino_date_picker/src/date_picker_theme.dart';
+import 'package:lenses/packages/flutter_cupertino_date_picker/src/date_time_formatter.dart';
+import 'package:lenses/packages/flutter_cupertino_date_picker/src/i18n/date_picker_i18n.dart';
+import 'package:lenses/packages/flutter_cupertino_date_picker/src/widget/date_picker_title_widget.dart';
 
 /// DateTimePicker widget. Can display date and time picker.
 ///
@@ -21,28 +19,32 @@ class DateTimePickerWidget extends StatefulWidget {
     this.minDateTime,
     this.maxDateTime,
     this.initDateTime,
-    this.dateFormat = DATETIME_PICKER_TIME_FORMAT,
-    this.locale = DATETIME_PICKER_LOCALE_DEFAULT,
-    this.pickerTheme = DateTimePickerTheme.Default,
+    this.dateFormat = dateTimePicketTimeFormat,
+    this.locale = dateTimePicketLocaleDefault,
+    this.pickerTheme = DateTimePickerTheme.defaultDateTimePicker,
     this.minuteDivider = 1,
     this.onCancel,
     this.onChange,
     this.onConfirm,
   }) {
-    final DateTime minTime = minDateTime ?? DateTime.parse(DATE_PICKER_MIN_DATETIME);
-    final DateTime maxTime = maxDateTime ?? DateTime.parse(DATE_PICKER_MAX_DATETIME);
+    final DateTime minTime = minDateTime ?? DateTime.parse(datePickerMinDateTime);
+    final DateTime maxTime = maxDateTime ?? DateTime.parse(datePicketMaxDateTime);
     assert(minTime.compareTo(maxTime) < 0);
   }
 
-  final DateTime? minDateTime, maxDateTime, initDateTime;
+  final DateTime? minDateTime;
+  final DateTime? maxDateTime;
+  final DateTime? initDateTime;
   final String? dateFormat;
   final DateTimePickerLocale locale;
   final DateTimePickerTheme pickerTheme;
   final DateVoidCallback? onCancel;
-  final DateValueCallback? onChange, onConfirm;
+  final DateValueCallback? onChange;
+  final DateValueCallback? onConfirm;
   final int minuteDivider;
 
   @override
+  // ignore: no_logic_in_create_state
   State<StatefulWidget> createState() => _DateTimePickerWidgetState(
         minDateTime,
         maxDateTime,
@@ -52,22 +54,6 @@ class DateTimePickerWidget extends StatefulWidget {
 }
 
 class _DateTimePickerWidgetState extends State<DateTimePickerWidget> {
-  DateTime _minTime = DateTime(0), _maxTime = DateTime(0);
-  int _currDay = 0, _currHour = 0, _currMinute = 0, _currSecond = 0;
-  int _minuteDivider = 0;
-  List<int> _dayRange = [], _hourRange = [], _minuteRange = [], _secondRange = [];
-  FixedExtentScrollController _dayScrollCtrl = FixedExtentScrollController(),
-      _hourScrollCtrl = FixedExtentScrollController(),
-      _minuteScrollCtrl = FixedExtentScrollController(),
-      _secondScrollCtrl = FixedExtentScrollController();
-
-  Map<String, FixedExtentScrollController> _scrollCtrlMap = {};
-  Map<String, List<int>> _valueRangeMap = {};
-
-  bool _isChangeTimeRange = false;
-
-  final DateTime _baselineDate = DateTime(1900);
-
   _DateTimePickerWidgetState(
     DateTime? minTime,
     DateTime? maxTime,
@@ -75,9 +61,9 @@ class _DateTimePickerWidgetState extends State<DateTimePickerWidget> {
     int minuteDivider,
   ) {
     // check minTime value
-    minTime ??= DateTime.parse(DATE_PICKER_MIN_DATETIME);
+    minTime ??= DateTime.parse(datePickerMinDateTime);
     // check maxTime value
-    maxTime ??= DateTime.parse(DATE_PICKER_MAX_DATETIME);
+    maxTime ??= DateTime.parse(datePicketMaxDateTime);
     // check initTime value
     initTime ??= DateTime.now();
     // limit initTime value
@@ -130,6 +116,28 @@ class _DateTimePickerWidgetState extends State<DateTimePickerWidget> {
     };
     _valueRangeMap = {'H': _hourRange, 'm': _minuteRange, 's': _secondRange};
   }
+  DateTime _minTime = DateTime(0);
+  DateTime _maxTime = DateTime(0);
+  int _currDay = 0;
+  int _currHour = 0;
+  int _currMinute = 0;
+  int _currSecond = 0;
+  int _minuteDivider = 0;
+  List<int> _dayRange = [];
+  List<int> _hourRange = [];
+  List<int> _minuteRange = [];
+  List<int> _secondRange = [];
+  FixedExtentScrollController _dayScrollCtrl = FixedExtentScrollController();
+  FixedExtentScrollController _hourScrollCtrl = FixedExtentScrollController();
+  FixedExtentScrollController _minuteScrollCtrl = FixedExtentScrollController();
+  FixedExtentScrollController _secondScrollCtrl = FixedExtentScrollController();
+
+  Map<String, FixedExtentScrollController> _scrollCtrlMap = {};
+  Map<String, List<int>> _valueRangeMap = {};
+
+  bool _isChangeTimeRange = false;
+
+  final DateTime _baselineDate = DateTime(1900);
 
   @override
   Widget build(BuildContext context) {
@@ -330,7 +338,7 @@ class _DateTimePickerWidgetState extends State<DateTimePickerWidget> {
       alignment: Alignment.center,
       child: Text(
         DateTimeFormatter.formatDate(dateTime, format, widget.locale),
-        style: widget.pickerTheme.itemTextStyle ?? DATETIME_PICKER_ITEM_TEXT_STYLE,
+        style: widget.pickerTheme.itemTextStyle ?? dateTimePickerItemTextStyle,
       ),
     );
   }
@@ -342,7 +350,7 @@ class _DateTimePickerWidgetState extends State<DateTimePickerWidget> {
       alignment: Alignment.center,
       child: Text(
         DateTimeFormatter.formatDateTime(value, format, widget.locale),
-        style: widget.pickerTheme.itemTextStyle ?? DATETIME_PICKER_ITEM_TEXT_STYLE,
+        style: widget.pickerTheme.itemTextStyle ?? dateTimePickerItemTextStyle,
       ),
     );
   }
@@ -472,7 +480,8 @@ class _DateTimePickerWidgetState extends State<DateTimePickerWidget> {
 
   /// calculate the range of hour
   List<int> _calcHourRange() {
-    int minHour = 0, maxHour = 23;
+    int minHour = 0;
+    int maxHour = 23;
     if (_currDay == _dayRange.first) {
       minHour = _minTime.hour;
     }
@@ -484,7 +493,8 @@ class _DateTimePickerWidgetState extends State<DateTimePickerWidget> {
 
   /// calculate the range of minute
   List<int> _calcMinuteRange({int? currHour}) {
-    int minMinute = 0, maxMinute = 59;
+    int minMinute = 0;
+    int maxMinute = 59;
     currHour ??= _currHour;
 
     if (_currDay == _dayRange.first && currHour == _minTime.hour) {
@@ -500,7 +510,8 @@ class _DateTimePickerWidgetState extends State<DateTimePickerWidget> {
 
   /// calculate the range of second
   List<int> _calcSecondRange({int? currHour, int? currMinute}) {
-    int minSecond = 0, maxSecond = 59;
+    int minSecond = 0;
+    int maxSecond = 59;
 
     currHour ??= _currHour;
     currMinute ??= _currMinute;

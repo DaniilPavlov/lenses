@@ -59,18 +59,20 @@ class _InitialWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Observer(builder: (context) {
-      final controller = context.read<LensesController>();
-      return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: CustomButton(
-          width: MediaQuery.sizeOf(context).width,
-          text: 'Надеть',
-          color: AppColors.pureColors.green.g900,
-          onPressed: () => _showLensesSheet(context, controller),
-        ),
-      );
-    });
+    return Observer(
+      builder: (context) {
+        final controller = context.read<LensesController>();
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: CustomButton(
+            width: MediaQuery.sizeOf(context).width,
+            text: 'Надеть',
+            color: AppColors.pureColors.green.g900,
+            onPressed: () => _showLensesSheet(context, controller),
+          ),
+        );
+      },
+    );
   }
 
   void _showLensesSheet(BuildContext context, LensesController controller) {

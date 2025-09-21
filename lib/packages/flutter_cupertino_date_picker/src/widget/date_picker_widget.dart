@@ -1,14 +1,11 @@
-// ignore_for_file: always_use_package_imports, no_logic_in_create_state, prefer_typing_uninitialized_variables, type_annotate_public_apis, avoid_dynamic_calls,avoid-returning-widgets,member-ordering-extended, always_put_required_named_parameters_first, avoid_multiple_declarations_per_line, cascade_invocations, omit_local_variable_types
-
 import 'dart:math';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../date_picker_constants.dart';
-import '../date_picker_theme.dart';
-import '../date_time_formatter.dart';
-import '../i18n/date_picker_i18n.dart';
-import 'date_picker_title_widget.dart';
+import 'package:lenses/packages/flutter_cupertino_date_picker/src/date_picker_constants.dart';
+import 'package:lenses/packages/flutter_cupertino_date_picker/src/date_picker_theme.dart';
+import 'package:lenses/packages/flutter_cupertino_date_picker/src/date_time_formatter.dart';
+import 'package:lenses/packages/flutter_cupertino_date_picker/src/i18n/date_picker_i18n.dart';
+import 'package:lenses/packages/flutter_cupertino_date_picker/src/widget/date_picker_title_widget.dart';
 
 /// Solar months of 31 days.
 const List<int> _solarMonthsOf31Days = <int>[1, 3, 5, 7, 8, 10, 12];
@@ -24,30 +21,33 @@ class DatePickerWidget extends StatefulWidget {
     this.minDateTime,
     this.maxDateTime,
     this.initialDateTime,
-    this.dateFormat = DATETIME_PICKER_DATE_FORMAT,
-    this.locale = DATETIME_PICKER_LOCALE_DEFAULT,
-    this.pickerTheme = DateTimePickerTheme.Default,
+    this.dateFormat = datePickerDateFormat,
+    this.locale = dateTimePicketLocaleDefault,
+    this.pickerTheme = DateTimePickerTheme.defaultDateTimePicker,
     this.onCancel,
     this.onChange,
     this.onConfirm,
     this.popWidget = true,
   }) {
-    final minTime = minDateTime ?? DateTime.parse(DATE_PICKER_MIN_DATETIME);
-    final maxTime = maxDateTime ?? DateTime.parse(DATE_PICKER_MAX_DATETIME);
+    final minTime = minDateTime ?? DateTime.parse(datePickerMinDateTime);
+    final maxTime = maxDateTime ?? DateTime.parse(datePicketMaxDateTime);
     assert(minTime.compareTo(maxTime) < 0);
   }
 
-  final DateTime? minDateTime, maxDateTime, initialDateTime;
+  final DateTime? minDateTime;
+  final DateTime? maxDateTime;
+  final DateTime? initialDateTime;
   final String? dateFormat;
   final DateTimePickerLocale locale;
   final DateTimePickerTheme pickerTheme;
   final bool popWidget;
   final DateVoidCallback? onCancel;
-  final DateValueCallback? onChange, onConfirm;
-  // ignore: member-ordering-extended
+  final DateValueCallback? onChange;
+  final DateValueCallback? onConfirm;
   final bool onMonthChangeStartWithFirstDate;
 
   @override
+  // ignore: no_logic_in_create_state
   State<StatefulWidget> createState() => _DatePickerWidgetState(
         minDateTime,
         maxDateTime,
@@ -56,18 +56,6 @@ class DatePickerWidget extends StatefulWidget {
 }
 
 class _DatePickerWidgetState extends State<DatePickerWidget> {
-  DateTime _minDateTime = DateTime(0), _maxDateTime = DateTime(0);
-  int _currYear = 0, _currMonth = 0, _currDay = 0;
-  List<int> _yearRange = [], _monthRange = [], _dayRange = [];
-  FixedExtentScrollController _yearScrollCtrl = FixedExtentScrollController(),
-      _monthScrollCtrl = FixedExtentScrollController(),
-      _dayScrollCtrl = FixedExtentScrollController();
-
-  Map<String, FixedExtentScrollController> _scrollCtrlMap = {};
-  Map<String, List<int>> _valueRangeMap = {};
-
-  bool _isChangeDateRange = false;
-
   _DatePickerWidgetState(
     DateTime? minDateTime,
     DateTime? maxDateTime,
@@ -80,8 +68,8 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
     _currDay = initDateTime.day;
 
     // handle DateTime range
-    _minDateTime = minDateTime ?? DateTime.parse(DATE_PICKER_MIN_DATETIME);
-    _maxDateTime = maxDateTime ?? DateTime.parse(DATE_PICKER_MAX_DATETIME);
+    _minDateTime = minDateTime ?? DateTime.parse(datePickerMinDateTime);
+    _maxDateTime = maxDateTime ?? DateTime.parse(datePicketMaxDateTime);
 
     // limit the range of year
     _yearRange = _calcYearRange();
@@ -109,6 +97,22 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
     };
     _valueRangeMap = {'y': _yearRange, 'M': _monthRange, 'd': _dayRange};
   }
+  DateTime _minDateTime = DateTime(0);
+  DateTime _maxDateTime = DateTime(0);
+  int _currYear = 0;
+  int _currMonth = 0;
+  int _currDay = 0;
+  List<int> _yearRange = [];
+  List<int> _monthRange = [];
+  List<int> _dayRange = [];
+  FixedExtentScrollController _yearScrollCtrl = FixedExtentScrollController();
+  FixedExtentScrollController _monthScrollCtrl = FixedExtentScrollController();
+  FixedExtentScrollController _dayScrollCtrl = FixedExtentScrollController();
+
+  Map<String, FixedExtentScrollController> _scrollCtrlMap = {};
+  Map<String, List<int>> _valueRangeMap = {};
+
+  bool _isChangeDateRange = false;
 
   @override
   Widget build(BuildContext context) {
@@ -254,7 +258,7 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
       alignment: Alignment.center,
       child: Text(
         DateTimeFormatter.formatDateTime(value, format, widget.locale),
-        style: widget.pickerTheme.itemTextStyle ?? DATETIME_PICKER_ITEM_TEXT_STYLE,
+        style: widget.pickerTheme.itemTextStyle ?? dateTimePickerItemTextStyle,
       ),
     );
   }
@@ -372,7 +376,8 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
 
   /// calculate the range of month
   List<int> _calcMonthRange() {
-    int minMonth = 1, maxMonth = 12;
+    int minMonth = 1;
+    int maxMonth = 12;
     final minYear = _minDateTime.year;
     final maxYear = _maxDateTime.year;
     if (minYear == _currYear) {
@@ -388,7 +393,8 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
 
   /// calculate the range of day
   List<int> _calcDayRange({int? currMonth}) {
-    int minDay = 1, maxDay = _calcDayCountOfMonth();
+    int minDay = 1;
+    int maxDay = _calcDayCountOfMonth();
     final minYear = _minDateTime.year;
     final maxYear = _maxDateTime.year;
     final minMonth = _minDateTime.month;

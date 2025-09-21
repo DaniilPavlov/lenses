@@ -19,7 +19,7 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+2
 
 environment:
-  sdk: ">=3.5.0 <4.0.0"
+  sdk: ">=3.8.0 <4.0.0"
   flutter: ^3.35.3
 
 # Dependencies specify other packages that your package needs in order to work.
@@ -62,7 +62,7 @@ dev_dependencies:
 flutter_icons:
   android: true
   ios: true
-  android_adaptive_icon_background: "#FFFFFF" 
+  android_adaptive_icon_background: "#FFFFFF"
   ios_remove_alpha_icon: true
   image_path: "assets/app_icon/app_icon.png"
 

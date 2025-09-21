@@ -1,14 +1,12 @@
 import 'package:lenses/models/toast_model.dart';
 import 'package:mobx/mobx.dart';
 
-
 part 'toast_handler_controller.g.dart';
 
-// ignore: library_private_types_in_public_api
-class ToastHandlerController = _ToastHandlerControllerBase with _$ToastHandlerController;
+class ToastHandlerController = ToastHandlerControllerBase with _$ToastHandlerController;
 
 /// Контроллер управления состояний тоастов в приложении
-abstract class _ToastHandlerControllerBase with Store {
+abstract class ToastHandlerControllerBase with Store {
   @observable
   List<ToastModel> _toasts = [];
 

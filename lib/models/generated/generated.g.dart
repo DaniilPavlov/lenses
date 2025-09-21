@@ -7,22 +7,19 @@ part of 'generated.dart';
 // **************************************************************************
 
 LensesPairDatesModel _$LensesPairDatesModelFromJson(
-        Map<String, dynamic> json) =>
-    LensesPairDatesModel(
-      left: json['left'] == null
-          ? null
-          : LensDateModel.fromJson(json['left'] as Map<String, dynamic>),
-      right: json['right'] == null
-          ? null
-          : LensDateModel.fromJson(json['right'] as Map<String, dynamic>),
-    );
+  Map<String, dynamic> json,
+) => LensesPairDatesModel(
+  left: json['left'] == null
+      ? null
+      : LensDateModel.fromJson(json['left'] as Map<String, dynamic>),
+  right: json['right'] == null
+      ? null
+      : LensDateModel.fromJson(json['right'] as Map<String, dynamic>),
+);
 
 Map<String, dynamic> _$LensesPairDatesModelToJson(
-        LensesPairDatesModel instance) =>
-    <String, dynamic>{
-      'left': instance.left,
-      'right': instance.right,
-    };
+  LensesPairDatesModel instance,
+) => <String, dynamic>{'left': instance.left, 'right': instance.right};
 
 LensDateModel _$LensDateModelFromJson(Map<String, dynamic> json) =>
     LensDateModel(

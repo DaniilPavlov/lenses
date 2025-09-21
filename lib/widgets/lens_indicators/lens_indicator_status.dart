@@ -5,14 +5,6 @@ import 'package:lenses/styles/const_text_styles.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
 class LensIndicatorStatus extends StatelessWidget {
-  final int daysBeforeReplacement;
-  final int lifeTime;
-  final VoidCallback onUpdateTap;
-  final bool title;
-  final bool sameTime;
-  final bool isAloneChildCircle;
-  final bool isLeft;
-
   const LensIndicatorStatus({
     required this.daysBeforeReplacement,
     required this.onUpdateTap,
@@ -23,6 +15,13 @@ class LensIndicatorStatus extends StatelessWidget {
     this.isAloneChildCircle = false,
     super.key,
   });
+  final int daysBeforeReplacement;
+  final int lifeTime;
+  final VoidCallback onUpdateTap;
+  final bool title;
+  final bool sameTime;
+  final bool isAloneChildCircle;
+  final bool isLeft;
 
   @override
   Widget build(BuildContext context) {

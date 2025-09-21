@@ -4,15 +4,15 @@ import 'package:lenses/styles/const_text_styles.dart';
 import 'package:lenses/widgets/buttons/custom_button.dart';
 
 class PutOnEndSheet extends StatelessWidget {
-  final VoidCallback onLeftConfirmed;
-  final VoidCallback onRightConfirmed;
-  final VoidCallback onBothConfirmed;
   const PutOnEndSheet({
     required this.onBothConfirmed,
     required this.onLeftConfirmed,
     required this.onRightConfirmed,
     super.key,
   });
+  final VoidCallback onLeftConfirmed;
+  final VoidCallback onRightConfirmed;
+  final VoidCallback onBothConfirmed;
 
   @override
   Widget build(BuildContext context) {

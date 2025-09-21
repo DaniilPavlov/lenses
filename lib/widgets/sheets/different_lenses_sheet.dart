@@ -5,15 +5,15 @@ import 'package:lenses/styles/const_text_styles.dart';
 import 'package:lenses/widgets/buttons/custom_button.dart';
 
 class DifferentLensesSheet extends StatefulWidget {
-  final void Function({DateTime? leftDate, DateTime? rightDate}) onConfirmed;
-  final DateTime leftDate;
-  final DateTime rightDate;
   const DifferentLensesSheet({
     required this.onConfirmed,
     required this.rightDate,
     required this.leftDate,
     super.key,
   });
+  final void Function({DateTime? leftDate, DateTime? rightDate}) onConfirmed;
+  final DateTime leftDate;
+  final DateTime rightDate;
 
   @override
   State<DifferentLensesSheet> createState() => _DifferentLensesSheetState();

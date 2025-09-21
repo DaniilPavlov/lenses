@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-// TODO придумать как сделать такой вызов рабочим
+// TODO: придумать как сделать такой вызов рабочим
 /// ```dart
 ///   const value = AppColors.pureColors.pink.p900
 /// ```

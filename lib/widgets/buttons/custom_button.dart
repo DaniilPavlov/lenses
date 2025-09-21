@@ -3,11 +3,6 @@ import 'package:lenses/styles/const_colors_styles.dart';
 import 'package:lenses/styles/const_text_styles.dart';
 
 class CustomButton extends StatelessWidget {
-  final String text;
-  final VoidCallback? onPressed;
-  final Color? color;
-  final double? width;
-
   const CustomButton({
     required this.text,
     this.onPressed,
@@ -15,6 +10,10 @@ class CustomButton extends StatelessWidget {
     this.width,
     super.key,
   });
+  final String text;
+  final VoidCallback? onPressed;
+  final Color? color;
+  final double? width;
 
   @override
   Widget build(BuildContext context) {

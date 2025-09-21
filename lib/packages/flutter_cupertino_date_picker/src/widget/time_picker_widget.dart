@@ -1,14 +1,12 @@
-// ignore_for_file: always_use_package_imports, no_logic_in_create_state, omit_local_variable_types, avoid_multiple_declarations_per_line, unnecessary_parenthesis,avoid-returning-widgets,member-ordering-extended
-
 import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../date_picker_constants.dart';
-import '../date_picker_theme.dart';
-import '../date_time_formatter.dart';
-import '../i18n/date_picker_i18n.dart';
-import 'date_picker_title_widget.dart';
+import 'package:lenses/packages/flutter_cupertino_date_picker/src/date_picker_constants.dart';
+import 'package:lenses/packages/flutter_cupertino_date_picker/src/date_picker_theme.dart';
+import 'package:lenses/packages/flutter_cupertino_date_picker/src/date_time_formatter.dart';
+import 'package:lenses/packages/flutter_cupertino_date_picker/src/i18n/date_picker_i18n.dart';
+import 'package:lenses/packages/flutter_cupertino_date_picker/src/widget/date_picker_title_widget.dart';
 
 /// TimePicker widget.
 ///
@@ -20,29 +18,33 @@ class TimePickerWidget extends StatefulWidget {
     this.minDateTime,
     this.maxDateTime,
     this.initDateTime,
-    this.dateFormat = DATETIME_PICKER_TIME_FORMAT,
-    this.locale = DATETIME_PICKER_LOCALE_DEFAULT,
-    this.pickerTheme = DateTimePickerTheme.Default,
+    this.dateFormat = dateTimePicketTimeFormat,
+    this.locale = dateTimePicketLocaleDefault,
+    this.pickerTheme = DateTimePickerTheme.defaultDateTimePicker,
     this.minuteDivider = 1,
     this.onCancel,
     this.onChange,
     this.onConfirm,
   }) {
-    final minTime = minDateTime ?? DateTime.parse(DATE_PICKER_MIN_DATETIME);
-    final maxTime = maxDateTime ?? DateTime.parse(DATE_PICKER_MAX_DATETIME);
+    final minTime = minDateTime ?? DateTime.parse(datePickerMinDateTime);
+    final maxTime = maxDateTime ?? DateTime.parse(datePicketMaxDateTime);
     assert(minTime.compareTo(maxTime) < 0);
   }
 
-  final DateTime? minDateTime, maxDateTime, initDateTime;
+  final DateTime? minDateTime;
+  final DateTime? maxDateTime;
+  final DateTime? initDateTime;
   final String? dateFormat;
   final DateTimePickerLocale locale;
   final DateTimePickerTheme pickerTheme;
   final DateVoidCallback? onCancel;
-  final DateValueCallback? onChange, onConfirm;
+  final DateValueCallback? onChange;
+  final DateValueCallback? onConfirm;
   final int minuteDivider;
 
   @override
-  State<StatefulWidget> createState() => _TimePickerWidgetState(
+  // ignore: no_logic_in_create_state
+  State<StatefulWidget> createState() => TimePickerWidgetState(
         minDateTime,
         maxDateTime,
         initDateTime,
@@ -50,28 +52,15 @@ class TimePickerWidget extends StatefulWidget {
       );
 }
 
-class _TimePickerWidgetState extends State<TimePickerWidget> {
-  DateTime _minTime = DateTime(1), _maxTime = DateTime(1);
-  int _currHour = 0, _currMinute = 0, _currSecond = 0;
-  int _minuteDivider = 0;
-  List<int> _hourRange = [], _minuteRange = [], _secondRange = [];
-  FixedExtentScrollController _hourScrollCtrl = FixedExtentScrollController(),
-      _minuteScrollCtrl = FixedExtentScrollController(),
-      _secondScrollCtrl = FixedExtentScrollController();
-
-  Map<String, FixedExtentScrollController> _scrollCtrlMap = {};
-  Map<String, List<int>> _valueRangeMap = {};
-
-  bool _isChangeTimeRange = false;
-
-  _TimePickerWidgetState(
+class TimePickerWidgetState extends State<TimePickerWidget> {
+  TimePickerWidgetState(
     DateTime? minTime,
     DateTime? maxTime,
     DateTime? initTime,
     int minuteDivider,
   ) {
-    minTime ??= DateTime.parse(DATE_PICKER_MIN_DATETIME);
-    maxTime ??= DateTime.parse(DATE_PICKER_MAX_DATETIME);
+    minTime ??= DateTime.parse(datePickerMinDateTime);
+    maxTime ??= DateTime.parse(datePicketMaxDateTime);
     initTime ??= DateTime.now();
     _minTime = minTime;
     _maxTime = maxTime;
@@ -109,6 +98,23 @@ class _TimePickerWidgetState extends State<TimePickerWidget> {
     };
     _valueRangeMap = {'H': _hourRange, 'm': _minuteRange, 's': _secondRange};
   }
+  DateTime _minTime = DateTime(1);
+  DateTime _maxTime = DateTime(1);
+  int _currHour = 0;
+  int _currMinute = 0;
+  int _currSecond = 0;
+  int _minuteDivider = 0;
+  List<int> _hourRange = [];
+  List<int> _minuteRange = [];
+  List<int> _secondRange = [];
+  FixedExtentScrollController _hourScrollCtrl = FixedExtentScrollController();
+  FixedExtentScrollController _minuteScrollCtrl = FixedExtentScrollController();
+  FixedExtentScrollController _secondScrollCtrl = FixedExtentScrollController();
+
+  Map<String, FixedExtentScrollController> _scrollCtrlMap = {};
+  Map<String, List<int>> _valueRangeMap = {};
+
+  bool _isChangeTimeRange = false;
 
   @override
   Widget build(BuildContext context) {
@@ -279,7 +285,7 @@ class _TimePickerWidgetState extends State<TimePickerWidget> {
       alignment: Alignment.center,
       child: Text(
         DateTimeFormatter.formatDateTime(value, format, widget.locale),
-        style: widget.pickerTheme.itemTextStyle ?? DATETIME_PICKER_ITEM_TEXT_STYLE,
+        style: widget.pickerTheme.itemTextStyle ?? dateTimePickerItemTextStyle,
       ),
     );
   }
@@ -378,7 +384,8 @@ class _TimePickerWidgetState extends State<TimePickerWidget> {
 
   /// calculate the range of minute
   List<int> _calcMinuteRange({int? currHour}) {
-    int minMinute = 0, maxMinute = 59;
+    int minMinute = 0;
+    int maxMinute = 59;
     final minHour = _minTime.hour;
     final maxHour = _maxTime.hour;
     currHour ??= _currHour;
@@ -396,7 +403,8 @@ class _TimePickerWidgetState extends State<TimePickerWidget> {
 
   /// calculate the range of second
   List<int> _calcSecondRange({int? currHour, int? currMinute}) {
-    int minSecond = 0, maxSecond = 59;
+    int minSecond = 0;
+    int maxSecond = 59;
     final minHour = _minTime.hour;
     final maxHour = _maxTime.hour;
     final minMinute = _minTime.minute;

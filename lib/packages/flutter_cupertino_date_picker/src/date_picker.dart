@@ -1,13 +1,11 @@
-// ignore_for_file: always_use_package_imports, prefer_const_constructors_in_immutables, parameter_assignments, member-ordering-extended, avoid_multiple_declarations_per_line, always_put_required_named_parameters_first
-
 import 'package:flutter/material.dart';
-import 'date_picker_constants.dart';
-import 'date_picker_theme.dart';
-import 'date_time_formatter.dart';
-import 'i18n/date_picker_i18n.dart';
-import 'widget/date_picker_widget.dart';
-import 'widget/datetime_picker_widget.dart';
-import 'widget/time_picker_widget.dart';
+import 'package:lenses/packages/flutter_cupertino_date_picker/src/date_picker_constants.dart';
+import 'package:lenses/packages/flutter_cupertino_date_picker/src/date_picker_theme.dart';
+import 'package:lenses/packages/flutter_cupertino_date_picker/src/date_time_formatter.dart';
+import 'package:lenses/packages/flutter_cupertino_date_picker/src/i18n/date_picker_i18n.dart';
+import 'package:lenses/packages/flutter_cupertino_date_picker/src/widget/date_picker_widget.dart';
+import 'package:lenses/packages/flutter_cupertino_date_picker/src/widget/datetime_picker_widget.dart';
+import 'package:lenses/packages/flutter_cupertino_date_picker/src/widget/time_picker_widget.dart';
 
 enum DateTimePickerMode {
   /// Display DatePicker
@@ -44,9 +42,9 @@ class DatePicker {
     DateTime? maxDateTime,
     DateTime? initialDateTime,
     String? dateFormat,
-    DateTimePickerLocale locale = DATETIME_PICKER_LOCALE_DEFAULT,
+    DateTimePickerLocale locale = dateTimePicketLocaleDefault,
     DateTimePickerMode pickerMode = DateTimePickerMode.date,
-    DateTimePickerTheme pickerTheme = DateTimePickerTheme.Default,
+    DateTimePickerTheme pickerTheme = DateTimePickerTheme.defaultDateTimePicker,
     DateVoidCallback? onCancel,
     DateVoidCallback? onClose,
     DateValueCallback? onChange,
@@ -55,8 +53,8 @@ class DatePicker {
     bool onMonthChangeStartWithFirstDate = false,
   }) {
     // handle the range of datetime
-    minDateTime ??= DateTime.parse(DATE_PICKER_MIN_DATETIME);
-    maxDateTime ??= DateTime.parse(DATE_PICKER_MAX_DATETIME);
+    minDateTime ??= DateTime.parse(datePickerMinDateTime);
+    maxDateTime ??= DateTime.parse(datePicketMaxDateTime);
 
     // handle initial DateTime
     initialDateTime ??= DateTime.now();
@@ -118,7 +116,9 @@ class _DatePickerRoute<T> extends PopupRoute<T> {
     required this.minuteDivider,
   });
 
-  final DateTime? minDateTime, maxDateTime, initialDateTime;
+  final DateTime? minDateTime;
+  final DateTime? maxDateTime;
+  final DateTime? initialDateTime;
   final String? dateFormat;
   final DateTimePickerLocale locale;
   final DateTimePickerMode pickerMode;
@@ -178,10 +178,9 @@ class _DatePickerRoute<T> extends PopupRoute<T> {
 }
 
 class _DatePickerComponent extends StatelessWidget {
+  const _DatePickerComponent(this.route, double pickerHeight) : _pickerHeight = pickerHeight;
   final _DatePickerRoute route;
   final double _pickerHeight;
-
-  _DatePickerComponent(this.route, double pickerHeight) : _pickerHeight = pickerHeight;
 
   @override
   Widget build(BuildContext context) {

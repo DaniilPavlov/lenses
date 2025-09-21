@@ -1,5 +1,3 @@
-// ignore_for_file: avoid_positional_boolean_parameters, constant_identifier_names
-
 import 'dart:math';
 
 part 'strings_en_us.dart';
@@ -33,13 +31,13 @@ abstract class StringsI18n {
 
 enum DateTimePickerLocale {
   /// English (EN) United States
-  en_us,
+  enUs,
 
   /// Chinese (ZH) Simplified
-  zh_cn,
+  zhCn,
 
   /// Portuguese (PT) Brazil
-  pt_br,
+  ptBr,
 
   /// Indonesia (ID)
   id,
@@ -66,7 +64,7 @@ enum DateTimePickerLocale {
   ar,
 
   /// Arabic (ar) Egypt
-  ar_eg,
+  arEg,
 
   /// Japanese (JP)
   jp,
@@ -96,41 +94,36 @@ enum DateTimePickerLocale {
   vi,
 
   /// Serbia (sr) Cyrillic
-  sr_cyrl,
+  srCyrl,
 
   /// Serbia (sr) Latin
-  sr_latn,
+  srLatn,
 
   /// Dutch (NL)
   nl,
 }
 
 /// Default value of date locale
-const DateTimePickerLocale DATETIME_PICKER_LOCALE_DEFAULT =
-    DateTimePickerLocale.en_us;
+const DateTimePickerLocale dateTimePicketLocaleDefault = DateTimePickerLocale.enUs;
 
 const Map<DateTimePickerLocale, StringsI18n> datePickerI18n = {
-  DateTimePickerLocale.en_us: _StringsEnUs(),
-  DateTimePickerLocale.sr_cyrl: _StringsSrCyrillic(),
-  DateTimePickerLocale.sr_latn: _StringsSrLatin(),
+  DateTimePickerLocale.enUs: _StringsEnUs(),
+  DateTimePickerLocale.srCyrl: _StringsSrCyrillic(),
+  DateTimePickerLocale.srLatn: _StringsSrLatin(),
   DateTimePickerLocale.ru: _StringsRu(),
 };
 
 class DatePickerI18n {
   /// Get done button text
   static String? getLocaleDone(DateTimePickerLocale locale) {
-    final i18n = datePickerI18n[locale] ??
-        datePickerI18n[DATETIME_PICKER_LOCALE_DEFAULT]!;
-    return i18n.getDoneText() ??
-        datePickerI18n[DATETIME_PICKER_LOCALE_DEFAULT]!.getDoneText();
+    final i18n = datePickerI18n[locale] ?? datePickerI18n[dateTimePicketLocaleDefault]!;
+    return i18n.getDoneText() ?? datePickerI18n[dateTimePicketLocaleDefault]!.getDoneText();
   }
 
   /// Get cancel button text
   static String getLocaleCancel(DateTimePickerLocale locale) {
-    final i18n = datePickerI18n[locale] ??
-        datePickerI18n[DATETIME_PICKER_LOCALE_DEFAULT]!;
-    return i18n.getCancelText() ??
-        datePickerI18n[DATETIME_PICKER_LOCALE_DEFAULT]!.getCancelText()!;
+    final i18n = datePickerI18n[locale] ?? datePickerI18n[dateTimePicketLocaleDefault]!;
+    return i18n.getCancelText() ?? datePickerI18n[dateTimePicketLocaleDefault]!.getCancelText()!;
   }
 
   /// Get locale month array
@@ -138,22 +131,21 @@ class DatePickerI18n {
     DateTimePickerLocale locale, [
     bool isFull = true,
   ]) {
-    final i18n = datePickerI18n[locale] ??
-        datePickerI18n[DATETIME_PICKER_LOCALE_DEFAULT]!;
+    final i18n = datePickerI18n[locale] ?? datePickerI18n[dateTimePicketLocaleDefault]!;
 
     if (isFull) {
       final months = i18n.getMonths();
       if (months != null && months.isNotEmpty) {
         return months;
       }
-      return datePickerI18n[DATETIME_PICKER_LOCALE_DEFAULT]!.getMonths()!;
+      return datePickerI18n[dateTimePicketLocaleDefault]!.getMonths()!;
     }
 
     final months = i18n.getMonthsShort();
     if (months != null && months.isNotEmpty && months.length == 12) {
       return months;
     }
-    return datePickerI18n[DATETIME_PICKER_LOCALE_DEFAULT]!.getMonthsShort()!;
+    return datePickerI18n[dateTimePicketLocaleDefault]!.getMonthsShort()!;
   }
 
   /// Get locale week array
@@ -161,14 +153,13 @@ class DatePickerI18n {
     DateTimePickerLocale locale, [
     bool isFull = true,
   ]) {
-    final i18n = datePickerI18n[locale] ??
-        datePickerI18n[DATETIME_PICKER_LOCALE_DEFAULT]!;
+    final i18n = datePickerI18n[locale] ?? datePickerI18n[dateTimePicketLocaleDefault]!;
     if (isFull) {
       final weeks = i18n.getWeeksFull();
       if (weeks != null && weeks.isNotEmpty) {
         return weeks;
       }
-      return datePickerI18n[DATETIME_PICKER_LOCALE_DEFAULT]!.getWeeksFull()!;
+      return datePickerI18n[dateTimePicketLocaleDefault]!.getWeeksFull()!;
     }
 
     final weeks = i18n.getWeeksShort();
@@ -178,10 +169,8 @@ class DatePickerI18n {
 
     final fullWeeks = i18n.getWeeksFull();
     if (fullWeeks != null && fullWeeks.isNotEmpty) {
-      return fullWeeks
-          .map((item) => item.substring(0, min(3, item.length)))
-          .toList();
+      return fullWeeks.map((item) => item.substring(0, min(3, item.length))).toList();
     }
-    return datePickerI18n[DATETIME_PICKER_LOCALE_DEFAULT]!.getWeeksShort()!;
+    return datePickerI18n[dateTimePicketLocaleDefault]!.getWeeksShort()!;
   }
 }

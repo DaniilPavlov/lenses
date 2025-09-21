@@ -95,28 +95,30 @@ class DottedLine extends StatelessWidget {
     return SizedBox(
       width: isHorizontal ? lineLength : lineThickness,
       height: isHorizontal ? lineThickness : lineLength,
-      child: LayoutBuilder(builder: (context, constraints) {
-        final lineLength = _getLineLength(constraints, isHorizontal);
-        final dashAndDashGapCount = _calculateDashAndDashGapCount(lineLength);
-        final dashCount = dashAndDashGapCount[0];
-        final dashGapCount = dashAndDashGapCount[1];
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          final lineLength = _getLineLength(constraints, isHorizontal);
+          final dashAndDashGapCount = _calculateDashAndDashGapCount(lineLength);
+          final dashCount = dashAndDashGapCount[0];
+          final dashGapCount = dashAndDashGapCount[1];
 
-        return Wrap(
-          direction: direction,
-          alignment: alignment,
-          children: List.generate(dashCount + dashGapCount, (index) {
-            if (index % 2 == 0) {
-              final dashColor = _getDashColor(dashCount, index ~/ 2);
-              final dash = _buildDash(isHorizontal, dashColor);
-              return dash;
-            } else {
-              final dashGapColor = _getDashGapColor(dashGapCount, index ~/ 2);
-              final dashGap = _buildDashGap(isHorizontal, dashGapColor);
-              return dashGap;
-            }
-          }).toList(growable: false),
-        );
-      }),
+          return Wrap(
+            direction: direction,
+            alignment: alignment,
+            children: List.generate(dashCount + dashGapCount, (index) {
+              if (index % 2 == 0) {
+                final dashColor = _getDashColor(dashCount, index ~/ 2);
+                final dash = _buildDash(isHorizontal, dashColor);
+                return dash;
+              } else {
+                final dashGapColor = _getDashGapColor(dashGapCount, index ~/ 2);
+                final dashGap = _buildDashGap(isHorizontal, dashGapColor);
+                return dashGap;
+              }
+            }).toList(growable: false),
+          );
+        },
+      ),
     );
   }
 
