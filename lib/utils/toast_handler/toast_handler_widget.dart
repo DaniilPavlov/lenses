@@ -16,8 +16,7 @@ class ToastHandlerWidget extends StatefulWidget {
 
   /// Метод, отдающий ошибку в [ToastHandlerController]
   static void handle(BuildContext context, {required ToastModel toast}) {
-    final controller = _getController(context);
-    controller.handleToast(toast);
+    _getController(context).handleToast(toast);
   }
 
   static ToastHandlerController _getController(BuildContext context) {
@@ -47,15 +46,10 @@ class _ToastHandlerWidgetState extends State<ToastHandlerWidget> {
             widget.child,
             SafeArea(
               child: Padding(
-                padding: const EdgeInsets.only(
-                  top: 80,
-                ),
+                padding: const EdgeInsets.only(top: 80),
                 child: Column(
                   children: [
-                    for (final error in controller.toasts) ...[
-                      ToastBanner(error),
-                      const SizedBox(height: 8),
-                    ],
+                    for (final error in controller.toasts) ...[ToastBanner(error), const SizedBox(height: 8)],
                   ],
                 ),
               ),

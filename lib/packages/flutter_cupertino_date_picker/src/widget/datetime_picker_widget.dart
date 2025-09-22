@@ -44,22 +44,16 @@ class DateTimePickerWidget extends StatefulWidget {
   final int minuteDivider;
 
   @override
-  // ignore: no_logic_in_create_state
-  State<StatefulWidget> createState() => _DateTimePickerWidgetState(
-        minDateTime,
-        maxDateTime,
-        initDateTime,
-        minuteDivider,
-      );
+  State<StatefulWidget> createState() => _DateTimePickerWidgetState();
 }
 
 class _DateTimePickerWidgetState extends State<DateTimePickerWidget> {
-  _DateTimePickerWidgetState(
-    DateTime? minTime,
-    DateTime? maxTime,
-    DateTime? initTime,
-    int minuteDivider,
-  ) {
+  @override
+  void initState() {
+    super.initState();
+    DateTime? minTime = widget.minDateTime;
+    DateTime? maxTime = widget.maxDateTime;
+    DateTime? initTime = widget.initDateTime;
     // check minTime value
     minTime ??= DateTime.parse(datePickerMinDateTime);
     // check maxTime value
@@ -80,7 +74,7 @@ class _DateTimePickerWidgetState extends State<DateTimePickerWidget> {
     _currMinute = initTime.minute;
     _currSecond = initTime.second;
 
-    _minuteDivider = minuteDivider;
+    _minuteDivider = widget.minuteDivider;
 
     // limit the range of date
     _dayRange = _calcDayRange();
@@ -102,20 +96,13 @@ class _DateTimePickerWidgetState extends State<DateTimePickerWidget> {
     // create scroll controller
     _dayScrollCtrl = FixedExtentScrollController(initialItem: _currDay - _dayRange.first);
     _hourScrollCtrl = FixedExtentScrollController(initialItem: _currHour - _hourRange.first);
-    _minuteScrollCtrl = FixedExtentScrollController(
-      initialItem: (_currMinute - _minuteRange.first) ~/ _minuteDivider,
-    );
-    _secondScrollCtrl = FixedExtentScrollController(
-      initialItem: _currSecond - _secondRange.first,
-    );
+    _minuteScrollCtrl = FixedExtentScrollController(initialItem: (_currMinute - _minuteRange.first) ~/ _minuteDivider);
+    _secondScrollCtrl = FixedExtentScrollController(initialItem: _currSecond - _secondRange.first);
 
-    _scrollCtrlMap = {
-      'H': _hourScrollCtrl,
-      'm': _minuteScrollCtrl,
-      's': _secondScrollCtrl,
-    };
+    _scrollCtrlMap = {'H': _hourScrollCtrl, 'm': _minuteScrollCtrl, 's': _secondScrollCtrl};
     _valueRangeMap = {'H': _hourRange, 'm': _minuteRange, 's': _secondRange};
   }
+
   DateTime _minTime = DateTime(0);
   DateTime _maxTime = DateTime(0);
   int _currDay = 0;
@@ -142,10 +129,7 @@ class _DateTimePickerWidgetState extends State<DateTimePickerWidget> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      child: Material(
-        color: Colors.transparent,
-        child: _renderPickerView(context),
-      ),
+      child: Material(color: Colors.transparent, child: _renderPickerView(context)),
     );
   }
 
@@ -168,9 +152,7 @@ class _DateTimePickerWidgetState extends State<DateTimePickerWidget> {
 
   /// pressed cancel widget
   void _onPressedCancel() {
-    if (widget.onCancel != null) {
-      widget.onCancel!();
-    }
+    widget.onCancel?.call();
     Navigator.pop(context);
   }
 
@@ -178,14 +160,7 @@ class _DateTimePickerWidgetState extends State<DateTimePickerWidget> {
   void _onPressedConfirm() {
     if (widget.onConfirm != null) {
       final DateTime day = _baselineDate.add(Duration(days: _currDay));
-      final DateTime dateTime = DateTime(
-        day.year,
-        day.month,
-        day.day,
-        _currHour,
-        _currMinute,
-        _currSecond,
-      );
+      final DateTime dateTime = DateTime(day.year, day.month, day.day, _currHour, _currMinute, _currSecond);
       widget.onConfirm!(dateTime, _calcSelectIndexList());
     }
     Navigator.pop(context);
@@ -195,14 +170,7 @@ class _DateTimePickerWidgetState extends State<DateTimePickerWidget> {
   void _onSelectedChange() {
     if (widget.onChange != null) {
       final DateTime day = _baselineDate.add(Duration(days: _currDay));
-      final DateTime dateTime = DateTime(
-        day.year,
-        day.month,
-        day.day,
-        _currHour,
-        _currMinute,
-        _currSecond,
-      );
+      final DateTime dateTime = DateTime(day.year, day.month, day.day, _currHour, _currMinute, _currSecond);
       widget.onChange!(dateTime, _calcSelectIndexList());
     }
   }
@@ -273,10 +241,7 @@ class _DateTimePickerWidgetState extends State<DateTimePickerWidget> {
       );
       pickers.add(pickerColumn);
     }
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: pickers,
-    );
+    return Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: pickers);
   }
 
   Widget _renderDatePickerColumnComponent(
@@ -284,11 +249,12 @@ class _DateTimePickerWidgetState extends State<DateTimePickerWidget> {
     List<int> valueRange,
     String format,
     ValueChanged<int> valueChanged, {
-    int? minuteDivider,
     required int flex,
+    int? minuteDivider,
     IndexedWidgetBuilder? itemBuilder,
   }) {
-    final IndexedWidgetBuilder builder = itemBuilder ??
+    final IndexedWidgetBuilder builder =
+        itemBuilder ??
         (context, index) {
           int value = valueRange.first + index;
 
@@ -300,7 +266,7 @@ class _DateTimePickerWidgetState extends State<DateTimePickerWidget> {
         };
 
     final Widget columnWidget = Container(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(8),
       width: double.infinity,
       height: widget.pickerTheme.pickerHeight,
       decoration: BoxDecoration(color: widget.pickerTheme.backgroundColor),
@@ -315,10 +281,7 @@ class _DateTimePickerWidgetState extends State<DateTimePickerWidget> {
         itemBuilder: builder,
       ),
     );
-    return Expanded(
-      flex: flex,
-      child: columnWidget,
-    );
+    return Expanded(flex: flex, child: columnWidget);
   }
 
   int _calculateMinuteChildCount(List<int> valueRange, int divider) {
@@ -378,7 +341,7 @@ class _DateTimePickerWidgetState extends State<DateTimePickerWidget> {
   /// change the selection of minute picker
   void _changeMinuteSelection(int index) {
     final int value = index * _minuteDivider;
-//    int value = _minuteRange.first + index;
+    //    int value = _minuteRange.first + index;
     if (_currMinute != value) {
       _currMinute = value;
       _changeTimeRange();

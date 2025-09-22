@@ -50,8 +50,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   Size get preferredSize => Size.fromHeight(toolbarHeight);
 
   SystemUiOverlayStyle _systemOverlayStyleForBrightness(Brightness brightness, [Color? backgroundColor]) {
-    final SystemUiOverlayStyle style =
-        brightness == Brightness.dark ? SystemUiOverlayStyle.light : SystemUiOverlayStyle.dark;
+    final SystemUiOverlayStyle style = brightness == Brightness.dark
+        ? SystemUiOverlayStyle.light
+        : SystemUiOverlayStyle.dark;
     // For backward compatibility, create an overlay style without system navigation bar settings.
     return SystemUiOverlayStyle(
       statusBarColor: backgroundColor,
@@ -105,7 +106,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       );
     }
 
-    final SystemUiOverlayStyle overlayStyle = systemOverlayStyle ??
+    final SystemUiOverlayStyle overlayStyle =
+        systemOverlayStyle ??
         appBarTheme.systemOverlayStyle ??
         _systemOverlayStyleForBrightness(
           ThemeData.estimateBrightnessForColor(backgroundColor ?? AppColors.pureColors.white.o100),
@@ -155,7 +157,7 @@ class _ToolbarContainerLayout extends SingleChildLayoutDelegate {
 
   @override
   Offset getPositionForChild(Size size, Size childSize) {
-    return Offset(0.0, size.height - childSize.height);
+    return Offset(0, size.height - childSize.height);
   }
 
   @override

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:lenses/controllers/lenses_controller.dart';
-import 'package:lenses/widgets/lines/date_info_line.dart';
-import 'package:lenses/widgets/lens_indicators/lens_indicator_status.dart';
-import 'package:lenses/widgets/sheets/different_lenses_sheet.dart';
 import 'package:lenses/styles/const_colors_styles.dart';
 import 'package:lenses/styles/const_text_styles.dart';
 import 'package:lenses/widgets/buttons/custom_button.dart';
+import 'package:lenses/widgets/lens_indicators/lens_indicator_status.dart';
+import 'package:lenses/widgets/lines/date_info_line.dart';
+import 'package:lenses/widgets/sheets/different_lenses_sheet.dart';
 import 'package:provider/provider.dart';
 
 class TwoLensReplacementIndicator extends StatelessWidget {
@@ -24,10 +24,7 @@ class TwoLensReplacementIndicator extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text(
-                'Дней до замены',
-                style: AppTextStyles.heading.kH2,
-              ),
+              Text('Дней до замены', style: AppTextStyles.heading.kH2),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 30),
                 child: Row(
@@ -39,10 +36,8 @@ class TwoLensReplacementIndicator extends StatelessWidget {
                         lifeTime: 14,
                         daysBeforeReplacement: leftLensDate!.daysLeft,
                         title: false,
-                        onUpdateTap: () => controller.updateLensesPair(
-                          leftDate: DateTime.now(),
-                          rightDate: rightLensDate?.dateStart,
-                        ),
+                        onUpdateTap: () =>
+                            controller.updateLensesPair(leftDate: DateTime.now(), rightDate: rightLensDate?.dateStart),
                       ),
                     ),
                     Expanded(
@@ -50,10 +45,8 @@ class TwoLensReplacementIndicator extends StatelessWidget {
                         lifeTime: 14,
                         daysBeforeReplacement: rightLensDate!.daysLeft,
                         title: false,
-                        onUpdateTap: () => controller.updateLensesPair(
-                          leftDate: leftLensDate.dateStart,
-                          rightDate: DateTime.now(),
-                        ),
+                        onUpdateTap: () =>
+                            controller.updateLensesPair(leftDate: leftLensDate.dateStart, rightDate: DateTime.now()),
                       ),
                     ),
                   ],
@@ -81,10 +74,7 @@ class TwoLensReplacementIndicator extends StatelessWidget {
                             builder: (context) {
                               return DifferentLensesSheet(
                                 onConfirmed: ({leftDate, rightDate}) {
-                                  controller.updateLensesPair(
-                                    leftDate: leftDate,
-                                    rightDate: rightDate,
-                                  );
+                                  controller.updateLensesPair(leftDate: leftDate, rightDate: rightDate);
                                 },
                                 leftDate: leftLensDate.dateStart,
                                 rightDate: rightLensDate.dateStart,

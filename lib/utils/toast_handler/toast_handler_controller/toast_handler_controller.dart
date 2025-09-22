@@ -17,8 +17,7 @@ abstract class ToastHandlerControllerBase with Store {
   @action
   void handleToast(ToastModel toast) {
     ++_toastsOnTheScreen;
-    final newToasts = [..._toasts];
-    newToasts.add(toast);
+    final newToasts = [..._toasts, toast];
     _toasts = newToasts;
   }
 

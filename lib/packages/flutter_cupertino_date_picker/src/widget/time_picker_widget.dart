@@ -44,21 +44,11 @@ class TimePickerWidget extends StatefulWidget {
 
   @override
   // ignore: no_logic_in_create_state
-  State<StatefulWidget> createState() => TimePickerWidgetState(
-        minDateTime,
-        maxDateTime,
-        initDateTime,
-        minuteDivider,
-      );
+  State<StatefulWidget> createState() => TimePickerWidgetState(minDateTime, maxDateTime, initDateTime, minuteDivider);
 }
 
 class TimePickerWidgetState extends State<TimePickerWidget> {
-  TimePickerWidgetState(
-    DateTime? minTime,
-    DateTime? maxTime,
-    DateTime? initTime,
-    int minuteDivider,
-  ) {
+  TimePickerWidgetState(DateTime? minTime, DateTime? maxTime, DateTime? initTime, int minuteDivider) {
     minTime ??= DateTime.parse(datePickerMinDateTime);
     maxTime ??= DateTime.parse(datePicketMaxDateTime);
     initTime ??= DateTime.now();
@@ -84,18 +74,10 @@ class TimePickerWidgetState extends State<TimePickerWidget> {
 
     // create scroll controller
     _hourScrollCtrl = FixedExtentScrollController(initialItem: _currHour - _hourRange.first);
-    _minuteScrollCtrl = FixedExtentScrollController(
-      initialItem: (_currMinute - _minuteRange.first) ~/ _minuteDivider,
-    );
-    _secondScrollCtrl = FixedExtentScrollController(
-      initialItem: _currSecond - _secondRange.first,
-    );
+    _minuteScrollCtrl = FixedExtentScrollController(initialItem: (_currMinute - _minuteRange.first) ~/ _minuteDivider);
+    _secondScrollCtrl = FixedExtentScrollController(initialItem: _currSecond - _secondRange.first);
 
-    _scrollCtrlMap = {
-      'H': _hourScrollCtrl,
-      'm': _minuteScrollCtrl,
-      's': _secondScrollCtrl,
-    };
+    _scrollCtrlMap = {'H': _hourScrollCtrl, 'm': _minuteScrollCtrl, 's': _secondScrollCtrl};
     _valueRangeMap = {'H': _hourRange, 'm': _minuteRange, 's': _secondRange};
   }
   DateTime _minTime = DateTime(1);
@@ -119,10 +101,7 @@ class TimePickerWidgetState extends State<TimePickerWidget> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      child: Material(
-        color: Colors.transparent,
-        child: _renderPickerView(context),
-      ),
+      child: Material(color: Colors.transparent, child: _renderPickerView(context)),
     );
   }
 
@@ -145,9 +124,7 @@ class TimePickerWidgetState extends State<TimePickerWidget> {
 
   /// pressed cancel widget
   void _onPressedCancel() {
-    if (widget.onCancel != null) {
-      widget.onCancel!();
-    }
+    widget.onCancel?.call();
     Navigator.pop(context);
   }
 
@@ -155,14 +132,7 @@ class TimePickerWidgetState extends State<TimePickerWidget> {
   void _onPressedConfirm() {
     if (widget.onConfirm != null) {
       final now = DateTime.now();
-      final dateTime = DateTime(
-        now.year,
-        now.month,
-        now.day,
-        _currHour,
-        _currMinute,
-        _currSecond,
-      );
+      final dateTime = DateTime(now.year, now.month, now.day, _currHour, _currMinute, _currSecond);
       widget.onConfirm!(dateTime, _calcSelectIndexList());
     }
     Navigator.pop(context);
@@ -172,14 +142,7 @@ class TimePickerWidgetState extends State<TimePickerWidget> {
   void _onSelectedChange() {
     if (widget.onChange != null) {
       final now = DateTime.now();
-      final dateTime = DateTime(
-        now.year,
-        now.month,
-        now.day,
-        _currHour,
-        _currMinute,
-        _currSecond,
-      );
+      final dateTime = DateTime(now.year, now.month, now.day, _currHour, _currMinute, _currSecond);
       widget.onChange!(dateTime, _calcSelectIndexList());
     }
   }
@@ -213,27 +176,18 @@ class TimePickerWidgetState extends State<TimePickerWidget> {
     for (final format in formatArr) {
       final valueRange = _findPickerItemRange(format);
 
-      final pickerColumn = _renderDatePickerColumnComponent(
-        _findScrollCtrl(format),
-        valueRange,
-        format,
-        (value) {
-          if (format.contains('H')) {
-            _changeHourSelection(value);
-          } else if (format.contains('m')) {
-            _changeMinuteSelection(value);
-          } else if (format.contains('s')) {
-            _changeSecondSelection(value);
-          }
-        },
-        minuteDivider: widget.minuteDivider,
-      );
+      final pickerColumn = _renderDatePickerColumnComponent(_findScrollCtrl(format), valueRange, format, (value) {
+        if (format.contains('H')) {
+          _changeHourSelection(value);
+        } else if (format.contains('m')) {
+          _changeMinuteSelection(value);
+        } else if (format.contains('s')) {
+          _changeSecondSelection(value);
+        }
+      }, minuteDivider: widget.minuteDivider);
       pickers.add(pickerColumn);
     }
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: pickers,
-    );
+    return Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: pickers);
   }
 
   Widget _renderDatePickerColumnComponent(
@@ -245,7 +199,7 @@ class TimePickerWidgetState extends State<TimePickerWidget> {
   }) {
     return Expanded(
       child: Container(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(8),
         height: widget.pickerTheme.pickerHeight,
         decoration: BoxDecoration(color: widget.pickerTheme.backgroundColor),
         child: CupertinoPicker.builder(
@@ -273,7 +227,7 @@ class TimePickerWidgetState extends State<TimePickerWidget> {
   int _calculateMinuteChildCount(List<int> valueRange, int divider) {
     if (divider == 0) {
       debugPrint('Cant devide by 0');
-      return (valueRange.last - valueRange.first + 1);
+      return valueRange.last - valueRange.first + 1;
     }
 
     return (valueRange.last - valueRange.first + 1) ~/ divider;

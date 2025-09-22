@@ -6,7 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 /// Регистрация контейнеров DI библиотеки get_it
 Future<void> diRegisters() async {
-  var sp = await SharedPreferences.getInstance();
+  final sp = await SharedPreferences.getInstance();
   GetIt.I.registerSingleton<SharedPreferences>(sp);
   GetIt.I.tryRegisterSingleton<RootNavigatorKey>(RootNavigatorKey(GlobalKey<NavigatorState>()));
 }

@@ -21,10 +21,7 @@ class _ToastBannerState extends State<ToastBanner> with SingleTickerProviderStat
   void initState() {
     super.initState();
 
-    _animationController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 4000),
-    );
+    _animationController = AnimationController(vsync: this, duration: const Duration(milliseconds: 4000));
 
     _animationController.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
@@ -37,24 +34,15 @@ class _ToastBannerState extends State<ToastBanner> with SingleTickerProviderStat
   void didChangeDependencies() {
     final invisiblePoint = MediaQuery.sizeOf(context).width * 0.09;
     final startAlignment = Alignment(-invisiblePoint, 0);
-    const middleAlignment = Alignment(0, 0);
+    const middleAlignment = Alignment.center;
     final endAlignment = Alignment(invisiblePoint, 0);
 
-    _startTween = Tween<AlignmentGeometry>(
-      begin: startAlignment,
-      end: middleAlignment,
-    );
+    _startTween = Tween<AlignmentGeometry>(begin: startAlignment, end: middleAlignment);
 
     //Должен постоять на месте пару секунд
-    _middleTween = Tween<AlignmentGeometry>(
-      begin: middleAlignment,
-      end: middleAlignment,
-    );
+    _middleTween = Tween<AlignmentGeometry>(begin: middleAlignment, end: middleAlignment);
 
-    _endTween = Tween<AlignmentGeometry>(
-      begin: middleAlignment,
-      end: endAlignment,
-    );
+    _endTween = Tween<AlignmentGeometry>(begin: middleAlignment, end: endAlignment);
 
     _alignment = TweenSequence<AlignmentGeometry>([
       TweenSequenceItem(tween: _startTween.chain(CurveTween(curve: Curves.easeOutExpo)), weight: 3),
@@ -78,9 +66,7 @@ class _ToastBannerState extends State<ToastBanner> with SingleTickerProviderStat
       alignment: _alignment,
       child: Container(
         padding: const EdgeInsets.all(9),
-        constraints: const BoxConstraints(
-          maxWidth: 460,
-        ),
+        constraints: const BoxConstraints(maxWidth: 460),
         width: MediaQuery.sizeOf(context).width - 32,
         decoration: BoxDecoration(
           color: widget.toast.isError ? AppColors.pureColors.error.error : AppColors.pureColors.green.g900,
@@ -99,9 +85,7 @@ class _ToastBannerState extends State<ToastBanner> with SingleTickerProviderStat
               child: RichText(
                 text: TextSpan(
                   text: widget.toast.message,
-                  style: TextStyle(
-                    color: AppColors.pureColors.white.o100,
-                  ),
+                  style: TextStyle(color: AppColors.pureColors.white.o100),
                 ),
                 textAlign: TextAlign.left,
               ),

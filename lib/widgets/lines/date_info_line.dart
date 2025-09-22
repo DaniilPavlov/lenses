@@ -1,18 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:lenses/widgets/lines/dotted_line.dart';
 import 'package:lenses/controllers/lenses_controller.dart';
 import 'package:lenses/styles/const_colors_styles.dart';
 import 'package:lenses/styles/const_text_styles.dart';
 import 'package:lenses/utils/utils.dart';
+import 'package:lenses/widgets/lines/dotted_line.dart';
 import 'package:provider/provider.dart';
 
 class DateInfoLine extends StatelessWidget {
-  const DateInfoLine({
-    this.isLeft = true,
-    this.hasIcon = true,
-    super.key,
-  });
+  const DateInfoLine({this.isLeft = true, this.hasIcon = true, super.key});
   final bool hasIcon;
   final bool isLeft;
 
@@ -44,9 +40,7 @@ class DateInfoLine extends StatelessWidget {
                         shape: BoxShape.circle,
                         color: isLeft ? AppColors.pureColors.blue.b800 : AppColors.pureColors.green.g100,
                       ),
-                      child: Center(
-                        child: Text(isLeft ? 'L' : 'R', style: AppTextStyles.body.kt1),
-                      ),
+                      child: Center(child: Text(isLeft ? 'L' : 'R', style: AppTextStyles.body.kt1)),
                     ),
                   ),
                 if (hasIcon) const SizedBox(width: 6),
@@ -77,9 +71,7 @@ class DateInfoLine extends StatelessWidget {
                     padding: const EdgeInsets.only(left: 6),
                     child: Text(
                       '${actualDaysLeft.toString().replaceFirst('-', '+ ')} д',
-                      style: AppTextStyles.body.kt1.copyWith(
-                        color: AppColors.pureColors.error.error,
-                      ),
+                      style: AppTextStyles.body.kt1.copyWith(color: AppColors.pureColors.error.error),
                     ),
                   ),
               ],

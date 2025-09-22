@@ -42,7 +42,7 @@ class LensIndicatorStatus extends StatelessWidget {
             radius: title ? 85 : 65,
             animation: true,
             animationDuration: 2000,
-            lineWidth: 15.0,
+            lineWidth: 15,
             linearGradient: sameTime
                 ? LinearGradient(
                     begin: Alignment.topCenter,
@@ -73,7 +73,7 @@ class LensIndicatorStatus extends StatelessWidget {
         else
           GestureDetector(
             onTap: onUpdateTap,
-            child: title == false
+            child: !title
                 ? SizedBox(
                     height: 145,
                     width: 145,
@@ -127,7 +127,7 @@ class LensIndicatorStatus extends StatelessWidget {
                     ],
                   ),
           ),
-        if (sameTime == false)
+        if (!sameTime)
           Padding(
             padding: EdgeInsets.only(top: !isAloneChildCircle ? 0 : 30),
             child: Align(

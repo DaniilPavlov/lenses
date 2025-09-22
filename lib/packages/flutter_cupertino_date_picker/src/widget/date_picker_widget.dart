@@ -16,8 +16,8 @@ const List<int> _solarMonthsOf31Days = <int>[1, 3, 5, 7, 8, 10, 12];
 /// @since 2019-05-10
 class DatePickerWidget extends StatefulWidget {
   DatePickerWidget({
-    super.key,
     required this.onMonthChangeStartWithFirstDate,
+    super.key,
     this.minDateTime,
     this.maxDateTime,
     this.initialDateTime,
@@ -48,19 +48,11 @@ class DatePickerWidget extends StatefulWidget {
 
   @override
   // ignore: no_logic_in_create_state
-  State<StatefulWidget> createState() => _DatePickerWidgetState(
-        minDateTime,
-        maxDateTime,
-        initialDateTime,
-      );
+  State<StatefulWidget> createState() => _DatePickerWidgetState(minDateTime, maxDateTime, initialDateTime);
 }
 
 class _DatePickerWidgetState extends State<DatePickerWidget> {
-  _DatePickerWidgetState(
-    DateTime? minDateTime,
-    DateTime? maxDateTime,
-    DateTime? initialDateTime,
-  ) {
+  _DatePickerWidgetState(DateTime? minDateTime, DateTime? maxDateTime, DateTime? initialDateTime) {
     // handle current selected year、month、day
     final initDateTime = initialDateTime ?? DateTime.now();
     _currYear = initDateTime.year;
@@ -85,16 +77,10 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
 
     // create scroll controller
     _yearScrollCtrl = FixedExtentScrollController(initialItem: _currYear - _yearRange.first);
-    _monthScrollCtrl = FixedExtentScrollController(
-      initialItem: _currMonth - _monthRange.first,
-    );
+    _monthScrollCtrl = FixedExtentScrollController(initialItem: _currMonth - _monthRange.first);
     _dayScrollCtrl = FixedExtentScrollController(initialItem: _currDay - _dayRange.first);
 
-    _scrollCtrlMap = {
-      'y': _yearScrollCtrl,
-      'M': _monthScrollCtrl,
-      'd': _dayScrollCtrl,
-    };
+    _scrollCtrlMap = {'y': _yearScrollCtrl, 'M': _monthScrollCtrl, 'd': _dayScrollCtrl};
     _valueRangeMap = {'y': _yearRange, 'M': _monthRange, 'd': _dayRange};
   }
   DateTime _minDateTime = DateTime(0);
@@ -117,10 +103,7 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      child: Material(
-        color: Colors.transparent,
-        child: _renderPickerView(context),
-      ),
+      child: Material(color: Colors.transparent, child: _renderPickerView(context)),
     );
   }
 
@@ -143,9 +126,7 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
 
   /// pressed cancel widget
   void _onPressedCancel() {
-    if (widget.onCancel != null) {
-      widget.onCancel!();
-    }
+    widget.onCancel?.call();
     if (widget.popWidget) {
       Navigator.pop(context);
     }
@@ -199,26 +180,18 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
     for (final format in formatArr) {
       final valueRange = _findPickerItemRange(format);
 
-      final pickerColumn = _renderDatePickerColumnComponent(
-        _findScrollCtrl(format),
-        valueRange,
-        format,
-        (value) {
-          if (format.contains('y')) {
-            _changeYearSelection(value);
-          } else if (format.contains('M')) {
-            _changeMonthSelection(value);
-          } else if (format.contains('d')) {
-            _changeDaySelection(value);
-          }
-        },
-      );
+      final pickerColumn = _renderDatePickerColumnComponent(_findScrollCtrl(format), valueRange, format, (value) {
+        if (format.contains('y')) {
+          _changeYearSelection(value);
+        } else if (format.contains('M')) {
+          _changeMonthSelection(value);
+        } else if (format.contains('d')) {
+          _changeDaySelection(value);
+        }
+      });
       pickers.add(pickerColumn);
     }
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: pickers,
-    );
+    return Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: pickers);
   }
 
   Widget _renderDatePickerColumnComponent(
@@ -238,14 +211,11 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
             scrollController: scrollCtrl,
             itemExtent: widget.pickerTheme.itemHeight,
             onSelectedItemChanged: valueChanged,
-            childCount:
-                valueRange?.last == null || valueRange?.first == null ? null : valueRange!.last - valueRange.first + 1,
-            itemBuilder: (context, index) => valueRange?.first == null
+            childCount: valueRange?.last == null || valueRange?.first == null
                 ? null
-                : _renderDatePickerItemComponent(
-                    valueRange!.first + index,
-                    format,
-                  ),
+                : valueRange!.last - valueRange.first + 1,
+            itemBuilder: (context, index) =>
+                valueRange?.first == null ? null : _renderDatePickerItemComponent(valueRange!.first + index, format),
           ),
         ),
       ),

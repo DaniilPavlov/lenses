@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:lenses/controllers/lenses_controller.dart';
-import 'package:lenses/styles/const_text_styles.dart';
-import 'package:lenses/widgets/lens_indicators/one_lens_replacement_indicator.dart';
-import 'package:lenses/widgets/sheets/different_lenses_sheet.dart';
-import 'package:lenses/widgets/lens_indicators/two_lens_replacement_indicator.dart';
 import 'package:lenses/styles/const_colors_styles.dart';
+import 'package:lenses/styles/const_text_styles.dart';
 import 'package:lenses/utils/utils.dart';
 import 'package:lenses/widgets/app_bar/custom_app_bar.dart';
 import 'package:lenses/widgets/buttons/custom_button.dart';
+import 'package:lenses/widgets/lens_indicators/one_lens_replacement_indicator.dart';
+import 'package:lenses/widgets/lens_indicators/two_lens_replacement_indicator.dart';
+import 'package:lenses/widgets/sheets/different_lenses_sheet.dart';
 import 'package:provider/provider.dart';
 
 class MainScreen extends StatelessWidget {
@@ -19,9 +19,7 @@ class MainScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(
-        title: Text('Мои линзы', style: AppTextStyles.heading.kH1),
-      ),
+      appBar: CustomAppBar(title: Text('Мои линзы', style: AppTextStyles.heading.kH1)),
       body: Center(
         child: Observer(
           builder: (context) {
@@ -34,10 +32,7 @@ class MainScreen extends StatelessWidget {
             final rightLensDate = pairDates.right;
             if (leftLensDate != null && rightLensDate != null) {
               return leftLensDate.dateEnd.isSameDate(rightLensDate.dateEnd)
-                  ? OneLensReplacementIndicator(
-                      sameTime: true,
-                      activeLensDate: leftLensDate,
-                    )
+                  ? OneLensReplacementIndicator(sameTime: true, activeLensDate: leftLensDate)
                   : const TwoLensReplacementIndicator();
             }
             if (leftLensDate != null || rightLensDate != null) {
@@ -86,10 +81,7 @@ class _InitialWidget extends StatelessWidget {
           leftDate: pairDates?.left?.dateStart ?? DateTime.now(),
           rightDate: pairDates?.right?.dateStart ?? DateTime.now(),
           onConfirmed: ({leftDate, rightDate}) {
-            controller.updateLensesPair(
-              leftDate: leftDate,
-              rightDate: rightDate,
-            );
+            controller.updateLensesPair(leftDate: leftDate, rightDate: rightDate);
           },
         );
       },

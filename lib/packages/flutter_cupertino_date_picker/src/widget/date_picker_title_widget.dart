@@ -11,9 +11,9 @@ class DatePickerTitleWidget extends StatelessWidget {
   const DatePickerTitleWidget(
     this.onCancel,
     this.onConfirm, {
-    super.key,
     required this.pickerTheme,
     required this.locale,
+    super.key,
   });
 
   final DateTimePickerTheme pickerTheme;
@@ -31,10 +31,7 @@ class DatePickerTitleWidget extends StatelessWidget {
       decoration: BoxDecoration(color: pickerTheme.backgroundColor),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          _renderCancelWidget(context),
-          _renderConfirmWidget(context),
-        ],
+        children: <Widget>[_renderCancelWidget(context), _renderConfirmWidget(context)],
       ),
     );
   }
@@ -50,23 +47,14 @@ class DatePickerTitleWidget extends StatelessWidget {
 
     var cancelWidget = pickerTheme.cancel;
     if (cancelWidget == null) {
-      final textStyle = pickerTheme.cancelTextStyle ??
-          TextStyle(
-            color: Theme.of(context).unselectedWidgetColor,
-            fontSize: 16.0,
-          );
-      cancelWidget = Text(
-        DatePickerI18n.getLocaleCancel(locale),
-        style: textStyle,
-      );
+      final textStyle =
+          pickerTheme.cancelTextStyle ?? TextStyle(color: Theme.of(context).unselectedWidgetColor, fontSize: 16);
+      cancelWidget = Text(DatePickerI18n.getLocaleCancel(locale), style: textStyle);
     }
 
     return SizedBox(
       height: pickerTheme.titleHeight,
-      child: TextButton(
-        onPressed: onCancel,
-        child: cancelWidget,
-      ),
+      child: TextButton(onPressed: onCancel, child: cancelWidget),
     );
   }
 
@@ -81,23 +69,13 @@ class DatePickerTitleWidget extends StatelessWidget {
 
     var confirmWidget = pickerTheme.confirm;
     if (confirmWidget == null) {
-      final textStyle = pickerTheme.confirmTextStyle ??
-          TextStyle(
-            color: Theme.of(context).primaryColor,
-            fontSize: 16.0,
-          );
-      confirmWidget = Text(
-        DatePickerI18n.getLocaleDone(locale) ?? '',
-        style: textStyle,
-      );
+      final textStyle = pickerTheme.confirmTextStyle ?? TextStyle(color: Theme.of(context).primaryColor, fontSize: 16);
+      confirmWidget = Text(DatePickerI18n.getLocaleDone(locale) ?? '', style: textStyle);
     }
 
     return SizedBox(
       height: pickerTheme.titleHeight,
-      child: TextButton(
-        onPressed: onConfirm,
-        child: confirmWidget,
-      ),
+      child: TextButton(onPressed: onConfirm, child: confirmWidget),
     );
   }
 

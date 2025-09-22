@@ -3,13 +3,7 @@ import 'package:lenses/styles/const_colors_styles.dart';
 import 'package:lenses/styles/const_text_styles.dart';
 
 class CustomButton extends StatelessWidget {
-  const CustomButton({
-    required this.text,
-    this.onPressed,
-    required this.color,
-    this.width,
-    super.key,
-  });
+  const CustomButton({required this.text, required this.color, this.onPressed, this.width, super.key});
   final String text;
   final VoidCallback? onPressed;
   final Color? color;
@@ -22,10 +16,7 @@ class CustomButton extends StatelessWidget {
       onTap: onPressed,
       child: Container(
         width: width,
-        decoration: BoxDecoration(
-          color: color,
-          borderRadius: BorderRadius.circular(10),
-        ),
+        decoration: BoxDecoration(color: color, borderRadius: BorderRadius.circular(10)),
         padding: const EdgeInsets.all(18),
         child: Text(
           text,

@@ -1,10 +1,11 @@
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:lenses/models/generated/generated.dart';
-import 'package:lenses/widgets/sheets/put_on_end_sheet.dart';
 import 'package:lenses/utils/logger.dart';
 import 'package:lenses/utils/mobx_async_value.dart';
+import 'package:lenses/widgets/sheets/put_on_end_sheet.dart';
 import 'package:mobx/mobx.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -25,10 +26,7 @@ abstract class LensesControllerBase with Store {
   bool isLoaded = false;
 
   @action
-  void updateLensesPair({
-    required DateTime? leftDate,
-    required DateTime? rightDate,
-  }) {
+  void updateLensesPair({required DateTime? leftDate, required DateTime? rightDate}) {
     final parsedLeftDate = leftDate != null
         ? LensDateModel(
             dateStart: leftDate,
@@ -43,9 +41,10 @@ abstract class LensesControllerBase with Store {
             daysLeft: rightDate.add(const Duration(days: 14)).difference(DateTime.now()).inDays + 1,
           )
         : _pairDates.value?.right;
-    _pairDates = AsyncValue.value(value: LensesPairDatesModel(left: parsedLeftDate, right: parsedRightDate));
-    final prefs = GetIt.I<SharedPreferences>();
-    prefs.setString('pairDates', json.encode(_pairDates.value?.toJson()));
+    _pairDates = AsyncValue.value(
+      value: LensesPairDatesModel(left: parsedLeftDate, right: parsedRightDate),
+    );
+    GetIt.I<SharedPreferences>().setString('pairDates', json.encode(_pairDates.value?.toJson()));
   }
 
   @action
@@ -80,13 +79,12 @@ abstract class LensesControllerBase with Store {
   @action
   void _putOffLensesPair({required bool left, required bool right}) {
     if (left) {
-      _pairDates = AsyncValue.value(value: LensesPairDatesModel(left: null, right: _pairDates.value?.right));
+      _pairDates = AsyncValue.value(value: LensesPairDatesModel(right: _pairDates.value?.right));
     }
     if (right) {
-      _pairDates = AsyncValue.value(value: LensesPairDatesModel(left: _pairDates.value?.left, right: null));
+      _pairDates = AsyncValue.value(value: LensesPairDatesModel(left: _pairDates.value?.left));
     }
-    final prefs = GetIt.I<SharedPreferences>();
-    prefs.setString('pairDates', json.encode(_pairDates.value?.toJson()));
+    GetIt.I<SharedPreferences>().setString('pairDates', json.encode(_pairDates.value?.toJson()));
   }
 
   @action
@@ -95,16 +93,10 @@ abstract class LensesControllerBase with Store {
     final pairDatesRaw = prefs.getString('pairDates');
     if (pairDatesRaw != null) {
       try {
-        _pairDates = AsyncValue.value(
-          value: LensesPairDatesModel.fromJson(jsonDecode(pairDatesRaw)),
-        );
+        _pairDates = AsyncValue.value(value: LensesPairDatesModel.fromJson(jsonDecode(pairDatesRaw)));
         updateLensesPair(leftDate: _pairDates.value?.left?.dateStart, rightDate: _pairDates.value?.right?.dateStart);
       } catch (e) {
-        _pairDates = AsyncValue.error(
-          error: AsyncError(
-            errorMessage: '_loadLensesDates error: $e',
-          ),
-        );
+        _pairDates = AsyncValue.error(error: AsyncError(errorMessage: '_loadLensesDates error: $e'));
         logger.e('_loadLensesDates error: $e');
       }
     }

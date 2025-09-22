@@ -33,14 +33,16 @@ class DottedLine extends StatelessWidget {
     this.dashGapGradient,
     this.dashRadius = 0.0,
     this.dashGapRadius = 0.0,
-  })  : assert(
-            dashGradient == null || dashGradient.length == 2,
-            'The dashGradient must have only two colors.\n'
-            'The beginning color and the ending color of the gradient.'),
-        assert(
-            dashGapGradient == null || dashGapGradient.length == 2,
-            'The dashGapGradient must have only two colors.\n'
-            'The beginning color and the ending color of the gradient.');
+  }) : assert(
+         dashGradient == null || dashGradient.length == 2,
+         'The dashGradient must have only two colors.\n'
+         'The beginning color and the ending color of the gradient.',
+       ),
+       assert(
+         dashGapGradient == null || dashGapGradient.length == 2,
+         'The dashGapGradient must have only two colors.\n'
+         'The beginning color and the ending color of the gradient.',
+       );
 
   /// The direction of the entire dotted line. Default [Axis.horizontal].
   final Axis direction;
@@ -106,7 +108,7 @@ class DottedLine extends StatelessWidget {
             direction: direction,
             alignment: alignment,
             children: List.generate(dashCount + dashGapCount, (index) {
-              if (index % 2 == 0) {
+              if (index.isEven) {
                 final dashColor = _getDashColor(dashCount, index ~/ 2);
                 final dash = _buildDash(isHorizontal, dashColor);
                 return dash;
@@ -128,8 +130,8 @@ class DottedLine extends StatelessWidget {
   double _getLineLength(BoxConstraints constraints, bool isHorizontal) {
     return lineLength == double.infinity
         ? isHorizontal
-            ? constraints.maxWidth
-            : constraints.maxHeight
+              ? constraints.maxWidth
+              : constraints.maxHeight
         : lineLength;
   }
 
@@ -140,9 +142,9 @@ class DottedLine extends StatelessWidget {
   /// example2) [lineLength] is 10, [dashLength] is 1, [dashGapLength] is 2.
   /// "-  -  -  -"
   List<int> _calculateDashAndDashGapCount(double lineLength) {
-    var dashAndDashGapLength = dashLength + dashGapLength;
+    final dashAndDashGapLength = dashLength + dashGapLength;
     var dashCount = lineLength ~/ dashAndDashGapLength;
-    var dashGapCount = lineLength ~/ dashAndDashGapLength;
+    final dashGapCount = lineLength ~/ dashAndDashGapLength;
     if (dashLength <= lineLength % dashAndDashGapLength) {
       dashCount += 1;
     }
@@ -151,10 +153,7 @@ class DottedLine extends StatelessWidget {
 
   Widget _buildDash(bool isHorizontal, Color color) {
     return Container(
-      decoration: BoxDecoration(
-        color: color,
-        borderRadius: BorderRadius.circular(dashRadius),
-      ),
+      decoration: BoxDecoration(color: color, borderRadius: BorderRadius.circular(dashRadius)),
       width: isHorizontal ? dashLength : lineThickness,
       height: isHorizontal ? lineThickness : dashLength,
     );
@@ -163,20 +162,12 @@ class DottedLine extends StatelessWidget {
   Color _getDashColor(int maxDashCount, int index) {
     return dashGradient == null
         ? dashColor
-        : _calculateGradientColor(
-            dashGradient![0],
-            dashGradient![1],
-            maxDashCount,
-            index,
-          );
+        : _calculateGradientColor(dashGradient![0], dashGradient![1], maxDashCount, index);
   }
 
   Widget _buildDashGap(bool isHorizontal, Color color) {
     return Container(
-      decoration: BoxDecoration(
-        color: color,
-        borderRadius: BorderRadius.circular(dashGapRadius),
-      ),
+      decoration: BoxDecoration(color: color, borderRadius: BorderRadius.circular(dashGapRadius)),
       width: isHorizontal ? dashGapLength : lineThickness,
       height: isHorizontal ? lineThickness : dashGapLength,
     );
@@ -185,29 +176,19 @@ class DottedLine extends StatelessWidget {
   Color _getDashGapColor(int maxDashGapCount, int index) {
     return dashGapGradient == null
         ? dashGapColor
-        : _calculateGradientColor(
-            dashGapGradient![0],
-            dashGapGradient![1],
-            maxDashGapCount,
-            index,
-          );
+        : _calculateGradientColor(dashGapGradient![0], dashGapGradient![1], maxDashGapCount, index);
   }
 
-  Color _calculateGradientColor(
-    Color startColor,
-    Color endColor,
-    int maxItemCount,
-    int index,
-  ) {
-    var diffAlpha = (endColor.a - startColor.a);
-    var diffRed = (endColor.r - startColor.r);
-    var diffGreen = (endColor.g - startColor.g);
-    var diffBlue = (endColor.b - startColor.b);
+  Color _calculateGradientColor(Color startColor, Color endColor, int maxItemCount, int index) {
+    final diffAlpha = endColor.a - startColor.a;
+    final diffRed = endColor.r - startColor.r;
+    final diffGreen = endColor.g - startColor.g;
+    final diffBlue = endColor.b - startColor.b;
 
-    var amountOfChangeInAlphaPerItem = diffAlpha ~/ maxItemCount;
-    var amountOfChangeInRedPerItem = diffRed ~/ maxItemCount;
-    var amountOfChangeInGreenPerItem = diffGreen ~/ maxItemCount;
-    var amountOfChangeInBluePerItem = diffBlue ~/ maxItemCount;
+    final amountOfChangeInAlphaPerItem = diffAlpha ~/ maxItemCount;
+    final amountOfChangeInRedPerItem = diffRed ~/ maxItemCount;
+    final amountOfChangeInGreenPerItem = diffGreen ~/ maxItemCount;
+    final amountOfChangeInBluePerItem = diffBlue ~/ maxItemCount;
 
     return startColor
         .withAlpha(startColor.a.toInt() + amountOfChangeInAlphaPerItem * index)

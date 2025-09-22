@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:lenses/controllers/lenses_controller.dart';
 import 'package:lenses/models/generated/generated.dart';
-import 'package:lenses/widgets/lines/date_info_line.dart';
-import 'package:lenses/widgets/lens_indicators/lens_indicator_status.dart';
-import 'package:lenses/widgets/sheets/different_lenses_sheet.dart';
-import 'package:lenses/widgets/sheets/put_on_date_sheet.dart';
 import 'package:lenses/styles/const_colors_styles.dart';
 import 'package:lenses/widgets/buttons/custom_button.dart';
+import 'package:lenses/widgets/lens_indicators/lens_indicator_status.dart';
+import 'package:lenses/widgets/lines/date_info_line.dart';
+import 'package:lenses/widgets/sheets/different_lenses_sheet.dart';
+import 'package:lenses/widgets/sheets/put_on_date_sheet.dart';
 import 'package:provider/provider.dart';
 
 class OneLensReplacementIndicator extends StatelessWidget {

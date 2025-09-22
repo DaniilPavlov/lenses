@@ -8,16 +8,16 @@ const dateTimePickerBackgroundColor = Colors.white;
 const dateTimePickerShowTitleDefault = true;
 
 /// Default value of DatePicker's height.
-const double dateTimePickerHeight = 210.0;
+const double dateTimePickerHeight = 210;
 
 /// Default value of DatePicker's title height.
-const double dateTimePickerTitleHeight = 44.0;
+const double dateTimePickerTitleHeight = 44;
 
 /// Default value of DatePicker's column height.
-const double dateTimePickerItemHeight = 36.0;
+const double dateTimePickerItemHeight = 36;
 
 /// Default value of DatePicker's item [TextStyle].
-const TextStyle dateTimePickerItemTextStyle = TextStyle(color: Color(0xFF000046), fontSize: 16.0);
+const TextStyle dateTimePickerItemTextStyle = TextStyle(color: Color(0xFF000046), fontSize: 16);
 
 class DateTimePickerTheme with Diagnosticable {
   /// DateTimePicker theme.
@@ -46,7 +46,6 @@ class DateTimePickerTheme with Diagnosticable {
     this.itemHeight = dateTimePickerItemHeight,
     this.itemTextStyle = dateTimePickerItemTextStyle,
   });
-  final cancelDefault = const Text('OK');
 
   static const DateTimePickerTheme defaultDateTimePicker = DateTimePickerTheme();
 
