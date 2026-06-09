@@ -44,9 +44,8 @@ void main() {
       });
 
       test('sets null value when stored pair is empty', () {
-        final controller = ControllerFixtures.controller(
-          loadPairDatesRaw: () => '{"left":null,"right":null}',
-        )..loadLensesDates();
+        final controller = ControllerFixtures.controller(loadPairDatesRaw: () => '{"left":null,"right":null}')
+          ..loadLensesDates();
 
         expect(controller.pairDates.value, isNull);
       });
@@ -55,7 +54,7 @@ void main() {
     group('updateLensesPair', () {
       mobxTest(
         'updates pair dates and saves json',
-        build: () => ControllerFixtures.controller(),
+        build: ControllerFixtures.controller,
         value: (store) => store.pairDates,
         act: (store) => store.updateLensesPair(
           leftDate: ControllerFixtures.startDate,
@@ -96,12 +95,13 @@ void main() {
 
       test('clears storage when both lenses are removed', () async {
         var cleared = false;
-        final controller = ControllerFixtures.controller(
-          loadPairDatesRaw: () => ControllerFixtures.pairDatesJson,
-          clearPairDatesRaw: () async => cleared = true,
-        )
-          ..loadLensesDates()
-          ..putOffLensesPair(left: true, right: true);
+        final controller =
+            ControllerFixtures.controller(
+                loadPairDatesRaw: () => ControllerFixtures.pairDatesJson,
+                clearPairDatesRaw: () async => cleared = true,
+              )
+              ..loadLensesDates()
+              ..putOffLensesPair(left: true, right: true);
 
         await Future<void>.delayed(Duration.zero);
 
@@ -112,9 +112,8 @@ void main() {
 
     group('renewLenses', () {
       test('renews only selected lenses', () {
-        final controller = ControllerFixtures.controller(
-          loadPairDatesRaw: () => ControllerFixtures.pairDatesJson,
-        )..loadLensesDates();
+        final controller = ControllerFixtures.controller(loadPairDatesRaw: () => ControllerFixtures.pairDatesJson)
+          ..loadLensesDates();
         final previousRightStart = controller.pairDates.value!.right!.dateStart;
 
         controller.renewLenses(left: true, right: false);

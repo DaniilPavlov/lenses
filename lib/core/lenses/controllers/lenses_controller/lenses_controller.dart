@@ -18,10 +18,10 @@ abstract class LensesControllerBase with Store {
     Future<void> Function()? clearPairDatesRaw,
     DateTime Function()? now,
     bool autoLoad = true,
-  })  : _loadPairDatesRawOverride = loadPairDatesRaw,
-        _savePairDatesRawOverride = savePairDatesRaw,
-        _clearPairDatesRawOverride = clearPairDatesRaw,
-        _nowOverride = now {
+  }) : _loadPairDatesRawOverride = loadPairDatesRaw,
+       _savePairDatesRawOverride = savePairDatesRaw,
+       _clearPairDatesRawOverride = clearPairDatesRaw,
+       _nowOverride = now {
     if (autoLoad) {
       loadLensesDates();
     }
@@ -51,10 +51,7 @@ abstract class LensesControllerBase with Store {
 
   void renewLenses({required bool left, required bool right}) {
     final now = _now();
-    updateLensesPair(
-      leftDate: left ? now : null,
-      rightDate: right ? now : null,
-    );
+    updateLensesPair(leftDate: left ? now : null, rightDate: right ? now : null);
   }
 
   @action
@@ -91,10 +88,7 @@ abstract class LensesControllerBase with Store {
   @action
   void putOffLensesPair({required bool left, required bool right}) {
     final current = pairDates.value;
-    final updated = LensesPairDatesModel(
-      left: left ? null : current?.left,
-      right: right ? null : current?.right,
-    );
+    final updated = LensesPairDatesModel(left: left ? null : current?.left, right: right ? null : current?.right);
     _setPairDates(updated.isEmpty ? null : updated);
   }
 
@@ -102,7 +96,7 @@ abstract class LensesControllerBase with Store {
   void loadLensesDates() {
     final pairDatesRaw = _loadPairDatesRaw();
     if (pairDatesRaw == null) {
-      pairDates = const AsyncValue.value(value: null);
+      pairDates = const AsyncValue.value();
       return;
     }
 
@@ -111,9 +105,7 @@ abstract class LensesControllerBase with Store {
       final recalculated = _recalculatePairDates(loaded);
       pairDates = AsyncValue.value(value: recalculated.isEmpty ? null : recalculated);
     } catch (e) {
-      pairDates = const AsyncValue.error(
-        error: AsyncError(errorMessage: 'Не удалось загрузить сохранённые данные'),
-      );
+      pairDates = const AsyncValue.error(error: AsyncError(errorMessage: 'Не удалось загрузить сохранённые данные'));
     }
   }
 
@@ -160,11 +152,7 @@ abstract class LensesControllerBase with Store {
   LensDateModel _createLensDate(DateTime dateStart) {
     final normalizedStart = _dateOnly(dateStart);
     final dateEnd = normalizedStart.add(const Duration(days: lensWearingDays));
-    return LensDateModel(
-      dateStart: normalizedStart,
-      dateEnd: dateEnd,
-      daysLeft: _daysLeftUntil(dateEnd),
-    );
+    return LensDateModel(dateStart: normalizedStart, dateEnd: dateEnd, daysLeft: _daysLeftUntil(dateEnd));
   }
 
   LensesPairDatesModel _recalculatePairDates(LensesPairDatesModel model) {
