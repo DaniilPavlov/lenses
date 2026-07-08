@@ -24,7 +24,11 @@ class MainScreen extends StatelessWidget {
         child: Observer(
           builder: (context) {
             final controller = context.read<LensesController>();
-            final pairDates = controller.pairDates.value;
+            final pairDatesState = controller.pairDates;
+            if (pairDatesState.isLoading) {
+              return CircularProgressIndicator(color: AppColors.pureColors.blue.b800);
+            }
+            final pairDates = pairDatesState.value;
             if (pairDates == null || pairDates.isEmpty) {
               return const _InitialWidget();
             }

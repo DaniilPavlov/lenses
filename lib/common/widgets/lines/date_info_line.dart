@@ -20,9 +20,12 @@ class DateInfoLine extends StatelessWidget {
         final pairDates = controller.pairDates.value;
         final leftLensDate = pairDates?.left;
         final rightLensDate = pairDates?.right;
-        final actualDateStart = isLeft ? leftLensDate!.dateStart : rightLensDate!.dateStart;
-        final actualDateEnd = isLeft ? leftLensDate!.dateEnd : rightLensDate!.dateEnd;
-        final actualDaysLeft = isLeft ? leftLensDate!.daysLeft : rightLensDate!.daysLeft;
+        final lensDate = isLeft ? leftLensDate : rightLensDate;
+
+        if (lensDate == null) {
+          return const SizedBox.shrink();
+        }
+
         return Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           spacing: 8,
@@ -45,7 +48,7 @@ class DateInfoLine extends StatelessWidget {
                   ),
                 if (hasIcon) const SizedBox(width: 6),
                 Text(
-                  '${actualDateStart.day} ${Utils.getMonthNameByNumber(actualDateStart.month)}',
+                  '${lensDate.dateStart.day} ${Utils.getMonthNameByNumber(lensDate.dateStart.month)}',
                   style: AppTextStyles.body.kt1s,
                 ),
               ],
@@ -63,14 +66,14 @@ class DateInfoLine extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  '${Utils.weekday(actualDateEnd)}, ${actualDateEnd.day} ${Utils.getMonthNameByNumber(actualDateEnd.month)}',
+                  '${Utils.weekday(lensDate.dateEnd)}, ${lensDate.dateEnd.day} ${Utils.getMonthNameByNumber(lensDate.dateEnd.month)}',
                   style: AppTextStyles.body.kt1s,
                 ),
-                if (actualDaysLeft < 0)
+                if (lensDate.daysLeft < 0)
                   Padding(
                     padding: const EdgeInsets.only(left: 6),
                     child: Text(
-                      '${actualDaysLeft.toString().replaceFirst('-', '+ ')} д',
+                      '${lensDate.daysLeft.toString().replaceFirst('-', '+ ')} д',
                       style: AppTextStyles.body.kt1.copyWith(color: AppColors.pureColors.error.error),
                     ),
                   ),

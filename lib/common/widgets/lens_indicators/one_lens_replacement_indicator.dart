@@ -104,12 +104,15 @@ class OneLensReplacementIndicator extends StatelessWidget {
       barrierColor: Colors.black.withValues(alpha: 0.8),
       builder: (context) {
         if (sameTime) {
+          if (leftLensDate == null || rightLensDate == null) {
+            return const SizedBox.shrink();
+          }
           return DifferentLensesSheet(
             onConfirmed: ({leftDate, rightDate}) {
               controller.updateLensesPair(leftDate: leftDate, rightDate: rightDate);
             },
-            leftDate: leftLensDate!.dateStart,
-            rightDate: rightLensDate!.dateStart,
+            leftDate: leftLensDate.dateStart,
+            rightDate: rightLensDate.dateStart,
           );
         } else {
           return PutOnDateSheet(

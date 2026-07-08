@@ -17,8 +17,14 @@ class TwoLensReplacementIndicator extends StatelessWidget {
     return Observer(
       builder: (context) {
         final controller = context.read<LensesController>();
-        final leftLensDate = controller.pairDates.value?.left;
-        final rightLensDate = controller.pairDates.value?.right;
+        final pairDates = controller.pairDates.value;
+        final leftLensDate = pairDates?.left;
+        final rightLensDate = pairDates?.right;
+
+        if (leftLensDate == null || rightLensDate == null) {
+          return const SizedBox.shrink();
+        }
+
         return Padding(
           padding: const EdgeInsets.all(16),
           child: Column(
@@ -34,7 +40,7 @@ class TwoLensReplacementIndicator extends StatelessWidget {
                       child: LensIndicatorStatus(
                         isLeft: true,
                         lifeTime: LensesControllerBase.lensWearingDays,
-                        daysBeforeReplacement: leftLensDate!.daysLeft,
+                        daysBeforeReplacement: leftLensDate.daysLeft,
                         title: false,
                         onUpdateTap: () => controller.renewLenses(left: true, right: false),
                       ),
@@ -42,7 +48,7 @@ class TwoLensReplacementIndicator extends StatelessWidget {
                     Expanded(
                       child: LensIndicatorStatus(
                         lifeTime: LensesControllerBase.lensWearingDays,
-                        daysBeforeReplacement: rightLensDate!.daysLeft,
+                        daysBeforeReplacement: rightLensDate.daysLeft,
                         title: false,
                         onUpdateTap: () => controller.renewLenses(left: false, right: true),
                       ),

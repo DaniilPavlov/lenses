@@ -20,7 +20,13 @@ class PutOnDateSheet extends StatefulWidget {
 }
 
 class _PutOnDateSheetState extends State<PutOnDateSheet> {
-  DateTime date = DateTime.now();
+  late DateTime date;
+
+  @override
+  void initState() {
+    super.initState();
+    date = widget.leftPut ?? widget.rightPut ?? DateTime.now();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +88,7 @@ class _PutOnDateSheetState extends State<PutOnDateSheet> {
                 clipBehavior: Clip.hardEdge,
                 child: DatePickerWidget(
                   onMonthChangeStartWithFirstDate: false,
-                  initialDateTime: widget.leftPut ?? widget.rightPut,
+                  initialDateTime: date,
                   minDateTime: DateTime.now().subtract(const Duration(days: 15)),
                   maxDateTime: DateTime.now().add(const Duration(days: 5)),
                   locale: DateTimePickerLocale.ru,
