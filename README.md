@@ -62,7 +62,7 @@ flutter test
 
 | Workflow | Когда | Что делает |
 |----------|-------|------------|
-| `ci.yml` | push / PR в `main` | codegen check, analyze, test |
+| `ci.yml` | push / PR в `master` | codegen check, analyze, test |
 | `release.yml` | тег `v*` или вручную | Android APK (+ GitHub Release) |
 
 Релиз:
