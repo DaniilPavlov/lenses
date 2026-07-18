@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:lenses/common/utils/helpers/utils.dart';
+import 'package:intl/intl.dart';
 import 'package:lenses/common/utils/theme/const_colors_styles.dart';
 import 'package:lenses/common/utils/theme/const_text_styles.dart';
 import 'package:lenses/common/widgets/lines/dotted_line.dart';
 import 'package:lenses/core/lenses/controllers/lenses_controller/lenses_controller.dart';
+import 'package:lenses/l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 
+/// Строка с датой начала/окончания ношения и просрочкой.
 class DateInfoLine extends StatelessWidget {
   const DateInfoLine({this.isLeft = true, this.hasIcon = true, super.key});
   final bool hasIcon;
@@ -25,6 +27,12 @@ class DateInfoLine extends StatelessWidget {
         if (lensDate == null) {
           return const SizedBox.shrink();
         }
+
+        final l10n = AppLocalizations.of(context);
+        final locale = Localizations.localeOf(context).toString();
+        final startLabel = DateFormat('d MMM', locale).format(lensDate.dateStart);
+        final endLabel =
+            '${DateFormat.E(locale).format(lensDate.dateEnd)}, ${DateFormat('d MMM', locale).format(lensDate.dateEnd)}';
 
         return Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -47,10 +55,7 @@ class DateInfoLine extends StatelessWidget {
                     ),
                   ),
                 if (hasIcon) const SizedBox(width: 6),
-                Text(
-                  '${lensDate.dateStart.day} ${Utils.getMonthNameByNumber(lensDate.dateStart.month)}',
-                  style: AppTextStyles.body.kt1s,
-                ),
+                Text(startLabel, style: AppTextStyles.body.kt1s),
               ],
             ),
             Padding(
@@ -65,15 +70,12 @@ class DateInfoLine extends StatelessWidget {
             Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text(
-                  '${Utils.weekday(lensDate.dateEnd)}, ${lensDate.dateEnd.day} ${Utils.getMonthNameByNumber(lensDate.dateEnd.month)}',
-                  style: AppTextStyles.body.kt1s,
-                ),
+                Text(endLabel, style: AppTextStyles.body.kt1s),
                 if (lensDate.daysLeft < 0)
                   Padding(
                     padding: const EdgeInsets.only(left: 6),
                     child: Text(
-                      '${lensDate.daysLeft.toString().replaceFirst('-', '+ ')} д',
+                      l10n.daysOverdue(lensDate.daysLeft.toString().replaceFirst('-', '+ ')),
                       style: AppTextStyles.body.kt1.copyWith(color: AppColors.pureColors.error.error),
                     ),
                   ),

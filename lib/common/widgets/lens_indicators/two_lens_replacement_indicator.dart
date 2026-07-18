@@ -7,8 +7,10 @@ import 'package:lenses/common/widgets/lens_indicators/lens_indicator_status.dart
 import 'package:lenses/common/widgets/lines/date_info_line.dart';
 import 'package:lenses/core/lenses/components/different_lenses_sheet.dart';
 import 'package:lenses/core/lenses/controllers/lenses_controller/lenses_controller.dart';
+import 'package:lenses/l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 
+/// Индикатор двух линз с разными датами замены.
 class TwoLensReplacementIndicator extends StatelessWidget {
   const TwoLensReplacementIndicator({super.key});
 
@@ -25,12 +27,14 @@ class TwoLensReplacementIndicator extends StatelessWidget {
           return const SizedBox.shrink();
         }
 
+        final l10n = AppLocalizations.of(context);
+
         return Padding(
           padding: const EdgeInsets.all(16),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text('Дней до замены', style: AppTextStyles.heading.kH2),
+              Text(l10n.daysUntilReplacement, style: AppTextStyles.heading.kH2),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 30),
                 child: Row(
@@ -68,7 +72,7 @@ class TwoLensReplacementIndicator extends StatelessWidget {
                     if (leftLensDate.daysLeft >= 0 || rightLensDate.daysLeft >= 0)
                       CustomButton(
                         width: MediaQuery.sizeOf(context).width,
-                        text: 'Редактировать',
+                        text: l10n.edit,
                         color: AppColors.pureColors.black.o24,
                         onPressed: () {
                           showModalBottomSheet<num>(
@@ -90,7 +94,7 @@ class TwoLensReplacementIndicator extends StatelessWidget {
                     CustomButton(
                       width: MediaQuery.sizeOf(context).width,
                       color: AppColors.pureColors.error.alertText,
-                      text: 'Завершить',
+                      text: l10n.finish,
                       onPressed: () => controller.putOffLensesSheet(context: context),
                     ),
                   ],

@@ -8,8 +8,10 @@ import 'package:lenses/core/lenses/components/different_lenses_sheet.dart';
 import 'package:lenses/core/lenses/components/put_on_date_sheet.dart';
 import 'package:lenses/core/lenses/controllers/lenses_controller/lenses_controller.dart';
 import 'package:lenses/core/lenses/models/generated/generated.dart';
+import 'package:lenses/l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 
+/// Индикатор одной линзы (или пары с одинаковой датой замены).
 class OneLensReplacementIndicator extends StatelessWidget {
   const OneLensReplacementIndicator({
     required this.activeLensDate,
@@ -29,6 +31,7 @@ class OneLensReplacementIndicator extends StatelessWidget {
         final pairDates = controller.pairDates.value;
         final leftLensDate = pairDates?.left;
         final rightLensDate = pairDates?.right;
+        final l10n = AppLocalizations.of(context);
         return Padding(
           padding: const EdgeInsets.all(16),
           child: Column(
@@ -59,7 +62,7 @@ class OneLensReplacementIndicator extends StatelessWidget {
                           Expanded(
                             flex: 3,
                             child: CustomButton(
-                              text: 'Редактировать',
+                              text: l10n.edit,
                               color: AppColors.pureColors.black.o24,
                               onPressed: () => _showEditSheet(context, controller, leftLensDate, rightLensDate),
                             ),
@@ -68,7 +71,7 @@ class OneLensReplacementIndicator extends StatelessWidget {
                           Expanded(
                             flex: 2,
                             child: CustomButton(
-                              text: 'Надеть',
+                              text: l10n.putOn,
                               color: AppColors.pureColors.green.g900,
                               onPressed: () => _showPutOnSheet(context, controller, leftLensDate, rightLensDate),
                             ),
@@ -78,7 +81,7 @@ class OneLensReplacementIndicator extends StatelessWidget {
                     CustomButton(
                       width: MediaQuery.sizeOf(context).width,
                       color: AppColors.pureColors.error.alertText,
-                      text: activeLensDate.daysLeft >= 0 ? 'Завершить' : 'Завершить ношение',
+                      text: activeLensDate.daysLeft >= 0 ? l10n.finish : l10n.finishWearing,
                       onPressed: () => controller.putOffLensesSheet(context: context),
                     ),
                   ],

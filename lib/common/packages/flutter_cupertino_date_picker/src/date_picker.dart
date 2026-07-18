@@ -169,7 +169,6 @@ class _DatePickerRoute<T> extends PopupRoute<T> {
     if (theme != null) {
       bottomSheet = Theme(data: theme!, child: bottomSheet);
     }
-    //return SafeArea(child: bottomSheet);
     return bottomSheet;
   }
 }

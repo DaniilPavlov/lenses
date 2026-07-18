@@ -3,7 +3,9 @@ import 'package:lenses/common/packages/flutter_cupertino_date_picker/flutter_cup
 import 'package:lenses/common/utils/theme/const_colors_styles.dart';
 import 'package:lenses/common/utils/theme/const_text_styles.dart';
 import 'package:lenses/common/widgets/buttons/custom_button.dart';
+import 'package:lenses/l10n/app_localizations.dart';
 
+/// Bottom sheet выбора даты надевания одной линзы (или обеих с одной датой).
 class PutOnDateSheet extends StatefulWidget {
   const PutOnDateSheet({
     required this.onConfirmed,
@@ -30,6 +32,8 @@ class _PutOnDateSheetState extends State<PutOnDateSheet> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final isRussian = Localizations.localeOf(context).languageCode == 'ru';
     return ClipRRect(
       borderRadius: BorderRadius.circular(5),
       child: ColoredBox(
@@ -63,10 +67,10 @@ class _PutOnDateSheetState extends State<PutOnDateSheet> {
                     padding: const EdgeInsets.only(top: 40, bottom: 30),
                     child: Text(
                       widget.leftPut != null && widget.rightPut != null
-                          ? 'Когда надеты линзы'
+                          ? l10n.whenLensesOn
                           : widget.rightPut != null
-                              ? 'Правая линза надета'
-                              : 'Левая линза надета',
+                              ? l10n.rightLensOn
+                              : l10n.leftLensOn,
                       style: AppTextStyles.heading.kH1,
                     ),
                   ),
@@ -76,7 +80,7 @@ class _PutOnDateSheetState extends State<PutOnDateSheet> {
                       color: Colors.transparent,
                       padding: const EdgeInsets.symmetric(vertical: 10),
                       child: Text(
-                        'Отменить',
+                        l10n.cancel,
                         style: AppTextStyles.heading.kH3,
                       ),
                     ),
@@ -91,7 +95,7 @@ class _PutOnDateSheetState extends State<PutOnDateSheet> {
                   initialDateTime: date,
                   minDateTime: DateTime.now().subtract(const Duration(days: 15)),
                   maxDateTime: DateTime.now().add(const Duration(days: 5)),
-                  locale: DateTimePickerLocale.ru,
+                  locale: isRussian ? DateTimePickerLocale.ru : DateTimePickerLocale.enUs,
                   dateFormat: 'dd.MM.yyyy',
                   pickerTheme: const DateTimePickerTheme(
                     cancel: SizedBox(),
@@ -106,7 +110,7 @@ class _PutOnDateSheetState extends State<PutOnDateSheet> {
               const SizedBox(height: 30),
               CustomButton(
                 color: AppColors.pureColors.blue.b900,
-                text: 'Выбрать',
+                text: l10n.choose,
                 onPressed: () {
                   widget.onConfirmed(
                     leftDate: widget.leftPut != null ? date : null,

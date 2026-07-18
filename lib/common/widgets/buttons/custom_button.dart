@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lenses/common/utils/theme/const_colors_styles.dart';
 import 'package:lenses/common/utils/theme/const_text_styles.dart';
 
+/// Кнопка приложения с фоном [color] и текстом [text].
 class CustomButton extends StatelessWidget {
   const CustomButton({required this.text, required this.color, this.onPressed, this.width, super.key});
   final String text;

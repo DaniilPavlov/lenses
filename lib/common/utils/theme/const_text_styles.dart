@@ -2,6 +2,7 @@ import 'package:flutter/painting.dart';
 import 'package:lenses/assets_gen/fonts.gen.dart';
 import 'package:lenses/common/utils/theme/const_colors_styles.dart';
 
+/// Текстовые стили приложения (heading / body).
 class AppTextStyles {
   AppTextStyles._();
 

@@ -4,6 +4,7 @@ import 'dart:ui';
 /// ```dart
 ///   const value = AppColors.pureColors.pink.p900
 /// ```
+/// Палитра цветов приложения.
 class AppColors {
   AppColors._();
 

@@ -2,8 +2,10 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:lenses/common/utils/theme/const_colors_styles.dart';
 import 'package:lenses/common/utils/theme/const_text_styles.dart';
+import 'package:lenses/l10n/app_localizations.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
+/// Круговой индикатор оставшихся дней до замены линзы.
 class LensIndicatorStatus extends StatelessWidget {
   const LensIndicatorStatus({
     required this.daysBeforeReplacement,
@@ -25,6 +27,7 @@ class LensIndicatorStatus extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Stack(
       alignment: Alignment.topCenter,
       children: [
@@ -34,7 +37,7 @@ class LensIndicatorStatus extends StatelessWidget {
                 ? Padding(
                     padding: const EdgeInsets.only(bottom: 30),
                     child: Text(
-                      'Дней до замены',
+                      l10n.daysUntilReplacement,
                       style: AppTextStyles.heading.kH2,
                     ),
                   )
@@ -87,7 +90,7 @@ class LensIndicatorStatus extends StatelessWidget {
                         ),
                         child: Center(
                           child: Text(
-                            'Замените\nлинзу',
+                            l10n.replaceLens,
                             style: AppTextStyles.heading.kH2,
                             textAlign: TextAlign.center,
                           ),
@@ -102,7 +105,7 @@ class LensIndicatorStatus extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.only(bottom: 20),
                           child: Text(
-                            daysBeforeReplacement == 0 ? 'День замены' : 'День замены просрочен',
+                            daysBeforeReplacement == 0 ? l10n.replacementDay : l10n.replacementDayOverdue,
                             style: AppTextStyles.heading.kH2,
                           ),
                         ),
@@ -117,7 +120,7 @@ class LensIndicatorStatus extends StatelessWidget {
                           ),
                           child: Center(
                             child: Text(
-                              'Замените\nлинз${sameTime ? 'ы' : 'у'}',
+                              sameTime ? l10n.replaceLenses : l10n.replaceLens,
                               style: AppTextStyles.heading.kH2,
                               textAlign: TextAlign.center,
                             ),

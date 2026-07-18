@@ -1,9 +1,18 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:get_it/get_it.dart';
+import 'package:lenses/common/localization/locale_controller.dart';
 import 'package:lenses/common/utils/theme/const_colors_styles.dart';
 import 'package:lenses/common/utils/theme/const_text_styles.dart';
 import 'package:lenses/common/widgets/app_bar/app_bar_leading_back_arrow.dart';
+import 'package:lenses/core/lenses/controllers/lenses_controller/lenses_controller.dart';
+import 'package:lenses/services/notifications/lens_replacement_reminder_service.dart';
+import 'package:provider/provider.dart';
 
+/// Кастомный AppBar приложения с кнопкой переключения языка справа.
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppBar({
     super.key,
@@ -17,6 +26,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.centerTitle = false,
     this.actionsPadding,
     this.systemOverlayStyle,
+    this.showLocaleToggle = true,
   });
 
   final Widget? title;
@@ -46,6 +56,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   final SystemUiOverlayStyle? systemOverlayStyle;
 
+  /// Показывать кнопку RU/EN справа.
+  final bool showLocaleToggle;
+
   @override
   Size get preferredSize => Size.fromHeight(toolbarHeight);
 
@@ -53,7 +66,6 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     final SystemUiOverlayStyle style = brightness == Brightness.dark
         ? SystemUiOverlayStyle.light
         : SystemUiOverlayStyle.dark;
-    // For backward compatibility, create an overlay style without system navigation bar settings.
     return SystemUiOverlayStyle(
       statusBarColor: backgroundColor,
       statusBarBrightness: style.statusBarBrightness,
@@ -66,8 +78,6 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     const appBarTheme = AppBarThemeData();
 
-    // Если явно не задан leading виджет,
-    // то будет отображаться кнопка перехода на предыдущий маршрут
     var leading = this.leading;
 
     if (leading == null && (ModalRoute.of(context)?.canPop ?? false)) {
@@ -81,8 +91,6 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       );
     }
 
-    // Обертка виджета заголовка в виджет стиля текста,
-    // чтобы придать тексту необходимый вид во всем поддереве
     Widget? title = this.title;
     if (title != null) {
       title = DefaultTextStyle(
@@ -93,15 +101,18 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       );
     }
 
-    // Создание ряда с виджетами из списка активностей
-    Widget? actions;
-    if (this.actions != null && this.actions!.isNotEmpty) {
-      actions = Padding(
-        padding: actionsPadding ?? EdgeInsets.zero,
+    final trailingChildren = <Widget>[
+      ...?actions,
+      if (showLocaleToggle) const _LocaleToggleButton(),
+    ];
+
+    Widget? trailing;
+    if (trailingChildren.isNotEmpty) {
+      trailing = Padding(
+        padding: actionsPadding ?? const EdgeInsets.only(right: 12),
         child: Row(
           mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: this.actions!,
+          children: trailingChildren,
         ),
       );
     }
@@ -125,13 +136,53 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             child: NavigationToolbar(
               leading: leading,
               middle: title,
-              trailing: actions,
+              trailing: trailing,
               centerMiddle: centerTitle,
               middleSpacing: titleSpacing ?? appBarTheme.titleSpacing ?? NavigationToolbar.kMiddleSpacing,
             ),
           ),
         ),
       ),
+    );
+  }
+}
+
+/// Кнопка переключения локали RU ↔ EN.
+class _LocaleToggleButton extends StatelessWidget {
+  const _LocaleToggleButton();
+
+  @override
+  Widget build(BuildContext context) {
+    final localeController = context.read<LocaleController>();
+
+    return Observer(
+      builder: (context) {
+        return GestureDetector(
+          onTap: () async {
+            await localeController.toggle();
+            if (!context.mounted) {
+              return;
+            }
+            unawaited(
+              GetIt.I<LensReplacementReminderService>().sync(
+                context.read<LensesController>().pairDates.value,
+                locale: localeController.locale,
+              ),
+            );
+          },
+          behavior: HitTestBehavior.opaque,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            child: Text(
+              localeController.localeCodeLabel,
+              style: AppTextStyles.heading.kH3.copyWith(
+                color: AppColors.pureColors.black.o100,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }

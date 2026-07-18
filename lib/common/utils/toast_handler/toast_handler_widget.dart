@@ -8,7 +8,7 @@ import 'package:lenses/core/lenses/models/toast_model.dart';
 
 part 'toast_banner.dart';
 
-///Виджет, который слушает ошибки с помощью [ToastHandlerController]
+///Виджет-обёртка над деревом приложения: слушает [ToastHandlerController] и рисует баннеры.
 class ToastHandlerWidget extends StatefulWidget {
   const ToastHandlerWidget({required this.child, super.key});
 

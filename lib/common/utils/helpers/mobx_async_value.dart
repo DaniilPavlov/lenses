@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+/// Обёртка статуса асинхронного значения для MobX-полей.
 @immutable
 class AsyncValue<T> {
   const AsyncValue({required this.status, this.value, this.error});
@@ -38,12 +39,15 @@ class AsyncValue<T> {
   }
 }
 
+/// Статусы [AsyncValue].
 enum AsyncStatus { loading, error, value }
 
+/// Ошибка для [AsyncValue.error].
 @immutable
 class AsyncError {
   const AsyncError({required this.errorMessage});
 
+  /// Пользовательское или техническое сообщение об ошибке.
   final String errorMessage;
 
   @override

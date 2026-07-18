@@ -1,0 +1,38 @@
+{
+  "@@locale": "ru",
+  "myLenses": "Мои линзы",
+  "putOn": "Надеть",
+  "edit": "Редактировать",
+  "finish": "Завершить",
+  "finishWearing": "Завершить ношение",
+  "cancel": "Отменить",
+  "choose": "Выбрать",
+  "daysUntilReplacement": "Дней до замены",
+  "replacementDay": "День замены",
+  "replacementDayOverdue": "День замены просрочен",
+  "replaceLens": "Замените\nлинзу",
+  "replaceLenses": "Замените\nлинзы",
+  "lensesAreOn": "Линзы надеты",
+  "whenLensesOn": "Когда надеты линзы",
+  "leftLensOn": "Левая линза надета",
+  "rightLensOn": "Правая линза надета",
+  "leftLensShort": "L ∙ Левой линзы",
+  "rightLensShort": "R ∙ Правой линзы",
+  "bothLenses": "Обеих линз",
+  "dataUpdated": "Данные обновлены",
+  "loadError": "Не удалось загрузить сохранённые данные",
+  "notificationChannelName": "Замена линз",
+  "notificationChannelDescription": "Напоминание о том, что пора заменить контактные линзы",
+  "notificationTitleBoth": "Пора заменить линзы",
+  "notificationBodyBoth": "Срок ношения закончился — наденьте новую пару",
+  "notificationTitleLeft": "Пора заменить левую линзу",
+  "notificationBodyLeft": "Срок ношения левой линзы закончился — наденьте новую",
+  "notificationTitleRight": "Пора заменить правую линзу",
+  "notificationBodyRight": "Срок ношения правой линзы закончился — наденьте новую",
+  "daysOverdue": "{days} д",
+  "@daysOverdue": {
+    "placeholders": {
+      "days": { "type": "String" }
+    }
+  }
+}

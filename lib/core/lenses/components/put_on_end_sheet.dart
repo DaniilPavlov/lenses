@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:lenses/common/utils/theme/const_colors_styles.dart';
 import 'package:lenses/common/utils/theme/const_text_styles.dart';
 import 'package:lenses/common/widgets/buttons/custom_button.dart';
+import 'package:lenses/l10n/app_localizations.dart';
 
+/// Bottom sheet выбора, какую линзу (или обе) снять.
 class PutOnEndSheet extends StatelessWidget {
   const PutOnEndSheet({
     required this.onBothConfirmed,
@@ -16,6 +18,7 @@ class PutOnEndSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return ClipRRect(
       borderRadius: BorderRadius.circular(5),
       child: ColoredBox(
@@ -49,14 +52,14 @@ class PutOnEndSheet extends StatelessWidget {
                   children: [
                     Expanded(
                       child: Text(
-                        'Завершить ношение',
+                        l10n.finishWearing,
                         style: AppTextStyles.heading.kH1,
                       ),
                     ),
                     GestureDetector(
                       onTap: Navigator.of(context).pop,
                       child: Text(
-                        'Отменить',
+                        l10n.cancel,
                         style: AppTextStyles.heading.kH3,
                       ),
                     ),
@@ -66,21 +69,21 @@ class PutOnEndSheet extends StatelessWidget {
               CustomButton(
                 width: MediaQuery.sizeOf(context).width,
                 color: AppColors.pureColors.white.o100,
-                text: 'L ∙ Левой линзы',
+                text: l10n.leftLensShort,
                 onPressed: onLeftConfirmed,
               ),
               const SizedBox(height: 6),
               CustomButton(
                 width: MediaQuery.sizeOf(context).width,
                 color: AppColors.pureColors.white.o100,
-                text: 'R ∙ Правой линзы',
+                text: l10n.rightLensShort,
                 onPressed: onRightConfirmed,
               ),
               const SizedBox(height: 6),
               CustomButton(
                 width: MediaQuery.sizeOf(context).width,
                 color: AppColors.pureColors.blue.b900,
-                text: 'Обеих линз',
+                text: l10n.bothLenses,
                 onPressed: onBothConfirmed,
               ),
             ],

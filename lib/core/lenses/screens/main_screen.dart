@@ -9,8 +9,10 @@ import 'package:lenses/common/widgets/lens_indicators/one_lens_replacement_indic
 import 'package:lenses/common/widgets/lens_indicators/two_lens_replacement_indicator.dart';
 import 'package:lenses/core/lenses/components/different_lenses_sheet.dart';
 import 'package:lenses/core/lenses/controllers/lenses_controller/lenses_controller.dart';
+import 'package:lenses/l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 
+/// Главный экран: индикаторы ношения или кнопка «Надеть».
 class MainScreen extends StatelessWidget {
   const MainScreen({super.key});
 
@@ -18,8 +20,9 @@ class MainScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Scaffold(
-      appBar: CustomAppBar(title: Text('Мои линзы', style: AppTextStyles.heading.kH1)),
+      appBar: CustomAppBar(title: Text(l10n.myLenses, style: AppTextStyles.heading.kH1)),
       body: Center(
         child: Observer(
           builder: (context) {
@@ -50,23 +53,26 @@ class MainScreen extends StatelessWidget {
   }
 }
 
+/// Состояние «линзы не надеты»: кнопка первого надевания.
 class _InitialWidget extends StatelessWidget {
   const _InitialWidget();
 
   @override
   Widget build(BuildContext context) {
     final controller = context.read<LensesController>();
+    final l10n = AppLocalizations.of(context);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: CustomButton(
         width: MediaQuery.sizeOf(context).width,
-        text: 'Надеть',
+        text: l10n.putOn,
         color: AppColors.pureColors.green.g900,
         onPressed: () => _showLensesSheet(context, controller),
       ),
     );
   }
 
+  /// Открывает sheet выбора дат для обеих линз.
   void _showLensesSheet(BuildContext context, LensesController controller) {
     final pairDates = controller.pairDates.value;
     showModalBottomSheet(

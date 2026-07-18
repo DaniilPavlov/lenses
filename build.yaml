@@ -5,3 +5,4 @@ targets:
         generate_for:
           - lib/core/**/controllers/**
           - lib/common/**/controllers/**
+          - lib/common/localization/locale_controller.dart

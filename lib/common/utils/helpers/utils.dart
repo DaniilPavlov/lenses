@@ -1,3 +1,4 @@
+/// Хелперы форматирования дат и названий месяцев на русском.
 class Utils {
   static String getMonthNameByNumber(
     int month, {
@@ -89,6 +90,7 @@ class Utils {
 }
 
 extension DateTimeExtension on DateTime {
+  /// Совпадают ли календарные год/месяц/день.
   bool isSameDate(DateTime other) {
     return year == other.year && month == other.month && day == other.day;
   }

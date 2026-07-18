@@ -3,7 +3,9 @@ import 'package:lenses/common/packages/flutter_cupertino_date_picker/flutter_cup
 import 'package:lenses/common/utils/theme/const_colors_styles.dart';
 import 'package:lenses/common/utils/theme/const_text_styles.dart';
 import 'package:lenses/common/widgets/buttons/custom_button.dart';
+import 'package:lenses/l10n/app_localizations.dart';
 
+/// Bottom sheet выбора отдельных дат надевания для L и R.
 class DifferentLensesSheet extends StatefulWidget {
   const DifferentLensesSheet({
     required this.onConfirmed,
@@ -33,6 +35,8 @@ class _DifferentLensesSheetState extends State<DifferentLensesSheet> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final isRussian = Localizations.localeOf(context).languageCode == 'ru';
     return ScrollConfiguration(
       behavior: const ScrollBehavior(),
       child: ClipRRect(
@@ -67,7 +71,7 @@ class _DifferentLensesSheetState extends State<DifferentLensesSheet> {
                     Padding(
                       padding: const EdgeInsets.only(top: 40, bottom: 30),
                       child: Text(
-                        'Линзы надеты',
+                        l10n.lensesAreOn,
                         style: AppTextStyles.heading.kH1,
                       ),
                     ),
@@ -77,7 +81,7 @@ class _DifferentLensesSheetState extends State<DifferentLensesSheet> {
                         color: Colors.transparent,
                         padding: const EdgeInsets.symmetric(vertical: 10),
                         child: Text(
-                          'Отменить',
+                          l10n.cancel,
                           style: AppTextStyles.heading.kH3,
                         ),
                       ),
@@ -140,7 +144,7 @@ class _DifferentLensesSheetState extends State<DifferentLensesSheet> {
                       initialDateTime: leftDate,
                       minDateTime: DateTime.now().subtract(const Duration(days: 15)),
                       maxDateTime: DateTime.now().add(const Duration(days: 5)),
-                      locale: DateTimePickerLocale.ru,
+                      locale: isRussian ? DateTimePickerLocale.ru : DateTimePickerLocale.enUs,
                       pickerTheme: const DateTimePickerTheme(
                         cancel: SizedBox(),
                         confirm: SizedBox(),
@@ -162,7 +166,7 @@ class _DifferentLensesSheetState extends State<DifferentLensesSheet> {
                       initialDateTime: rightDate,
                       minDateTime: DateTime.now().subtract(const Duration(days: 15)),
                       maxDateTime: DateTime.now().add(const Duration(days: 5)),
-                      locale: DateTimePickerLocale.ru,
+                      locale: isRussian ? DateTimePickerLocale.ru : DateTimePickerLocale.enUs,
                       pickerTheme: const DateTimePickerTheme(
                         cancel: SizedBox(),
                         confirm: SizedBox(),
@@ -177,7 +181,7 @@ class _DifferentLensesSheetState extends State<DifferentLensesSheet> {
                 const SizedBox(height: 30),
                 CustomButton(
                   color: AppColors.pureColors.blue.b900,
-                  text: 'Выбрать',
+                  text: l10n.choose,
                   onPressed: () {
                     widget.onConfirmed(
                       leftDate: leftDate,

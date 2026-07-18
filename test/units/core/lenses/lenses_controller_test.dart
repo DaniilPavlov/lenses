@@ -32,7 +32,7 @@ void main() {
           isA<AsyncValue<LensesPairDatesModel?>>().having((e) => e.status, 'status', AsyncStatus.error),
         ],
         verify: (store) {
-          expect(store.pairDates.error?.errorMessage, 'Не удалось загрузить сохранённые данные');
+          expect(store.pairDates.error?.errorMessage, 'loadError');
         },
       );
 

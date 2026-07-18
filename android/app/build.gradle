@@ -23,12 +23,31 @@ if (flutterVersionName == null) {
     flutterVersionName = '1.0'
 }
 
+boolean hasKeyStore = false
+def keystoreProperties = new Properties()
+def keystorePropertiesFile = rootProject.file('key.properties')
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+    hasKeyStore = true
+} else {
+    println "____NOTE____"
+    println "No keystore defined. The app will be signed with the debug keystore."
+    println "Create a android/key.properties file with the following properties:"
+    println "storePassword"
+    println "keyPassword"
+    println "keyAlias"
+    println "storeFile"
+    println "____________"
+}
+
 android {
     namespace = "com.example.lenses"
     compileSdk = 36
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
+        // Needed for flutter_local_notifications on older Android APIs.
+        coreLibraryDesugaringEnabled true
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
     }
@@ -39,23 +58,38 @@ android {
 
     defaultConfig {
         applicationId = "com.example.lenses"
-        // You can update the following values to match your application needs.
-        // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = 26
         targetSdk = 35
         versionCode = flutter.versionCode
         versionName = flutter.versionName
     }
 
+    if (hasKeyStore) {
+        signingConfigs {
+            release {
+                keyAlias keystoreProperties['keyAlias']
+                keyPassword keystoreProperties['keyPassword']
+                storeFile keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
+                storePassword keystoreProperties['storePassword']
+            }
+        }
+    }
+
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig = signingConfigs.debug
+            if (hasKeyStore) {
+                signingConfig = signingConfigs.release
+            } else {
+                signingConfig = signingConfigs.debug
+            }
         }
     }
 }
 
 flutter {
     source = "../.."
+}
+
+dependencies {
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.4'
 }

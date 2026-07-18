@@ -9,8 +9,10 @@ import 'package:mobx/mobx.dart';
 
 part 'lenses_controller.g.dart';
 
+/// MobX-контроллер дат ношения линз.
 class LensesController = LensesControllerBase with _$LensesController;
 
+/// Управляет загрузкой, обновлением и снятием пары дат ношения.
 abstract class LensesControllerBase with Store {
   LensesControllerBase({
     String? Function()? loadPairDatesRaw,
@@ -27,6 +29,7 @@ abstract class LensesControllerBase with Store {
     }
   }
 
+  /// Длительность ношения одной пары линз в днях.
   static const lensWearingDays = 14;
 
   final String? Function()? _loadPairDatesRawOverride;
@@ -34,11 +37,14 @@ abstract class LensesControllerBase with Store {
   final Future<void> Function()? _clearPairDatesRawOverride;
   final DateTime Function()? _nowOverride;
 
+  /// Текущее состояние пары дат ношения.
   @observable
   AsyncValue<LensesPairDatesModel?> pairDates = const AsyncValue.loading();
 
+  /// Флаг первой успешной/ошибочной реакции после старта (чтобы не показывать toast при автозагрузке).
   bool isLoaded = false;
 
+  /// Обновляет даты старта левой и/или правой линзы и пересчитывает срок ношения.
   @action
   void updateLensesPair({required DateTime? leftDate, required DateTime? rightDate}) {
     final current = pairDates.value;
@@ -49,11 +55,13 @@ abstract class LensesControllerBase with Store {
     _setPairDates(updated.isEmpty ? null : updated);
   }
 
+  /// Переносит выбранные линзы на «сегодня» (замена).
   void renewLenses({required bool left, required bool right}) {
     final now = _now();
     updateLensesPair(leftDate: left ? now : null, rightDate: right ? now : null);
   }
 
+  /// Показывает sheet выбора, какую линзу снять, либо сразу снимает единственную.
   @action
   void putOffLensesSheet({required BuildContext context}) {
     final current = pairDates.value;
@@ -85,6 +93,7 @@ abstract class LensesControllerBase with Store {
     );
   }
 
+  /// Снимает указанные линзы и сохраняет новое состояние.
   @action
   void putOffLensesPair({required bool left, required bool right}) {
     final current = pairDates.value;
@@ -92,6 +101,7 @@ abstract class LensesControllerBase with Store {
     _setPairDates(updated.isEmpty ? null : updated);
   }
 
+  /// Загружает даты из хранилища и пересчитывает [LensDateModel.daysLeft].
   @action
   void loadLensesDates() {
     final pairDatesRaw = _loadPairDatesRaw();
@@ -105,14 +115,16 @@ abstract class LensesControllerBase with Store {
       final recalculated = _recalculatePairDates(loaded);
       pairDates = AsyncValue.value(value: recalculated.isEmpty ? null : recalculated);
     } catch (e) {
-      pairDates = const AsyncValue.error(error: AsyncError(errorMessage: 'Не удалось загрузить сохранённые данные'));
+      pairDates = const AsyncValue.error(error: AsyncError(errorMessage: 'loadError'));
     }
   }
 
+  /// Отмечает, что первичная реакция на [pairDates] уже обработана.
   void setDataLoaded() {
     isLoaded = true;
   }
 
+  /// Применяет новое значение [pairDates] и синхронизирует его с хранилищем.
   void _setPairDates(LensesPairDatesModel? value) {
     pairDates = AsyncValue.value(value: value);
     _persistPairDates(value);
@@ -149,12 +161,14 @@ abstract class LensesControllerBase with Store {
     return LensesDatesLoader.clear();
   }
 
+  /// Создаёт модель даты ношения от [dateStart] на [lensWearingDays] дней.
   LensDateModel _createLensDate(DateTime dateStart) {
     final normalizedStart = _dateOnly(dateStart);
     final dateEnd = normalizedStart.add(const Duration(days: lensWearingDays));
     return LensDateModel(dateStart: normalizedStart, dateEnd: dateEnd, daysLeft: _daysLeftUntil(dateEnd));
   }
 
+  /// Пересчитывает [daysLeft] для сохранённой пары относительно «сегодня».
   LensesPairDatesModel _recalculatePairDates(LensesPairDatesModel model) {
     return LensesPairDatesModel(
       left: model.left != null ? _createLensDate(model.left!.dateStart) : null,
@@ -162,6 +176,7 @@ abstract class LensesControllerBase with Store {
     );
   }
 
+  /// Сколько календарных дней осталось до замены (включительно с днём [dateEnd]).
   int _daysLeftUntil(DateTime dateEnd) {
     return _dateOnly(dateEnd).difference(_dateOnly(_now())).inDays + 1;
   }
