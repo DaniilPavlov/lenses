@@ -9,6 +9,7 @@ import 'package:lenses/common/utils/theme/const_colors_styles.dart';
 import 'package:lenses/common/utils/theme/const_text_styles.dart';
 import 'package:lenses/common/widgets/app_bar/app_bar_leading_back_arrow.dart';
 import 'package:lenses/core/lenses/controllers/lenses_controller/lenses_controller.dart';
+import 'package:lenses/l10n/app_localizations.dart';
 import 'package:lenses/services/notifications/lens_replacement_reminder_service.dart';
 import 'package:provider/provider.dart';
 
@@ -154,30 +155,40 @@ class _LocaleToggleButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final localeController = context.read<LocaleController>();
+    final l10n = AppLocalizations.of(context);
 
     return Observer(
       builder: (context) {
-        return GestureDetector(
-          onTap: () async {
-            await localeController.toggle();
-            if (!context.mounted) {
-              return;
-            }
-            unawaited(
-              GetIt.I<LensReplacementReminderService>().sync(
-                context.read<LensesController>().pairDates.value,
-                locale: localeController.locale,
-              ),
-            );
-          },
-          behavior: HitTestBehavior.opaque,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-            child: Text(
-              localeController.localeCodeLabel,
-              style: AppTextStyles.heading.kH3.copyWith(
-                color: AppColors.pureColors.black.o100,
-                fontWeight: FontWeight.w600,
+        final nextLanguage =
+            localeController.isRussian ? l10n.semanticLanguageEn : l10n.semanticLanguageRu;
+
+        return Semantics(
+          button: true,
+          label: l10n.semanticToggleLocale(nextLanguage),
+          child: GestureDetector(
+            onTap: () async {
+              await localeController.toggle();
+              if (!context.mounted) {
+                return;
+              }
+              unawaited(
+                GetIt.I<LensReplacementReminderService>().sync(
+                  context.read<LensesController>().pairDates.value,
+                  locale: localeController.locale,
+                ),
+              );
+            },
+            behavior: HitTestBehavior.opaque,
+            child: ExcludeSemantics(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                child: Text(
+                  localeController.localeCodeLabel,
+                  style: AppTextStyles.heading.kH3.copyWith(
+                    color: AppColors.pureColors.black.o100,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
               ),
             ),
           ),

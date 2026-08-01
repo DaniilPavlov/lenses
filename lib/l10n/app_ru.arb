@@ -34,5 +34,39 @@
     "placeholders": {
       "days": { "type": "String" }
     }
-  }
+  },
+  "semanticLeftLens": "Левая линза",
+  "semanticRightLens": "Правая линза",
+  "semanticBothLenses": "Обе линзы",
+  "semanticDaysUntilReplacement": "{days} дн. до замены",
+  "@semanticDaysUntilReplacement": {
+    "placeholders": {
+      "days": { "type": "int" }
+    }
+  },
+  "semanticReplaceLens": "Заменить линзу",
+  "semanticReplaceLenses": "Заменить линзы",
+  "semanticLensStatus": "{lens}, {status}",
+  "@semanticLensStatus": {
+    "placeholders": {
+      "lens": { "type": "String" },
+      "status": { "type": "String" }
+    }
+  },
+  "semanticWearPeriod": "{lens}, надета {start}, замена {end}",
+  "@semanticWearPeriod": {
+    "placeholders": {
+      "lens": { "type": "String" },
+      "start": { "type": "String" },
+      "end": { "type": "String" }
+    }
+  },
+  "semanticToggleLocale": "Переключить язык на {language}",
+  "@semanticToggleLocale": {
+    "placeholders": {
+      "language": { "type": "String" }
+    }
+  },
+  "semanticLanguageEn": "английский",
+  "semanticLanguageRu": "русский"
 }

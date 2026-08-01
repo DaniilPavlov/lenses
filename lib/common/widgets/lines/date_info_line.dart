@@ -33,68 +33,76 @@ class DateInfoLine extends StatelessWidget {
         final startLabel = DateFormat('d MMM', locale).format(lensDate.dateStart);
         final endLabel =
             '${DateFormat.E(locale).format(lensDate.dateEnd)}, ${DateFormat('d MMM', locale).format(lensDate.dateEnd)}';
+        final lensLabel = isLeft ? l10n.semanticLeftLens : l10n.semanticRightLens;
+        final semanticLabel = l10n.semanticWearPeriod(lensLabel, startLabel, endLabel);
 
-        return Row(
-          children: [
-            Flexible(
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  if (hasIcon)
-                    Align(
-                      alignment: Alignment.topCenter,
-                      child: Container(
-                        height: 17,
-                        width: 17,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: isLeft ? AppColors.pureColors.blue.b800 : AppColors.pureColors.green.g100,
+        return Semantics(
+          container: true,
+          label: semanticLabel,
+          child: ExcludeSemantics(
+            child: Row(
+              children: [
+                Flexible(
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      if (hasIcon)
+                        Align(
+                          alignment: Alignment.topCenter,
+                          child: Container(
+                            height: 17,
+                            width: 17,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: isLeft ? AppColors.pureColors.blue.b800 : AppColors.pureColors.green.g100,
+                            ),
+                            child: Center(child: Text(isLeft ? 'L' : 'R', style: AppTextStyles.body.kt1)),
+                          ),
                         ),
-                        child: Center(child: Text(isLeft ? 'L' : 'R', style: AppTextStyles.body.kt1)),
+                      if (hasIcon) const SizedBox(width: 6),
+                      Flexible(
+                        child: Text(startLabel, style: AppTextStyles.body.kt1s, overflow: TextOverflow.ellipsis),
                       ),
-                    ),
-                  if (hasIcon) const SizedBox(width: 6),
-                  Flexible(
-                    child: Text(startLabel, style: AppTextStyles.body.kt1s, overflow: TextOverflow.ellipsis),
+                    ],
                   ),
-                ],
-              ),
-            ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.only(top: 4),
-                child: LayoutBuilder(
-                  builder: (context, constraints) {
-                    return DottedLine(
-                      lineLength: constraints.maxWidth,
-                      dashColor: AppColors.pureColors.black.o24,
-                      dashLength: 2,
-                      dashGapLength: 2,
-                    );
-                  },
                 ),
-              ),
-            ),
-            Flexible(
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Flexible(
-                    child: Text(endLabel, style: AppTextStyles.body.kt1s, overflow: TextOverflow.ellipsis),
-                  ),
-                  if (lensDate.daysLeft < 0)
-                    Padding(
-                      padding: const EdgeInsets.only(left: 6),
-                      child: Text(
-                        l10n.daysOverdue(lensDate.daysLeft.toString().replaceFirst('-', '+ ')),
-                        style: AppTextStyles.body.kt1.copyWith(color: AppColors.pureColors.error.error),
-                      ),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 4),
+                    child: LayoutBuilder(
+                      builder: (context, constraints) {
+                        return DottedLine(
+                          lineLength: constraints.maxWidth,
+                          dashColor: AppColors.pureColors.black.o24,
+                          dashLength: 2,
+                          dashGapLength: 2,
+                        );
+                      },
                     ),
-                ],
-              ),
+                  ),
+                ),
+                Flexible(
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Flexible(
+                        child: Text(endLabel, style: AppTextStyles.body.kt1s, overflow: TextOverflow.ellipsis),
+                      ),
+                      if (lensDate.daysLeft < 0)
+                        Padding(
+                          padding: const EdgeInsets.only(left: 6),
+                          child: Text(
+                            l10n.daysOverdue(lensDate.daysLeft.toString().replaceFirst('-', '+ ')),
+                            style: AppTextStyles.body.kt1.copyWith(color: AppColors.pureColors.error.error),
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
+              ],
             ),
-          ],
+          ),
         );
       },
     );

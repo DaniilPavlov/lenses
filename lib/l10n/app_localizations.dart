@@ -277,6 +277,72 @@ abstract class AppLocalizations {
   /// In ru, this message translates to:
   /// **'{days} д'**
   String daysOverdue(String days);
+
+  /// No description provided for @semanticLeftLens.
+  ///
+  /// In ru, this message translates to:
+  /// **'Левая линза'**
+  String get semanticLeftLens;
+
+  /// No description provided for @semanticRightLens.
+  ///
+  /// In ru, this message translates to:
+  /// **'Правая линза'**
+  String get semanticRightLens;
+
+  /// No description provided for @semanticBothLenses.
+  ///
+  /// In ru, this message translates to:
+  /// **'Обе линзы'**
+  String get semanticBothLenses;
+
+  /// No description provided for @semanticDaysUntilReplacement.
+  ///
+  /// In ru, this message translates to:
+  /// **'{days} дн. до замены'**
+  String semanticDaysUntilReplacement(int days);
+
+  /// No description provided for @semanticReplaceLens.
+  ///
+  /// In ru, this message translates to:
+  /// **'Заменить линзу'**
+  String get semanticReplaceLens;
+
+  /// No description provided for @semanticReplaceLenses.
+  ///
+  /// In ru, this message translates to:
+  /// **'Заменить линзы'**
+  String get semanticReplaceLenses;
+
+  /// No description provided for @semanticLensStatus.
+  ///
+  /// In ru, this message translates to:
+  /// **'{lens}, {status}'**
+  String semanticLensStatus(String lens, String status);
+
+  /// No description provided for @semanticWearPeriod.
+  ///
+  /// In ru, this message translates to:
+  /// **'{lens}, надета {start}, замена {end}'**
+  String semanticWearPeriod(String lens, String start, String end);
+
+  /// No description provided for @semanticToggleLocale.
+  ///
+  /// In ru, this message translates to:
+  /// **'Переключить язык на {language}'**
+  String semanticToggleLocale(String language);
+
+  /// No description provided for @semanticLanguageEn.
+  ///
+  /// In ru, this message translates to:
+  /// **'английский'**
+  String get semanticLanguageEn;
+
+  /// No description provided for @semanticLanguageRu.
+  ///
+  /// In ru, this message translates to:
+  /// **'русский'**
+  String get semanticLanguageRu;
 }
 
 class _AppLocalizationsDelegate
