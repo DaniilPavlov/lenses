@@ -19,7 +19,10 @@ LensesPairDatesModel _$LensesPairDatesModelFromJson(
 
 Map<String, dynamic> _$LensesPairDatesModelToJson(
   LensesPairDatesModel instance,
-) => <String, dynamic>{'left': instance.left, 'right': instance.right};
+) => <String, dynamic>{
+  'left': instance.left?.toJson(),
+  'right': instance.right?.toJson(),
+};
 
 LensDateModel _$LensDateModelFromJson(Map<String, dynamic> json) =>
     LensDateModel(

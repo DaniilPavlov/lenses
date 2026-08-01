@@ -1,46 +1,58 @@
 # Lenses
 
-Flutter-приложение для учёта срока ношения контактных линз  
-(надевание, отслеживание дней до замены, снятие и напоминания).
+Flutter app for tracking contact lens wear periods  
+(put on, days until replacement, take off, and reminders).
 
-Данные хранятся локально через SharedPreferences.
+Data is stored locally via SharedPreferences.
 
-## Стек
+## Stack
 
-| Слой | Технологии |
+| Layer | Tech |
 |------|------------|
 | UI | Flutter, Material |
 | State | MobX + Provider |
 | DI | GetIt |
-| Хранение | SharedPreferences |
+| Storage | SharedPreferences |
 | Codegen | json_serializable, mobx_codegen, flutter_gen |
-| Локализация | flutter_localizations, intl (ARB) |
-| Уведомления | flutter_local_notifications, timezone |
+| Localization | flutter_localizations, intl (ARB) |
+| Tests | unit + widget (`test/units/`, `test/widget/`, shared `test/helpers/`) |
 
-## Структура
+## Architecture
+
+- **DI** — GetIt in `lib/services/di_register.dart` (`SharedPreferences`, navigator key, reminder service).
+- **State** — `LensesController` (MobX) owns wear dates; UI observes via `Observer`.
+- **Persistence** — `LensesDatesLoader` reads/writes JSON in SharedPreferences.
+- **Locale** — `LocaleController` (MobX) + ARB (`lib/l10n/`); RU/EN switch without restart.
+- **Reminders** — `LensReplacementReminderService` schedules one local notification at 09:00 on the nearest replacement day.
+- **Codegen** — after MobX / json / assets changes: `dart run build_runner build --delete-conflicting-outputs`. Do not hand-edit `*.g.dart` / flutter_gen output.
+- **Scope** — minimal diffs; match `lib/core/`, `lib/common/`, `lib/services/`. No new layers unless asked.
+
+## Structure
 
 ```
 lenses/
 ├── lib/
-│   ├── common/      # виджеты, тема, utils, localization, toast
-│   ├── core/        # фича lenses: controllers, models, screens, sheets
-│   ├── services/    # DI, локальные уведомления
-│   ├── l10n/        # ARB и сгенерированные локализации
-│   ├── assets_gen/  # FlutterGen (иконки, шрифты)
+│   ├── common/      # widgets, theme, utils, localization, toast
+│   ├── core/        # lenses feature: controllers, models, screens, sheets
+│   ├── services/    # DI, local notifications
+│   ├── l10n/        # ARB + generated localizations
+│   ├── assets_gen/  # FlutterGen (icons, fonts)
 │   ├── app.dart
 │   └── main.dart
 ├── test/
-├── android/
-├── ios/
+│   ├── helpers/
+│   ├── mobx/
+│   └── units/       # mirrors lib/
+├── assets/
+├── android/ / ios/
 └── .github/workflows/
 ```
 
-## Требования
+## Requirements
 
-- Flutter **3.35.3+**
-- Dart **3.8+**
+- Flutter **≥3.38** (CI: **3.44.8**), Dart **≥3.10**, Java **21**
 
-## Запуск
+## Run
 
 ```bash
 flutter pub get
@@ -49,38 +61,42 @@ flutter gen-l10n
 flutter run
 ```
 
-## Тесты и анализ
-
-```bash
-flutter analyze
-flutter test
-```
-
 ## CI / CD
 
 [![CI](https://github.com/DaniilPavlov/lenses/actions/workflows/ci.yml/badge.svg)](https://github.com/DaniilPavlov/lenses/actions/workflows/ci.yml)
 
-| Workflow | Когда | Что делает |
-|----------|-------|------------|
-| `ci.yml` | push / PR в `master` | codegen check, analyze, test |
-| `release.yml` | тег `v*` или вручную | Android APK (+ GitHub Release) |
-
-Релиз:
+| Workflow | When | What |
+|----------|------|------|
+| `ci.yml` | push / PR → `master` | codegen check, analyze, test, coverage gate (≥75%) |
+| `release.yml` | tag `v*` or manual | Android APK (+ GitHub Release) |
 
 ```bash
-# версия в pubspec.yaml должна совпадать с тегом
-git tag v1.1.0
-git push origin v1.1.0
+flutter test --coverage
+dart run tool/ci/check_coverage.dart   # same gate as CI; raise --min as coverage grows
 ```
 
-Для release-подписи APK (опционально) — secrets `ANDROID_KEYSTORE_*` в GitHub Actions.
+```bash
+flutter analyze && flutter test
+```
 
-## Возможности
+```bash
+# bump pubspec `version: name+code` (code must increase), then:
+git tag v1.2.0 && git push origin v1.2.0
+```
 
-- **Главный экран** — индикатор дней до замены для одной или обеих линз (L / R)  
-- **Надеть** — выбор даты надевания для одной или обеих линз  
-- **Разные даты** — отдельный срок для левой и правой линзы  
-- **Редактировать / завершить** — смена даты или снятие одной/обеих линз  
-- **Срок ношения** — 14 дней с даты надевания, отображение просрочки  
-- **Локализация** — русский и английский, переключатель RU/EN в AppBar без перезапуска  
-- **Напоминание** — одно локальное уведомление в 09:00 в день ближайшей замены; текст различает левую, правую или обе линзы
+Release secrets (required): `ANDROID_KEYSTORE_BASE64`, `ANDROID_KEYSTORE_PASSWORD`, `ANDROID_KEY_ALIAS`, `ANDROID_KEY_PASSWORD`.
+
+```bash
+keytool -genkey -v -keystore upload-keystore.jks -keyalg RSA -keysize 2048 -validity 10000 -alias upload
+base64 -i upload-keystore.jks | pbcopy   # → ANDROID_KEYSTORE_BASE64
+```
+
+## Features
+
+- **Home** — days-until-replacement indicator for one or both lenses (L / R)
+- **Put on** — set wear start date for one or both lenses
+- **Different dates** — separate schedule for left and right
+- **Edit / finish** — change date or take off one/both lenses
+- **Wear period** — 14 days from put-on date, overdue shown when past
+- **Localization** — Russian and English; RU/EN toggle in AppBar without restart
+- **Reminder** — one local notification at 09:00 on the nearest replacement day; copy differs for left, right, or both

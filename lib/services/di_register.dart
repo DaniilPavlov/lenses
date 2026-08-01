@@ -8,7 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 /// Регистрация контейнеров DI библиотеки get_it.
 Future<void> diRegisters() async {
   final sp = await SharedPreferences.getInstance();
-  GetIt.I.registerSingleton<SharedPreferences>(sp);
+  GetIt.I.tryRegisterSingleton<SharedPreferences>(sp);
   GetIt.I.tryRegisterSingleton<RootNavigatorKey>(RootNavigatorKey(GlobalKey<NavigatorState>()));
   GetIt.I.tryRegisterSingleton<LensReplacementReminderService>(LensReplacementReminderService());
 }

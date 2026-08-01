@@ -1,6 +1,11 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:get_it/get_it.dart';
 import 'package:lenses/common/utils/helpers/mobx_async_value.dart';
+import 'package:lenses/core/lenses/controllers/lenses_controller/lenses_controller.dart';
+import 'package:lenses/core/lenses/loaders/lenses_dates_loader.dart';
 import 'package:lenses/core/lenses/models/generated/generated.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../helpers/controller_fixtures.dart';
 import '../../../mobx/mobx_testing.dart';
@@ -121,6 +126,62 @@ void main() {
         expect(controller.pairDates.value!.left!.dateStart, ControllerFixtures.fixedNow);
         expect(controller.pairDates.value!.right!.dateStart, previousRightStart);
       });
+    });
+
+    group('putOffLensesSheet', () {
+      testWidgets('removes single lens without sheet', (tester) async {
+        final controller = ControllerFixtures.controller(
+          loadPairDatesRaw: () =>
+              '{"left":{"dateStart":"2026-01-01T00:00:00.000","dateEnd":"2026-01-15T00:00:00.000","daysLeft":10},"right":null}',
+        )..loadLensesDates();
+
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Builder(
+              builder: (context) {
+                return ElevatedButton(
+                  onPressed: () => controller.putOffLensesSheet(context: context),
+                  child: const Text('finish'),
+                );
+              },
+            ),
+          ),
+        );
+        await tester.tap(find.text('finish'));
+        await tester.pump();
+        expect(controller.pairDates.value, isNull);
+      });
+    });
+
+    test('setDataLoaded flips flag', () {
+      final controller = ControllerFixtures.controller();
+      expect(controller.isLoaded, isFalse);
+      controller.setDataLoaded();
+      expect(controller.isLoaded, isTrue);
+    });
+
+    test('falls back to LensesDatesLoader when overrides missing', () async {
+      SharedPreferences.setMockInitialValues({
+        LensesDatesLoader.pairDatesKey: ControllerFixtures.pairDatesJson,
+      });
+      await GetIt.I.reset();
+      final prefs = await SharedPreferences.getInstance();
+      GetIt.I.registerSingleton<SharedPreferences>(prefs);
+
+      final controller = LensesController(now: () => ControllerFixtures.fixedNow);
+      await Future<void>.delayed(Duration.zero);
+      expect(controller.pairDates.isValue, isTrue);
+      expect(controller.pairDates.value?.hasBoth, isTrue);
+
+      controller.updateLensesPair(leftDate: ControllerFixtures.fixedNow, rightDate: null);
+      await Future<void>.delayed(Duration.zero);
+      expect(LensesDatesLoader.loadRaw(), isNotNull);
+
+      controller.putOffLensesPair(left: true, right: true);
+      await Future<void>.delayed(Duration.zero);
+      expect(LensesDatesLoader.loadRaw(), isNull);
+
+      await GetIt.I.reset();
     });
   });
 }

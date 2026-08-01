@@ -82,12 +82,10 @@ class _ToastBannerState extends State<ToastBanner> with SingleTickerProviderStat
               color: AppColors.pureColors.white.o100,
             ),
             Expanded(
-              child: RichText(
-                text: TextSpan(
-                  text: widget.toast.message,
-                  style: TextStyle(color: AppColors.pureColors.white.o100),
-                ),
+              child: Text(
+                widget.toast.message,
                 textAlign: TextAlign.left,
+                style: TextStyle(color: AppColors.pureColors.white.o100),
               ),
             ),
           ],

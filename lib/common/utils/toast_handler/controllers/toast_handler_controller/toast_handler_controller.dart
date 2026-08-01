@@ -13,6 +13,7 @@ abstract class ToastHandlerControllerBase with Store {
   int _toastsOnTheScreen = 0;
 
   /// Текущий список toast'ов для отображения.
+  @computed
   List<ToastModel> get toasts => _toasts;
 
   /// Добавляет toast в очередь.

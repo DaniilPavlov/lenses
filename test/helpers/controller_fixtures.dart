@@ -29,7 +29,7 @@ abstract final class ControllerFixtures {
   }) =>
       LensesController(
         autoLoad: false,
-        loadPairDatesRaw: loadPairDatesRaw,
+        loadPairDatesRaw: loadPairDatesRaw ?? () => null,
         savePairDatesRaw: savePairDatesRaw ?? (_) async {},
         clearPairDatesRaw: clearPairDatesRaw ?? () async {},
         now: now ?? () => fixedNow,

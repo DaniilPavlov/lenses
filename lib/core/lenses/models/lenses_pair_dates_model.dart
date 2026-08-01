@@ -2,7 +2,7 @@ part of 'generated/generated.dart';
 
 /// Пара дат ношения левой и правой линзы.
 @immutable
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class LensesPairDatesModel {
   const LensesPairDatesModel({this.left, this.right});
 
