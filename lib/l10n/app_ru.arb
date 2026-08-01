@@ -8,8 +8,21 @@
   "cancel": "Отменить",
   "choose": "Выбрать",
   "daysUntilReplacement": "Дней до замены",
+  "wearPeriodTitle": "Срок ношения",
+  "wearPeriodDays": "{days} д",
+  "@wearPeriodDays": {
+    "placeholders": {
+      "days": { "type": "int" }
+    }
+  },
   "replacementDay": "День замены",
   "replacementDayOverdue": "День замены просрочен",
+  "semanticEditWearPeriod": "Срок ношения, {days} дн. Нажмите, чтобы изменить",
+  "@semanticEditWearPeriod": {
+    "placeholders": {
+      "days": { "type": "int" }
+    }
+  },
   "replaceLens": "Замените\nлинзу",
   "replaceLenses": "Замените\nлинзы",
   "lensesAreOn": "Линзы надеты",

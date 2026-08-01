@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:lenses/common/utils/helpers/mobx_async_value.dart';
 import 'package:lenses/core/lenses/controllers/lenses_controller/lenses_controller.dart';
+import 'package:lenses/core/lenses/loaders/lens_wear_period_loader.dart';
 import 'package:lenses/core/lenses/loaders/lenses_dates_loader.dart';
 import 'package:lenses/core/lenses/models/generated/generated.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -115,16 +116,39 @@ void main() {
       });
     });
 
-    group('renewLenses', () {
-      test('renews only selected lenses', () {
-        final controller = ControllerFixtures.controller(loadPairDatesRaw: () => ControllerFixtures.pairDatesJson)
-          ..loadLensesDates();
-        final previousRightStart = controller.pairDates.value!.right!.dateStart;
+    group('setWearingDays', () {
+      test('updates period, persists and recalculates ends from starts', () async {
+        var savedDays = LensesControllerBase.defaultWearingDays;
+        final controller = ControllerFixtures.controller(
+          loadPairDatesRaw: () => ControllerFixtures.pairDatesJson,
+          saveWearingDays: (days) async => savedDays = days,
+        )..loadLensesDates();
 
-        controller.renewLenses(left: true, right: false);
+        final leftStart = controller.pairDates.value!.left!.dateStart;
+        final rightStart = controller.pairDates.value!.right!.dateStart;
 
-        expect(controller.pairDates.value!.left!.dateStart, ControllerFixtures.fixedNow);
-        expect(controller.pairDates.value!.right!.dateStart, previousRightStart);
+        controller.setWearingDays(30);
+
+        expect(controller.wearingDays, 30);
+        expect(savedDays, 30);
+        expect(controller.pairDates.value!.left!.dateEnd, leftStart.add(const Duration(days: 30)));
+        expect(controller.pairDates.value!.right!.dateEnd, rightStart.add(const Duration(days: 30)));
+      });
+
+      test('clamps to allowed range', () {
+        final controller = ControllerFixtures.controller()..setWearingDays(0);
+        expect(controller.wearingDays, LensWearPeriodLoader.minDays);
+        controller.setWearingDays(999);
+        expect(controller.wearingDays, LensWearPeriodLoader.maxDays);
+      });
+
+      test('no-op when value unchanged', () async {
+        var saveCount = 0;
+        final controller = ControllerFixtures.controller(saveWearingDays: (_) async => saveCount++);
+
+        // ignore: cascade_invocations
+        controller.setWearingDays(LensesControllerBase.defaultWearingDays);
+        expect(saveCount, 0);
       });
     });
 
@@ -161,9 +185,7 @@ void main() {
     });
 
     test('falls back to LensesDatesLoader when overrides missing', () async {
-      SharedPreferences.setMockInitialValues({
-        LensesDatesLoader.pairDatesKey: ControllerFixtures.pairDatesJson,
-      });
+      SharedPreferences.setMockInitialValues({LensesDatesLoader.pairDatesKey: ControllerFixtures.pairDatesJson});
       await GetIt.I.reset();
       final prefs = await SharedPreferences.getInstance();
       GetIt.I.registerSingleton<SharedPreferences>(prefs);

@@ -9,6 +9,24 @@ part of 'lenses_controller.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$LensesController on LensesControllerBase, Store {
+  late final _$wearingDaysAtom = Atom(
+    name: 'LensesControllerBase.wearingDays',
+    context: context,
+  );
+
+  @override
+  int get wearingDays {
+    _$wearingDaysAtom.reportRead();
+    return super.wearingDays;
+  }
+
+  @override
+  set wearingDays(int value) {
+    _$wearingDaysAtom.reportWrite(value, super.wearingDays, () {
+      super.wearingDays = value;
+    });
+  }
+
   late final _$pairDatesAtom = Atom(
     name: 'LensesControllerBase.pairDates',
     context: context,
@@ -42,6 +60,18 @@ mixin _$LensesController on LensesControllerBase, Store {
     );
     try {
       return super.updateLensesPair(leftDate: leftDate, rightDate: rightDate);
+    } finally {
+      _$LensesControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setWearingDays(int days) {
+    final _$actionInfo = _$LensesControllerBaseActionController.startAction(
+      name: 'LensesControllerBase.setWearingDays',
+    );
+    try {
+      return super.setWearingDays(days);
     } finally {
       _$LensesControllerBaseActionController.endAction(_$actionInfo);
     }
@@ -86,6 +116,7 @@ mixin _$LensesController on LensesControllerBase, Store {
   @override
   String toString() {
     return '''
+wearingDays: ${wearingDays},
 pairDates: ${pairDates}
     ''';
   }

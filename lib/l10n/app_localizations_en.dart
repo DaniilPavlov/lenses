@@ -33,10 +33,23 @@ class AppLocalizationsEn extends AppLocalizations {
   String get daysUntilReplacement => 'Days until replacement';
 
   @override
+  String get wearPeriodTitle => 'Wearing period';
+
+  @override
+  String wearPeriodDays(int days) {
+    return '$days d';
+  }
+
+  @override
   String get replacementDay => 'Replacement day';
 
   @override
   String get replacementDayOverdue => 'Replacement day overdue';
+
+  @override
+  String semanticEditWearPeriod(int days) {
+    return 'Wearing period, $days days. Tap to change';
+  }
 
   @override
   String get replaceLens => 'Replace\nlens';

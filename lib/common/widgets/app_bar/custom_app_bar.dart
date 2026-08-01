@@ -8,6 +8,7 @@ import 'package:lenses/common/localization/locale_controller.dart';
 import 'package:lenses/common/utils/theme/const_colors_styles.dart';
 import 'package:lenses/common/utils/theme/const_text_styles.dart';
 import 'package:lenses/common/widgets/app_bar/app_bar_leading_back_arrow.dart';
+import 'package:lenses/core/lenses/components/wear_period_sheet.dart';
 import 'package:lenses/core/lenses/controllers/lenses_controller/lenses_controller.dart';
 import 'package:lenses/l10n/app_localizations.dart';
 import 'package:lenses/services/notifications/lens_replacement_reminder_service.dart';
@@ -104,6 +105,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
     final trailingChildren = <Widget>[
       ...?actions,
+      const _WearPeriodButton(),
       if (showLocaleToggle) const _LocaleToggleButton(),
     ];
 
@@ -144,6 +146,55 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+/// Кнопка общего срока ношения (открывает [WearPeriodSheet]).
+class _WearPeriodButton extends StatelessWidget {
+  const _WearPeriodButton();
+
+  @override
+  Widget build(BuildContext context) {
+    final lensesController = context.read<LensesController>();
+    final l10n = AppLocalizations.of(context);
+
+    return Observer(
+      builder: (context) {
+        final days = lensesController.wearingDays;
+        return Semantics(
+          button: true,
+          label: l10n.semanticEditWearPeriod(days),
+          child: GestureDetector(
+            onTap: () {
+              showModalBottomSheet<void>(
+                isScrollControlled: true,
+                context: context,
+                barrierColor: Colors.black.withValues(alpha: 0.8),
+                builder: (sheetContext) {
+                  return WearPeriodSheet(
+                    initialDays: lensesController.wearingDays,
+                    onConfirmed: lensesController.setWearingDays,
+                  );
+                },
+              );
+            },
+            behavior: HitTestBehavior.opaque,
+            child: ExcludeSemantics(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                child: Text(
+                  l10n.wearPeriodDays(days),
+                  style: AppTextStyles.heading.kH3.copyWith(
+                    color: AppColors.pureColors.black.o100,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }

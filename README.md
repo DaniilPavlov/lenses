@@ -24,6 +24,7 @@ Data is stored locally via SharedPreferences.
 - **Persistence** — `LensesDatesLoader` reads/writes JSON in SharedPreferences.
 - **Locale** — `LocaleController` (MobX) + ARB (`lib/l10n/`); RU/EN switch without restart.
 - **Reminders** — `LensReplacementReminderService` schedules one local notification at 09:00 on the nearest replacement day.
+- **Home widget** — `LensHomeWidgetService` syncs days-until-replacement to Android/iOS home-screen widgets via `home_widget`.
 - **Codegen** — after MobX / json / assets changes: `dart run build_runner build --delete-conflicting-outputs`. Do not hand-edit `*.g.dart` / flutter_gen output.
 - **Scope** — minimal diffs; match `lib/core/`, `lib/common/`, `lib/services/`. No new layers unless asked.
 
@@ -34,7 +35,7 @@ lenses/
 ├── lib/
 │   ├── common/      # widgets, theme, utils, localization, toast
 │   ├── core/        # lenses feature: controllers, models, screens, sheets
-│   ├── services/    # DI, local notifications
+│   ├── services/    # DI, local notifications, home widget sync
 │   ├── l10n/        # ARB + generated localizations
 │   ├── assets_gen/  # FlutterGen (icons, fonts)
 │   ├── app.dart
@@ -44,7 +45,8 @@ lenses/
 │   ├── mobx/
 │   └── units/       # mirrors lib/
 ├── assets/
-├── android/ / ios/
+├── android/         # includes AppWidget (LensesDaysWidgetReceiver)
+├── ios/             # Runner + LensesDaysWidget (WidgetKit)
 └── .github/workflows/
 ```
 
@@ -97,6 +99,15 @@ base64 -i upload-keystore.jks | pbcopy   # → ANDROID_KEYSTORE_BASE64
 - **Put on** — set wear start date for one or both lenses
 - **Different dates** — separate schedule for left and right
 - **Edit / finish** — change date or take off one/both lenses
-- **Wear period** — 14 days from put-on date, overdue shown when past
+- **Wear period** — configurable (default 14 days), shared by both lenses; change from the app bar
 - **Localization** — Russian and English; RU/EN toggle in AppBar without restart
 - **Reminder** — one local notification at 09:00 on the nearest replacement day; copy differs for left, right, or both
+- **Home screen widget** — days until replacement (one number if dates match, otherwise L / R), Android + iOS
+
+## Home screen widget
+
+Shows the same countdown as the main screen. Data is written by Flutter (`LensHomeWidgetService`) whenever wear dates or locale change; native widgets recalculate days from stored `dateEnd` (including overnight).
+
+**Android:** long-press home screen → Widgets → Lenses → Days until replacement.
+
+**iOS:** long-press home screen → Edit → Add Widget → Lenses. Requires a paid Apple Developer account and App Group `group.com.example.lenses` enabled for both the Runner app and the `LensesDaysWidget` extension (Signing & Capabilities in Xcode). Entitlement files are already in the repo.

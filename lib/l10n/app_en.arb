@@ -8,8 +8,21 @@
   "cancel": "Cancel",
   "choose": "Select",
   "daysUntilReplacement": "Days until replacement",
+  "wearPeriodTitle": "Wearing period",
+  "wearPeriodDays": "{days} d",
+  "@wearPeriodDays": {
+    "placeholders": {
+      "days": { "type": "int" }
+    }
+  },
   "replacementDay": "Replacement day",
   "replacementDayOverdue": "Replacement day overdue",
+  "semanticEditWearPeriod": "Wearing period, {days} days. Tap to change",
+  "@semanticEditWearPeriod": {
+    "placeholders": {
+      "days": { "type": "int" }
+    }
+  },
   "replaceLens": "Replace\nlens",
   "replaceLenses": "Replace\nlenses",
   "lensesAreOn": "Lenses are on",

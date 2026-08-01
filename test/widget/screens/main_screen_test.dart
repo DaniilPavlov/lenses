@@ -28,7 +28,7 @@ LensDateModel _freshLens({int startOffsetDays = -5, int daysLeft = 9}) {
   final start = ControllerFixtures.fixedNow.add(Duration(days: startOffsetDays));
   return LensDateModel(
     dateStart: start,
-    dateEnd: start.add(const Duration(days: LensesControllerBase.lensWearingDays)),
+    dateEnd: start.add(const Duration(days: LensesControllerBase.defaultWearingDays)),
     daysLeft: daysLeft,
   );
 }

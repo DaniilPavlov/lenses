@@ -40,10 +40,11 @@ class DateInfoLine extends StatelessWidget {
           container: true,
           label: semanticLabel,
           child: ExcludeSemantics(
-            child: Row(
-              children: [
-                Flexible(
-                  child: Row(
+            child: SizedBox(
+              width: double.infinity,
+              child: Row(
+                children: [
+                  Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       if (hasIcon)
@@ -60,35 +61,28 @@ class DateInfoLine extends StatelessWidget {
                           ),
                         ),
                       if (hasIcon) const SizedBox(width: 6),
-                      Flexible(
-                        child: Text(startLabel, style: AppTextStyles.body.kt1s, overflow: TextOverflow.ellipsis),
-                      ),
+                      Text(startLabel, style: AppTextStyles.body.kt1s),
                     ],
                   ),
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 4),
-                    child: LayoutBuilder(
-                      builder: (context, constraints) {
-                        return DottedLine(
-                          lineLength: constraints.maxWidth,
-                          dashColor: AppColors.pureColors.black.o24,
-                          dashLength: 2,
-                          dashGapLength: 2,
-                        );
-                      },
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 4),
+                      child: LayoutBuilder(
+                        builder: (context, constraints) {
+                          return DottedLine(
+                            lineLength: constraints.maxWidth,
+                            dashColor: AppColors.pureColors.black.o24,
+                            dashLength: 2,
+                            dashGapLength: 2,
+                          );
+                        },
+                      ),
                     ),
                   ),
-                ),
-                Flexible(
-                  child: Row(
+                  Row(
                     mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      Flexible(
-                        child: Text(endLabel, style: AppTextStyles.body.kt1s, overflow: TextOverflow.ellipsis),
-                      ),
+                      Text(endLabel, style: AppTextStyles.body.kt1s),
                       if (lensDate.daysLeft < 0)
                         Padding(
                           padding: const EdgeInsets.only(left: 6),
@@ -99,8 +93,8 @@ class DateInfoLine extends StatelessWidget {
                         ),
                     ],
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         );

@@ -63,15 +63,17 @@ class _PutOnDateSheetState extends State<PutOnDateSheet> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 40, bottom: 30),
-                    child: Text(
-                      widget.leftPut != null && widget.rightPut != null
-                          ? l10n.whenLensesOn
-                          : widget.rightPut != null
-                              ? l10n.rightLensOn
-                              : l10n.leftLensOn,
-                      style: AppTextStyles.heading.kH1,
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 40, bottom: 30),
+                      child: Text(
+                        widget.leftPut != null && widget.rightPut != null
+                            ? l10n.whenLensesOn
+                            : widget.rightPut != null
+                                ? l10n.rightLensOn
+                                : l10n.leftLensOn,
+                        style: AppTextStyles.heading.kH1,
+                      ),
                     ),
                   ),
                   GestureDetector(

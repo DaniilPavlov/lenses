@@ -11,6 +11,7 @@ import 'package:lenses/l10n/app_localizations_en.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../helpers/controller_fixtures.dart';
 import '../../helpers/pump_app.dart';
 
 void main() {
@@ -24,7 +25,7 @@ void main() {
     await tester.pumpApp(
       LensIndicatorStatus(
         daysBeforeReplacement: 5,
-        lifeTime: LensesControllerBase.lensWearingDays,
+        lifeTime: LensesControllerBase.defaultWearingDays,
         isLeft: true,
         onUpdateTap: () {},
       ),
@@ -46,7 +47,7 @@ void main() {
     await tester.pumpApp(
       LensIndicatorStatus(
         daysBeforeReplacement: 0,
-        lifeTime: LensesControllerBase.lensWearingDays,
+        lifeTime: LensesControllerBase.defaultWearingDays,
         sameTime: true,
         onUpdateTap: () => tapped = true,
       ),
@@ -93,14 +94,18 @@ void main() {
 
   testWidgets('AppBar locale toggle has switch-language semantics', (tester) async {
     final localeController = LocaleController();
+    final lensesController = ControllerFixtures.controller()..loadLensesDates();
     await tester.pumpApp(
       const Scaffold(
         appBar: CustomAppBar(title: Text('Title')),
         body: SizedBox.shrink(),
       ),
       wrapInScaffold: false,
-      wrapApp: (app) => Provider<LocaleController>.value(
-        value: localeController,
+      wrapApp: (app) => MultiProvider(
+        providers: [
+          Provider<LocaleController>.value(value: localeController),
+          Provider<LensesController>.value(value: lensesController),
+        ],
         child: app,
       ),
     );

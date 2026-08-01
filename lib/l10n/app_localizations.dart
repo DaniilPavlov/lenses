@@ -146,6 +146,18 @@ abstract class AppLocalizations {
   /// **'Дней до замены'**
   String get daysUntilReplacement;
 
+  /// No description provided for @wearPeriodTitle.
+  ///
+  /// In ru, this message translates to:
+  /// **'Срок ношения'**
+  String get wearPeriodTitle;
+
+  /// No description provided for @wearPeriodDays.
+  ///
+  /// In ru, this message translates to:
+  /// **'{days} д'**
+  String wearPeriodDays(int days);
+
   /// No description provided for @replacementDay.
   ///
   /// In ru, this message translates to:
@@ -157,6 +169,12 @@ abstract class AppLocalizations {
   /// In ru, this message translates to:
   /// **'День замены просрочен'**
   String get replacementDayOverdue;
+
+  /// No description provided for @semanticEditWearPeriod.
+  ///
+  /// In ru, this message translates to:
+  /// **'Срок ношения, {days} дн. Нажмите, чтобы изменить'**
+  String semanticEditWearPeriod(int days);
 
   /// No description provided for @replaceLens.
   ///

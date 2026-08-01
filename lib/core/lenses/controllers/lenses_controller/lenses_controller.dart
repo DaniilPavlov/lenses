@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:lenses/common/utils/helpers/mobx_async_value.dart';
 import 'package:lenses/core/lenses/components/put_on_end_sheet.dart';
+import 'package:lenses/core/lenses/loaders/lens_wear_period_loader.dart';
 import 'package:lenses/core/lenses/loaders/lenses_dates_loader.dart';
 import 'package:lenses/core/lenses/models/generated/generated.dart';
 import 'package:mobx/mobx.dart';
@@ -18,24 +19,35 @@ abstract class LensesControllerBase with Store {
     String? Function()? loadPairDatesRaw,
     Future<void> Function(String json)? savePairDatesRaw,
     Future<void> Function()? clearPairDatesRaw,
+    int? Function()? loadWearingDays,
+    Future<void> Function(int days)? saveWearingDays,
     DateTime Function()? now,
     bool autoLoad = true,
   }) : _loadPairDatesRawOverride = loadPairDatesRaw,
        _savePairDatesRawOverride = savePairDatesRaw,
        _clearPairDatesRawOverride = clearPairDatesRaw,
+       _loadWearingDaysOverride = loadWearingDays,
+       _saveWearingDaysOverride = saveWearingDays,
        _nowOverride = now {
+    wearingDays = _loadWearingDays();
     if (autoLoad) {
       loadLensesDates();
     }
   }
 
-  /// Длительность ношения одной пары линз в днях.
-  static const lensWearingDays = 14;
+  /// Срок ношения по умолчанию (совпадает с [LensWearPeriodLoader.defaultDays]).
+  static const defaultWearingDays = LensWearPeriodLoader.defaultDays;
 
   final String? Function()? _loadPairDatesRawOverride;
   final Future<void> Function(String json)? _savePairDatesRawOverride;
   final Future<void> Function()? _clearPairDatesRawOverride;
+  final int? Function()? _loadWearingDaysOverride;
+  final Future<void> Function(int days)? _saveWearingDaysOverride;
   final DateTime Function()? _nowOverride;
+
+  /// Общий срок ношения обеих линз в днях.
+  @observable
+  int wearingDays = defaultWearingDays;
 
   /// Текущее состояние пары дат ношения.
   @observable
@@ -59,6 +71,22 @@ abstract class LensesControllerBase with Store {
   void renewLenses({required bool left, required bool right}) {
     final now = _now();
     updateLensesPair(leftDate: left ? now : null, rightDate: right ? now : null);
+  }
+
+  /// Задаёт общий срок ношения и пересчитывает даты замены от текущих стартов.
+  @action
+  void setWearingDays(int days) {
+    final next = days.clamp(LensWearPeriodLoader.minDays, LensWearPeriodLoader.maxDays);
+    if (next == wearingDays) {
+      return;
+    }
+    wearingDays = next;
+    _saveWearingDays(next);
+    final current = pairDates.value;
+    if (current == null || current.isEmpty) {
+      return;
+    }
+    _setPairDates(_recalculatePairDates(current));
   }
 
   /// Показывает sheet выбора, какую линзу снять, либо сразу снимает единственную.
@@ -161,10 +189,29 @@ abstract class LensesControllerBase with Store {
     return LensesDatesLoader.clear();
   }
 
-  /// Создаёт модель даты ношения от [dateStart] на [lensWearingDays] дней.
+  int _loadWearingDays() {
+    final load = _loadWearingDaysOverride;
+    if (load != null) {
+      return (load() ?? defaultWearingDays).clamp(
+        LensWearPeriodLoader.minDays,
+        LensWearPeriodLoader.maxDays,
+      );
+    }
+    return LensWearPeriodLoader.load();
+  }
+
+  Future<void> _saveWearingDays(int days) {
+    final save = _saveWearingDaysOverride;
+    if (save != null) {
+      return save(days);
+    }
+    return LensWearPeriodLoader.save(days);
+  }
+
+  /// Создаёт модель даты ношения от [dateStart] на [wearingDays] дней.
   LensDateModel _createLensDate(DateTime dateStart) {
     final normalizedStart = _dateOnly(dateStart);
-    final dateEnd = normalizedStart.add(const Duration(days: lensWearingDays));
+    final dateEnd = normalizedStart.add(Duration(days: wearingDays));
     return LensDateModel(dateStart: normalizedStart, dateEnd: dateEnd, daysLeft: _daysLeftUntil(dateEnd));
   }
 
@@ -176,9 +223,9 @@ abstract class LensesControllerBase with Store {
     );
   }
 
-  /// Сколько календарных дней осталось до замены (включительно с днём [dateEnd]).
+  /// Сколько календарных дней осталось до дня замены [dateEnd] (0 = день замены).
   int _daysLeftUntil(DateTime dateEnd) {
-    return _dateOnly(dateEnd).difference(_dateOnly(_now())).inDays + 1;
+    return _dateOnly(dateEnd).difference(_dateOnly(_now())).inDays;
   }
 
   DateTime _now() => _nowOverride?.call() ?? DateTime.now();

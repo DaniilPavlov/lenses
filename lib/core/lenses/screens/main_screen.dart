@@ -38,13 +38,19 @@ class MainScreen extends StatelessWidget {
             if (pairDates.hasBoth) {
               final leftLensDate = pairDates.left!;
               final rightLensDate = pairDates.right!;
-              return leftLensDate.dateEnd.isSameDate(rightLensDate.dateEnd)
-                  ? OneLensReplacementIndicator(sameTime: true, activeLensDate: leftLensDate)
-                  : const TwoLensReplacementIndicator();
+              return SizedBox(
+                width: double.infinity,
+                child: leftLensDate.dateEnd.isSameDate(rightLensDate.dateEnd)
+                    ? OneLensReplacementIndicator(sameTime: true, activeLensDate: leftLensDate)
+                    : const TwoLensReplacementIndicator(),
+              );
             }
-            return OneLensReplacementIndicator(
-              isLeft: pairDates.left != null,
-              activeLensDate: pairDates.left ?? pairDates.right!,
+            return SizedBox(
+              width: double.infinity,
+              child: OneLensReplacementIndicator(
+                isLeft: pairDates.left != null,
+                activeLensDate: pairDates.left ?? pairDates.right!,
+              ),
             );
           },
         ),

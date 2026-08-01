@@ -33,10 +33,23 @@ class AppLocalizationsRu extends AppLocalizations {
   String get daysUntilReplacement => 'Дней до замены';
 
   @override
+  String get wearPeriodTitle => 'Срок ношения';
+
+  @override
+  String wearPeriodDays(int days) {
+    return '$days д';
+  }
+
+  @override
   String get replacementDay => 'День замены';
 
   @override
   String get replacementDayOverdue => 'День замены просрочен';
+
+  @override
+  String semanticEditWearPeriod(int days) {
+    return 'Срок ношения, $days дн. Нажмите, чтобы изменить';
+  }
 
   @override
   String get replaceLens => 'Замените\nлинзу';

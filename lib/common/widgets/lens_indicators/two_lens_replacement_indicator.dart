@@ -33,6 +33,7 @@ class TwoLensReplacementIndicator extends StatelessWidget {
           padding: const EdgeInsets.all(16),
           child: Column(
             mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Text(l10n.daysUntilReplacement, style: AppTextStyles.heading.kH2),
               Padding(
@@ -43,7 +44,7 @@ class TwoLensReplacementIndicator extends StatelessWidget {
                     Expanded(
                       child: LensIndicatorStatus(
                         isLeft: true,
-                        lifeTime: LensesControllerBase.lensWearingDays,
+                        lifeTime: controller.wearingDays,
                         daysBeforeReplacement: leftLensDate.daysLeft,
                         title: false,
                         onUpdateTap: () => controller.renewLenses(left: true, right: false),
@@ -51,7 +52,7 @@ class TwoLensReplacementIndicator extends StatelessWidget {
                     ),
                     Expanded(
                       child: LensIndicatorStatus(
-                        lifeTime: LensesControllerBase.lensWearingDays,
+                        lifeTime: controller.wearingDays,
                         daysBeforeReplacement: rightLensDate.daysLeft,
                         title: false,
                         onUpdateTap: () => controller.renewLenses(left: false, right: true),
@@ -71,7 +72,7 @@ class TwoLensReplacementIndicator extends StatelessWidget {
                   children: [
                     if (leftLensDate.daysLeft >= 0 || rightLensDate.daysLeft >= 0)
                       CustomButton(
-                        width: MediaQuery.sizeOf(context).width,
+                        width: double.infinity,
                         text: l10n.edit,
                         color: AppColors.pureColors.black.o24,
                         onPressed: () {
@@ -92,7 +93,7 @@ class TwoLensReplacementIndicator extends StatelessWidget {
                         },
                       ),
                     CustomButton(
-                      width: MediaQuery.sizeOf(context).width,
+                      width: double.infinity,
                       color: AppColors.pureColors.error.alertText,
                       text: l10n.finish,
                       onPressed: () => controller.putOffLensesSheet(context: context),

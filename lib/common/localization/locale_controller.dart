@@ -21,11 +21,16 @@ abstract class LocaleControllerBase with Store {
   @computed
   String get localeCodeLabel => isRussian ? 'RU' : 'EN';
 
-  /// Загружает сохранённую локаль; без значения — русский.
+  /// Загружает сохранённую локаль; без значения — русский (сразу пишется в prefs).
   @action
   Future<void> load() async {
     final prefs = await SharedPreferences.getInstance();
     final code = prefs.getString(_prefsKey);
+    if (code == null) {
+      locale = const Locale('ru');
+      await prefs.setString(_prefsKey, 'ru');
+      return;
+    }
     locale = code == 'en' ? const Locale('en') : const Locale('ru');
   }
 

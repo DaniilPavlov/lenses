@@ -22,6 +22,15 @@ void main() {
     expect(controller.isRussian, isTrue);
   });
 
+  test('load without saved value persists russian', () async {
+    SharedPreferences.setMockInitialValues({});
+    final controller = LocaleController();
+    await controller.load();
+    expect(controller.locale, const Locale('ru'));
+    final prefs = await SharedPreferences.getInstance();
+    expect(prefs.getString('app_locale'), 'ru');
+  });
+
   test('load restores saved english locale', () async {
     SharedPreferences.setMockInitialValues({'app_locale': 'en'});
     final controller = LocaleController();
