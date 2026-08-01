@@ -41,6 +41,19 @@
             android:name="com.example.lenses.NOTIFICATION_ICON"
             android:resource="@drawable/ic_notification" />
 
+        <!-- Home screen widget: days until lens replacement -->
+        <receiver
+            android:name=".LensesDaysWidgetReceiver"
+            android:exported="true"
+            android:label="@string/widget_name">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/lenses_days_widget_info" />
+        </receiver>
+
         <!-- Нужны, чтобы AlarmManager реально показал отложенное уведомление. -->
         <receiver
             android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationReceiver"

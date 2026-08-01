@@ -64,33 +64,34 @@ class _ToastBannerState extends State<ToastBanner> with SingleTickerProviderStat
   Widget build(BuildContext context) {
     return AlignTransition(
       alignment: _alignment,
-      child: Container(
-        padding: const EdgeInsets.all(9),
-        constraints: const BoxConstraints(maxWidth: 460),
-        width: MediaQuery.sizeOf(context).width - 32,
-        decoration: BoxDecoration(
-          color: widget.toast.isError ? AppColors.pureColors.error.error : AppColors.pureColors.green.g900,
-          borderRadius: const BorderRadius.all(Radius.circular(8)),
-        ),
-        child: Row(
-          spacing: 10,
-          children: [
-            CustomSvgPicture(
-              widget.toast.isError ? Assets.icons.error.path : Assets.icons.check.path,
-              height: 24,
-              width: 24,
-              color: AppColors.pureColors.white.o100,
-            ),
-            Expanded(
-              child: RichText(
-                text: TextSpan(
-                  text: widget.toast.message,
+      child: Material(
+        color: Colors.transparent,
+        child: Container(
+          padding: const EdgeInsets.all(9),
+          constraints: const BoxConstraints(maxWidth: 460),
+          width: MediaQuery.sizeOf(context).width - 32,
+          decoration: BoxDecoration(
+            color: widget.toast.isError ? AppColors.pureColors.error.error : AppColors.pureColors.green.g900,
+            borderRadius: const BorderRadius.all(Radius.circular(8)),
+          ),
+          child: Row(
+            spacing: 10,
+            children: [
+              CustomSvgPicture(
+                widget.toast.isError ? Assets.icons.error.path : Assets.icons.check.path,
+                height: 24,
+                width: 24,
+                color: AppColors.pureColors.white.o100,
+              ),
+              Expanded(
+                child: Text(
+                  widget.toast.message,
+                  textAlign: TextAlign.left,
                   style: TextStyle(color: AppColors.pureColors.white.o100),
                 ),
-                textAlign: TextAlign.left,
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

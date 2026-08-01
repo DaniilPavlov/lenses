@@ -33,10 +33,23 @@ class AppLocalizationsEn extends AppLocalizations {
   String get daysUntilReplacement => 'Days until replacement';
 
   @override
+  String get wearPeriodTitle => 'Wearing period';
+
+  @override
+  String wearPeriodDays(int days) {
+    return '$days d';
+  }
+
+  @override
   String get replacementDay => 'Replacement day';
 
   @override
   String get replacementDayOverdue => 'Replacement day overdue';
+
+  @override
+  String semanticEditWearPeriod(int days) {
+    return 'Wearing period, $days days. Tap to change';
+  }
 
   @override
   String get replaceLens => 'Replace\nlens';
@@ -103,4 +116,45 @@ class AppLocalizationsEn extends AppLocalizations {
   String daysOverdue(String days) {
     return '$days d';
   }
+
+  @override
+  String get semanticLeftLens => 'Left lens';
+
+  @override
+  String get semanticRightLens => 'Right lens';
+
+  @override
+  String get semanticBothLenses => 'Both lenses';
+
+  @override
+  String semanticDaysUntilReplacement(int days) {
+    return '$days days until replacement';
+  }
+
+  @override
+  String get semanticReplaceLens => 'Replace lens';
+
+  @override
+  String get semanticReplaceLenses => 'Replace lenses';
+
+  @override
+  String semanticLensStatus(String lens, String status) {
+    return '$lens, $status';
+  }
+
+  @override
+  String semanticWearPeriod(String lens, String start, String end) {
+    return '$lens, put on $start, replace $end';
+  }
+
+  @override
+  String semanticToggleLocale(String language) {
+    return 'Switch language to $language';
+  }
+
+  @override
+  String get semanticLanguageEn => 'English';
+
+  @override
+  String get semanticLanguageRu => 'Russian';
 }

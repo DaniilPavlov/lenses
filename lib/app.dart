@@ -19,10 +19,9 @@ import 'package:lenses/core/lenses/models/toast_model.dart';
 import 'package:lenses/core/lenses/screens/main_screen.dart';
 import 'package:lenses/l10n/app_localizations.dart';
 import 'package:lenses/services/notifications/lens_replacement_reminder_service.dart';
+import 'package:lenses/services/widgets/lens_home_widget_service.dart';
 import 'package:mobx/mobx.dart';
 import 'package:provider/provider.dart';
-
-// TODO(feature): add feature of lens' period wearing editing
 
 /// Корневой виджет приложения: тема, локаль, тосты и реакция на даты линз.
 class App extends StatefulWidget {
@@ -61,49 +60,56 @@ class _AppState extends State<App> {
             onFirstLoadDone: controller.setDataLoaded,
           ));
         }),
-        child: Observer(
-          builder: (context) {
-            return MaterialApp(
-              locale: localeController.locale,
-              supportedLocales: LocaleControllerBase.supportedLocales,
-              localizationsDelegates: const [
-                AppLocalizations.delegate,
-                GlobalMaterialLocalizations.delegate,
-                GlobalWidgetsLocalizations.delegate,
-                GlobalCupertinoLocalizations.delegate,
-              ],
-              theme: ThemeData(
-                useMaterial3: true,
-                splashFactory: NoSplash.splashFactory,
-                highlightColor: Colors.transparent,
-                typography: Typography.material2014(platform: defaultTargetPlatform),
-                canvasColor: AppColors.pureColors.white.o100,
-                fontFamily: FontFamily.rfDewi,
-                popupMenuTheme: PopupMenuThemeData(
-                  surfaceTintColor: AppColors.pureColors.white.o100,
-                  color: AppColors.pureColors.white.o100,
+        child: ReactionBuilder(
+          builder: (context) => reaction((_) => localeController.locale, (locale) {
+            final pair = context.read<LensesController>().pairDates.value;
+            unawaited(GetIt.I<LensReplacementReminderService>().sync(pair, locale: locale));
+            unawaited(GetIt.I<LensHomeWidgetService>().sync(pair, locale: locale));
+          }),
+          child: Observer(
+            builder: (context) {
+              return MaterialApp(
+                locale: localeController.locale,
+                supportedLocales: LocaleControllerBase.supportedLocales,
+                localizationsDelegates: const [
+                  AppLocalizations.delegate,
+                  GlobalMaterialLocalizations.delegate,
+                  GlobalWidgetsLocalizations.delegate,
+                  GlobalCupertinoLocalizations.delegate,
+                ],
+                theme: ThemeData(
+                  useMaterial3: true,
+                  splashFactory: NoSplash.splashFactory,
+                  highlightColor: Colors.transparent,
+                  typography: Typography.material2014(platform: defaultTargetPlatform),
+                  canvasColor: AppColors.pureColors.white.o100,
+                  fontFamily: FontFamily.rfDewi,
+                  popupMenuTheme: PopupMenuThemeData(
+                    surfaceTintColor: AppColors.pureColors.white.o100,
+                    color: AppColors.pureColors.white.o100,
+                  ),
+                  scaffoldBackgroundColor: Colors.white,
+                  appBarTheme: AppBarTheme(surfaceTintColor: AppColors.pureColors.white.o100),
+                  textSelectionTheme: TextSelectionThemeData(
+                    selectionColor: AppColors.pureColors.green.g100,
+                    selectionHandleColor: AppColors.pureColors.green.g500,
+                  ),
+                  tabBarTheme: const TabBarThemeData(overlayColor: WidgetStatePropertyAll(Colors.transparent)),
                 ),
-                scaffoldBackgroundColor: Colors.white,
-                appBarTheme: AppBarTheme(surfaceTintColor: AppColors.pureColors.white.o100),
-                textSelectionTheme: TextSelectionThemeData(
-                  selectionColor: AppColors.pureColors.green.g100,
-                  selectionHandleColor: AppColors.pureColors.green.g500,
-                ),
-                tabBarTheme: const TabBarThemeData(overlayColor: WidgetStatePropertyAll(Colors.transparent)),
-              ),
-              navigatorKey: GetIt.I.get<RootNavigatorKey>().navigatorKey,
-              builder: (context, child) {
-                return MediaQuery(
-                  data: MediaQuery.of(context).copyWith(textScaler: TextScaler.noScaling),
-                  child: ToastHandlerWidget(child: child!),
-                );
-              },
-              initialRoute: MainScreen.id,
-              onGenerateRoute: (settings) {
-                return MaterialPageRoute(builder: (_) => const MainScreen(), settings: settings);
-              },
-            );
-          },
+                navigatorKey: GetIt.I.get<RootNavigatorKey>().navigatorKey,
+                builder: (context, child) {
+                  return MediaQuery(
+                    data: MediaQuery.of(context).copyWith(textScaler: TextScaler.noScaling),
+                    child: ToastHandlerWidget(child: child!),
+                  );
+                },
+                initialRoute: MainScreen.id,
+                onGenerateRoute: (settings) {
+                  return MaterialPageRoute(builder: (_) => const MainScreen(), settings: settings);
+                },
+              );
+            },
+          ),
         ),
       ),
     );
@@ -129,6 +135,7 @@ class _AppState extends State<App> {
       onFirstLoadDone();
     }
     await GetIt.I<LensReplacementReminderService>().sync(pairDates.value, locale: locale);
+    await GetIt.I<LensHomeWidgetService>().sync(pairDates.value, locale: locale);
   }
 
   /// Показывает toast через корневой [ToastHandlerWidget].

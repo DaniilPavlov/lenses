@@ -24,22 +24,29 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
       - name: Setup Java
-        uses: actions/setup-java@v5.6.0
+        uses: actions/setup-java@03ad4de0992f5dab5e18fcb136590ce7c4a0ac95 # v5
         with:
           distribution: temurin
           java-version: "21"
 
       - name: Setup Flutter
-        uses: subosito/flutter-action@v2
+        uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2
         with:
-          flutter-version: "3.35.3"
+          flutter-version: "3.44.8"
           cache: true
 
       - name: Install dependencies
         run: flutter pub get
+
+      - name: Audit dependencies
+        run: dart run dart_audit --exit-zero
+
+      - name: Check outdated dependencies
+        run: dart pub outdated --show-all --dev-dependencies
+        continue-on-error: true
 
       - name: Verify codegen is up to date
         run: |
@@ -56,9 +63,12 @@ jobs:
       - name: Test
         run: flutter test --coverage
 
+      - name: Coverage gate
+        run: dart run tool/ci/check_coverage.dart --min 75 --path coverage/lcov.info
+
       - name: Upload coverage
-        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
-        uses: actions/upload-artifact@v7
+        if: always() && github.event_name == 'push' && github.ref == 'refs/heads/master'
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         with:
           name: coverage-lcov
           path: coverage/lcov.info

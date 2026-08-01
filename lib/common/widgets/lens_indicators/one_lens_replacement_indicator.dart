@@ -36,6 +36,7 @@ class OneLensReplacementIndicator extends StatelessWidget {
           padding: const EdgeInsets.all(16),
           child: Column(
             mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Padding(
                 padding: const EdgeInsets.only(bottom: 30),
@@ -43,7 +44,7 @@ class OneLensReplacementIndicator extends StatelessWidget {
                   sameTime: sameTime,
                   isAloneChildCircle: true,
                   isLeft: isLeft,
-                  lifeTime: LensesControllerBase.lensWearingDays,
+                  lifeTime: controller.wearingDays,
                   daysBeforeReplacement: activeLensDate.daysLeft,
                   onUpdateTap: () => controller.renewLenses(left: sameTime || isLeft, right: sameTime || !isLeft),
                 ),
@@ -79,7 +80,7 @@ class OneLensReplacementIndicator extends StatelessWidget {
                       ],
                     ),
                     CustomButton(
-                      width: MediaQuery.sizeOf(context).width,
+                      width: double.infinity,
                       color: AppColors.pureColors.error.alertText,
                       text: activeLensDate.daysLeft >= 0 ? l10n.finish : l10n.finishWearing,
                       onPressed: () => controller.putOffLensesSheet(context: context),

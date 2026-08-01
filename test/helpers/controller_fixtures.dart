@@ -25,13 +25,17 @@ abstract final class ControllerFixtures {
     String? Function()? loadPairDatesRaw,
     Future<void> Function(String json)? savePairDatesRaw,
     Future<void> Function()? clearPairDatesRaw,
+    int? Function()? loadWearingDays,
+    Future<void> Function(int days)? saveWearingDays,
     DateTime Function()? now,
   }) =>
       LensesController(
         autoLoad: false,
-        loadPairDatesRaw: loadPairDatesRaw,
+        loadPairDatesRaw: loadPairDatesRaw ?? () => null,
         savePairDatesRaw: savePairDatesRaw ?? (_) async {},
         clearPairDatesRaw: clearPairDatesRaw ?? () async {},
+        loadWearingDays: loadWearingDays ?? () => LensesControllerBase.defaultWearingDays,
+        saveWearingDays: saveWearingDays ?? (_) async {},
         now: now ?? () => fixedNow,
       );
 }

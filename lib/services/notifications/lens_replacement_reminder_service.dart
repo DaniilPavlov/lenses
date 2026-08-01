@@ -2,14 +2,11 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
-import 'package:lenses/common/utils/helpers/utils.dart';
 import 'package:lenses/core/lenses/models/generated/generated.dart';
 import 'package:lenses/l10n/app_localizations.dart';
+import 'package:lenses/services/notifications/lens_replacement_schedule.dart';
 import 'package:timezone/data/latest_all.dart' as tz_data;
 import 'package:timezone/timezone.dart' as tz;
-
-/// Какая линза (или обе) попадает в ближайшее напоминание о замене.
-enum _ReplacementTarget { left, right, both }
 
 /// Локальное напоминание о замене линз в день окончания ношения.
 ///
@@ -61,7 +58,7 @@ class LensReplacementReminderService {
       final l10n = await AppLocalizations.delegate.load(locale);
       await _ensureAndroidChannel(l10n);
 
-      final target = _nextReplacement(pairDates);
+      final target = nextLensReplacement(pairDates);
       if (target == null) {
         if (kDebugMode) {
           debugPrint('LensReplacementReminderService: no upcoming reminder');
@@ -97,36 +94,11 @@ class LensReplacementReminderService {
     }
   }
 
-  /// Ближайшая дата замены и какие линзы в этот день заканчиваются.
-  ({DateTime date, _ReplacementTarget which})? _nextReplacement(LensesPairDatesModel? pairDates) {
-    if (pairDates == null || pairDates.isEmpty) {
-      return null;
-    }
-
-    final leftEnd = pairDates.left?.dateEnd;
-    final rightEnd = pairDates.right?.dateEnd;
-
-    if (leftEnd != null && rightEnd != null) {
-      if (leftEnd.isSameDate(rightEnd)) {
-        return (date: leftEnd, which: _ReplacementTarget.both);
-      }
-      if (leftEnd.isBefore(rightEnd)) {
-        return (date: leftEnd, which: _ReplacementTarget.left);
-      }
-      return (date: rightEnd, which: _ReplacementTarget.right);
-    }
-
-    if (leftEnd != null) {
-      return (date: leftEnd, which: _ReplacementTarget.left);
-    }
-    return (date: rightEnd!, which: _ReplacementTarget.right);
-  }
-
-  (String, String) _copyFor(_ReplacementTarget which, AppLocalizations l10n) {
+  (String, String) _copyFor(ReplacementTarget which, AppLocalizations l10n) {
     return switch (which) {
-      _ReplacementTarget.both => (l10n.notificationTitleBoth, l10n.notificationBodyBoth),
-      _ReplacementTarget.left => (l10n.notificationTitleLeft, l10n.notificationBodyLeft),
-      _ReplacementTarget.right => (l10n.notificationTitleRight, l10n.notificationBodyRight),
+      ReplacementTarget.both => (l10n.notificationTitleBoth, l10n.notificationBodyBoth),
+      ReplacementTarget.left => (l10n.notificationTitleLeft, l10n.notificationBodyLeft),
+      ReplacementTarget.right => (l10n.notificationTitleRight, l10n.notificationBodyRight),
     };
   }
 

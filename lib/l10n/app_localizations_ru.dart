@@ -33,10 +33,23 @@ class AppLocalizationsRu extends AppLocalizations {
   String get daysUntilReplacement => 'Дней до замены';
 
   @override
+  String get wearPeriodTitle => 'Срок ношения';
+
+  @override
+  String wearPeriodDays(int days) {
+    return '$days д';
+  }
+
+  @override
   String get replacementDay => 'День замены';
 
   @override
   String get replacementDayOverdue => 'День замены просрочен';
+
+  @override
+  String semanticEditWearPeriod(int days) {
+    return 'Срок ношения, $days дн. Нажмите, чтобы изменить';
+  }
 
   @override
   String get replaceLens => 'Замените\nлинзу';
@@ -103,4 +116,45 @@ class AppLocalizationsRu extends AppLocalizations {
   String daysOverdue(String days) {
     return '$days д';
   }
+
+  @override
+  String get semanticLeftLens => 'Левая линза';
+
+  @override
+  String get semanticRightLens => 'Правая линза';
+
+  @override
+  String get semanticBothLenses => 'Обе линзы';
+
+  @override
+  String semanticDaysUntilReplacement(int days) {
+    return '$days дн. до замены';
+  }
+
+  @override
+  String get semanticReplaceLens => 'Заменить линзу';
+
+  @override
+  String get semanticReplaceLenses => 'Заменить линзы';
+
+  @override
+  String semanticLensStatus(String lens, String status) {
+    return '$lens, $status';
+  }
+
+  @override
+  String semanticWearPeriod(String lens, String start, String end) {
+    return '$lens, надета $start, замена $end';
+  }
+
+  @override
+  String semanticToggleLocale(String language) {
+    return 'Переключить язык на $language';
+  }
+
+  @override
+  String get semanticLanguageEn => 'английский';
+
+  @override
+  String get semanticLanguageRu => 'русский';
 }

@@ -8,8 +8,21 @@
   "cancel": "Cancel",
   "choose": "Select",
   "daysUntilReplacement": "Days until replacement",
+  "wearPeriodTitle": "Wearing period",
+  "wearPeriodDays": "{days} d",
+  "@wearPeriodDays": {
+    "placeholders": {
+      "days": { "type": "int" }
+    }
+  },
   "replacementDay": "Replacement day",
   "replacementDayOverdue": "Replacement day overdue",
+  "semanticEditWearPeriod": "Wearing period, {days} days. Tap to change",
+  "@semanticEditWearPeriod": {
+    "placeholders": {
+      "days": { "type": "int" }
+    }
+  },
   "replaceLens": "Replace\nlens",
   "replaceLenses": "Replace\nlenses",
   "lensesAreOn": "Lenses are on",
@@ -29,5 +42,16 @@
   "notificationBodyLeft": "The left lens wearing period is over — put on a new one",
   "notificationTitleRight": "Time to replace the right lens",
   "notificationBodyRight": "The right lens wearing period is over — put on a new one",
-  "daysOverdue": "{days} d"
+  "daysOverdue": "{days} d",
+  "semanticLeftLens": "Left lens",
+  "semanticRightLens": "Right lens",
+  "semanticBothLenses": "Both lenses",
+  "semanticDaysUntilReplacement": "{days} days until replacement",
+  "semanticReplaceLens": "Replace lens",
+  "semanticReplaceLenses": "Replace lenses",
+  "semanticLensStatus": "{lens}, {status}",
+  "semanticWearPeriod": "{lens}, put on {start}, replace {end}",
+  "semanticToggleLocale": "Switch language to {language}",
+  "semanticLanguageEn": "English",
+  "semanticLanguageRu": "Russian"
 }

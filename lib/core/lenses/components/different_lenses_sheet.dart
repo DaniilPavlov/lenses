@@ -92,44 +92,55 @@ class _DifferentLensesSheetState extends State<DifferentLensesSheet> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: ['L', 'R']
                       .map(
-                        (type) => Expanded(
-                          child: DecoratedBox(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
-                              border: Border.all(
-                                color: 'L' == type && leftActive || 'R' == type && !leftActive
-                                    ? AppColors.pureColors.blue.b800
-                                    : Colors.white,
-                                width: 2,
-                              ),
-                              color: Colors.white,
-                            ),
-                            child: InkWell(
-                              splashFactory: NoSplash.splashFactory,
-                              hoverColor: Colors.transparent,
-                              highlightColor: Colors.transparent,
-                              onTap: () {
-                                setState(() {
-                                  leftActive = type == 'L';
-                                });
-                              },
-                              customBorder: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(5),
-                              ),
-                              child: Center(
-                                child: Padding(
-                                  padding: const EdgeInsets.only(bottom: 11, top: 9),
-                                  child: Text(
-                                    type,
-                                    style: AppTextStyles.heading.kH2.copyWith(
-                                      fontWeight: FontWeight.bold,
+                        (type) {
+                          final isLeft = type == 'L';
+                          final isSelected = isLeft ? leftActive : !leftActive;
+                          return Expanded(
+                            child: Semantics(
+                              button: true,
+                              selected: isSelected,
+                              label: isLeft ? l10n.semanticLeftLens : l10n.semanticRightLens,
+                              child: ExcludeSemantics(
+                                child: DecoratedBox(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    border: Border.all(
+                                      color: isSelected
+                                          ? AppColors.pureColors.blue.b800
+                                          : Colors.white,
+                                      width: 2,
+                                    ),
+                                    color: Colors.white,
+                                  ),
+                                  child: InkWell(
+                                    splashFactory: NoSplash.splashFactory,
+                                    hoverColor: Colors.transparent,
+                                    highlightColor: Colors.transparent,
+                                    onTap: () {
+                                      setState(() {
+                                        leftActive = isLeft;
+                                      });
+                                    },
+                                    customBorder: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(5),
+                                    ),
+                                    child: Center(
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(bottom: 11, top: 9),
+                                        child: Text(
+                                          type,
+                                          style: AppTextStyles.heading.kH2.copyWith(
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
                                     ),
                                   ),
                                 ),
                               ),
                             ),
-                          ),
-                        ),
+                          );
+                        },
                       )
                       .toList(),
                 ),
