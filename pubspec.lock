@@ -5,18 +5,18 @@ packages:
     dependency: transitive
     description:
       name: _fe_analyzer_shared
-      sha256: a49d6cf99e8d8e7a8e93668d09ced0bbdb954d0b4fccc2f5f9241c6b87fad95c
+      sha256: "739258fc1504144e55b639fa6c6fe4c1d10ae71c20f25973c12af118699723fa"
       url: "https://pub.dev"
     source: hosted
-    version: "99.0.0"
+    version: "106.0.0"
   analyzer:
     dependency: transitive
     description:
       name: analyzer
-      sha256: "663efa951fb8a45e06f491223a604c93820598f20e6a99c25617a1576065e8b7"
+      sha256: "76c74350a63a37635d01dc2dd6850cc9642218c9f7291659d073e697e4450bc1"
       url: "https://pub.dev"
     source: hosted
-    version: "12.1.0"
+    version: "14.2.0"
   archive:
     dependency: transitive
     description:
@@ -53,10 +53,10 @@ packages:
     dependency: transitive
     description:
       name: build
-      sha256: "45d14a0fb23e018d8287c32fc98d726ce466b231928ed9b9200f29bd3ccd39ae"
+      sha256: b94f5da9ed3d081fd4ecc426c260998b5f4f4eb2f6d89b7e5472edef0b2b2a1b
       url: "https://pub.dev"
     source: hosted
-    version: "4.0.7"
+    version: "4.0.10"
   build_config:
     dependency: transitive
     description:
@@ -77,10 +77,10 @@ packages:
     dependency: "direct dev"
     description:
       name: build_runner
-      sha256: "5367e521935b102bdf1e735d2aab461e36b2edca6517662d088dd04cc39f8d16"
+      sha256: "90363d438bd9f84a4d5bbb83352251f57d2d9d771bc95a44e6a33fe25fa52774"
       url: "https://pub.dev"
     source: hosted
-    version: "2.15.1"
+    version: "2.16.0"
   built_collection:
     dependency: transitive
     description:
@@ -181,10 +181,10 @@ packages:
     dependency: transitive
     description:
       name: dart_style
-      sha256: a4c1ccfee44c7e75ed80484071a5c142a385345e658fd8bd7c4b5c97e7198f98
+      sha256: "82ade9fc4273f29ed673e33166944465225b4f7fc5d4aaef48605cc751c18fc1"
       url: "https://pub.dev"
     source: hosted
-    version: "3.1.8"
+    version: "3.1.13"
   dartx:
     dependency: transitive
     description:
@@ -449,10 +449,10 @@ packages:
     dependency: "direct main"
     description:
       name: intl
-      sha256: "3df61194eb431efc39c4ceba583b95633a403f46c9fd341e550ce0bfa50e9aa5"
+      sha256: "1ca20c894b1717686a2319b8548763d812bc0aabdac580420a44c5178c57a867"
       url: "https://pub.dev"
     source: hosted
-    version: "0.20.2"
+    version: "0.20.3"
   io:
     dependency: transitive
     description:
@@ -553,10 +553,10 @@ packages:
     dependency: transitive
     description:
       name: matcher
-      sha256: dc0b7dc7651697ea4ff3e69ef44b0407ea32c487a39fff6a4004fa585e901861
+      sha256: "31bd099b47c10cd1aeb55146a2d46ce0277630ecef3f7dae54ad7873f36696cd"
       url: "https://pub.dev"
     source: hosted
-    version: "0.12.19"
+    version: "0.12.20"
   material_color_utilities:
     dependency: transitive
     description:
@@ -569,10 +569,10 @@ packages:
     dependency: transitive
     description:
       name: meta
-      sha256: "1741988757a65eb6b36abe716829688cf01910bbf91c34354ff7ec1c3de2b349"
+      sha256: "307249ce4ff29d58a18e97f6345f539382eb9c9c29ecda628900f31de0443dd9"
       url: "https://pub.dev"
     source: hosted
-    version: "1.18.0"
+    version: "1.19.0"
   meykuless_lint_rules:
     dependency: "direct dev"
     description:
@@ -602,10 +602,10 @@ packages:
     dependency: "direct dev"
     description:
       name: mobx_codegen
-      sha256: "6529bcae074838004b58ad01fbe4966be182a176aacfb723686985986ebac19f"
+      sha256: e90238a74e1e6cd7886228552006db73cd7768ce1584ffa13112332df8565853
       url: "https://pub.dev"
     source: hosted
-    version: "2.7.7"
+    version: "2.7.8"
   nested:
     dependency: transitive
     description:
@@ -919,10 +919,10 @@ packages:
     dependency: transitive
     description:
       name: test_api
-      sha256: "949a932224383300f01be9221c39180316445ecb8e7547f70a41a35bf421fb9e"
+      sha256: "2a122cbe059f8b610d3a5415f42e255b6c17b1f21eee1d960f31080237fb4f11"
       url: "https://pub.dev"
     source: hosted
-    version: "0.7.11"
+    version: "0.7.12"
   time:
     dependency: transitive
     description:
@@ -975,10 +975,10 @@ packages:
     dependency: transitive
     description:
       name: vector_math
-      sha256: d530bd74fea330e6e364cda7a85019c434070188383e1cd8d9777ee586914c5b
+      sha256: f36f9f3be64c6198714492bb455c11056e33e2f85d9a0b676a48301e44fdcf47
       url: "https://pub.dev"
     source: hosted
-    version: "2.2.0"
+    version: "2.4.2"
   vm_service:
     dependency: transitive
     description:
